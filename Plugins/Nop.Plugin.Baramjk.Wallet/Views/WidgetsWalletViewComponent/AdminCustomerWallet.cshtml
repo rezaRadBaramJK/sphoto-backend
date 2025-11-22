@@ -1,0 +1,28 @@
+﻿@using Nop.Web.Framework.TagHelpers.Admin
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<Nop.Plugin.Baramjk.Wallet.Services.Models.CustomerWallet>
+
+<nop-card asp-name="Wallet" asp-icon="fas fa-coins" asp-title="Wallet" asp-hide="false"
+          asp-hide-block-attribute-name="Wallet" asp-advanced="false">
+
+    <div class="card-body">
+        <ul class="common-list">
+            <form method="post" action=""></form>
+            @foreach (var item in Model)
+            {
+                <li>
+                    <form method="post" action="/WalletCharge/IncreaseBalance?customerId=@item.Wallet.CustomerId&currencyCode=@item.Wallet.CurrencyCode">
+                        @item.Currency.Name -<b> @item.Wallet.Amount</b>
+                        <input type="number" style="width: 80px" name="amount"/>
+                        <button type="submit" name="impersonate" class="btn btn-primary">
+                            <i class="fa fa-plus"></i>
+                            Add
+                        </button>
+                    </form>
+                </li>
+            }
+
+        </ul>
+    </div>
+
+</nop-card>

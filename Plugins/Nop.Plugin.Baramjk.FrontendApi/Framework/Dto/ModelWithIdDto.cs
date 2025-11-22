@@ -1,0 +1,10 @@
+namespace Nop.Plugin.Baramjk.FrontendApi.Framework.Dto
+{
+    public abstract class ModelWithIdDto : ModelDto
+    {
+        /// <summary>
+        ///     Gets or sets the dto object identifier
+        /// </summary>
+        public int Id { get; set; }
+    }
+}

@@ -1,0 +1,32 @@
+﻿@using Nop.Plugin.Baramjk.PushNotification
+
+@model Nop.Plugin.Baramjk.PushNotification.Models.Admin.EventNotificationConfigs.EventNotificationConfigModel
+
+@{
+    ViewBag.PageTitle = T($"{DefaultValue.SystemName}.Admin.EventNotificationConfig.Title").Text;
+    Html.SetActiveMenuItemSystemName($"{SystemName}.EventNotificationConfig");
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form asp-controller="EventNotificationConfig" asp-action="Create" method="post">
+    <div class="content-header clearfix">
+        <h1 class="float-left">
+            @T($"{DefaultValue.SystemName}.Admin.EventNotificationConfig.AddNew")
+            <small>
+                <i class="fas fa-arrow-circle-left"></i>
+                <a asp-controller="EventNotificationConfig" asp-action="Events">@T($"{DefaultValue.SystemName}.Admin.EventNotificationConfig.BackToList")</a>
+            </small>
+        </h1>
+        <div class="float-right">
+            <button type="submit" name="save" class="btn btn-primary">
+                <i class="far fa-save"></i>
+                @T("Admin.Common.Save")
+            </button>
+            <button type="submit" name="save-continue" class="btn btn-primary">
+                <i class="far fa-save"></i>
+                @T("Admin.Common.SaveContinue")
+            </button>
+        </div>
+    </div>
+    @await Html.PartialAsync("~/Plugins/Baramjk.PushNotification/Views/Menu/EventNotificationConfigs/_CreateOrUpdate.cshtml", Model)
+</form>

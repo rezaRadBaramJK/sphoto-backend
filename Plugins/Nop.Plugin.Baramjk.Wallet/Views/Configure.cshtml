@@ -1,0 +1,188 @@
+﻿@using Nop.Web.Framework.TagHelpers.Admin
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Nop.Plugin.Baramjk.Framework.Models.ViewModels
+@using Nop.Plugin.Baramjk.Wallet.Plugins
+@model Nop.Plugin.Baramjk.Wallet.Models.WalletSettingModel
+
+@{
+    InitConfigureView(new DefaultConfigureViewModel(typeof(WalletPlugin), "WalletAdmin"));
+}
+
+<div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="MyFatoorahAccessKey"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="MyFatoorahAccessKey"/>
+            <span asp-validation-for="MyFatoorahAccessKey"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="MyFatoorahUseSandbox"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="MyFatoorahUseSandbox"/>
+            <span asp-validation-for="MyFatoorahUseSandbox"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="DefaultCurrencyCode"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="DefaultCurrencyCode"/>
+            <span asp-validation-for="DefaultCurrencyCode"></span>
+        </div>
+    </div>
+
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="AmountForRegistration"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="AmountForRegistration"/>
+            <span asp-validation-for="AmountForRegistration"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="MinimumAmountToUsePerOrder"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="MinimumAmountToUsePerOrder"/>
+            <span asp-validation-for="MinimumAmountToUsePerOrder"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="MaximumAmountToUsePerOrder"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="MaximumAmountToUsePerOrder"/>
+            <span asp-validation-for="MaximumAmountToUsePerOrder"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="MinimumOrderTotalToUse"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="MinimumOrderTotalToUse"/>
+            <span asp-validation-for="MinimumOrderTotalToUse"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="EachOrderTotal"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="EachOrderTotal"/>
+            <span asp-validation-for="EachOrderTotal"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="EachOrderTotalEarn"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="EachOrderTotalEarn"/>
+            <span asp-validation-for="EachOrderTotalEarn"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="MaximumAmountEarnPerOrder"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="MaximumAmountEarnPerOrder"/>
+            <span asp-validation-for="MaximumAmountEarnPerOrder"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="AutoUseWalletAmount"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="AutoUseWalletAmount"/>
+            <span asp-validation-for="AutoUseWalletAmount"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="RewardExpirationDays"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="RewardExpirationDays"/>
+            <span asp-validation-for="RewardExpirationDays"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="CashBackEnabled"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="CashBackEnabled"/>
+            <span asp-validation-for="CashBackEnabled"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="EarnFromOrderPercent"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="EarnFromOrderPercent"/>
+            <span asp-validation-for="EarnFromOrderPercent"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="PublicViewComponentName"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="PublicViewComponentName"/>
+            <span asp-validation-for="PublicViewComponentName"></span>
+        </div>
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="SkipPaymentInfo"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="SkipPaymentInfo"/>
+            <span asp-validation-for="SkipPaymentInfo"></span>
+        </div>
+    </div>
+    
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="ForceUseWalletCredit"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="ForceUseWalletCredit"/>
+            <span asp-validation-for="ForceUseWalletCredit"></span>
+        </div>
+    </div>
+ 
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="IsEnableChargeWallet"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="IsEnableChargeWallet"/>
+            <span asp-validation-for="IsEnableChargeWallet"></span>
+        </div>
+    </div>
+
+</div>

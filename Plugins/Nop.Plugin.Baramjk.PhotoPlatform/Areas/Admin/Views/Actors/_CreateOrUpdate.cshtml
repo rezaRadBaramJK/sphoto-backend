@@ -1,0 +1,100 @@
+@using Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.Actors
+@model Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.Actors.ActorViewModel
+
+@{
+}
+
+<div class="container-fluid">
+    <div class="form-horizontal">
+        <div class="card card-default">
+            <div class="card-body">
+                @(await Html.LocalizedEditorAsync<ActorViewModel, ActorLocalizedModel>("actor-localized",
+                    @<div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="@Model.Locales[item].Name"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="@Model.Locales[item].Name"/>
+                                <span asp-validation-for="@Model.Locales[item].Name"></span>
+                            </div>
+                        </div>
+                        <input type="hidden" asp-for="@Model.Locales[item].LanguageId"/>
+                    </div>
+                    ,
+                    @<div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="Name"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="Name"/>
+                                <span asp-validation-for="Name"></span>
+                            </div>
+                        </div>
+                    </div>)
+                )
+
+
+
+
+                @if (!string.IsNullOrWhiteSpace(Model.Email))
+                {
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="CustomerId"/>
+                        </div>
+                        <div class="col-md-9">
+                            <a asp-controller="Customer" asp-action="Edit" asp-route-id="@Model.CustomerId">@Model.Email</a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="Email"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="Email"/>
+                            <span asp-validation-for="Email"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="Password"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="Password"/>
+                            <span asp-validation-for="Password"></span>
+                        </div>
+                    </div>
+                }
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="CardNumber"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="CardNumber"/>
+                        <span asp-validation-for="CardNumber"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="CardHolderName"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="CardHolderName"/>
+                        <span asp-validation-for="CardHolderName"></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+        

@@ -1,0 +1,283 @@
+﻿@model Nop.Plugin.Baramjk.PushNotification.Models.PushNotificationSettingModel
+@using Nop.Web.Framework.TagHelpers.Admin
+@using Nop.Plugin.Baramjk.Framework.Models.ViewModels
+@using Nop.Plugin.Baramjk.PushNotification
+@using Nop.Plugin.Baramjk.PushNotification.Plugins
+@using Nop.Services.Configuration
+
+@inject ISettingService _SettingService;
+@{
+    InitConfigureView(new DefaultConfigureViewModel(typeof(PushNotificationPlugin), "PushNotificationAdmin"));
+
+    var hide = false;
+    var _Sms = await _SettingService.LoadSettingAsync<SmsProviderSetting>();
+    // var _Sms = ViewBag.sms as SmsProviderSetting;
+    // var _PushNotification = Model;
+
+}
+
+<nop-card asp-name="pushnotification-component"
+          asp-icon="fa fa-sticky-note-o"
+          asp-title="Push Notification Settings"
+          asp-hide="@hide"
+          asp-hide-block-attribute-name="@hide"
+
+          asp-tab-name-to-select="tab-basic-seeting">
+    <div class="card-body">
+        <script>
+            function parseToBoolean(value) {
+                if (typeof value === 'string') {
+                    var valueTrimmed = value.trim().toLowerCase();
+                    if (valueTrimmed === 'true') return true;
+                    if (valueTrimmed === 'false') return false;
+                }
+                return value;
+            }
+            function getDivInputs(id){
+                var results = {};
+                
+                // Assuming your div has an ID of 'myDiv'
+                $(`#${id} input`).each(function() {
+                    var key = $(this).attr('name');
+                    var value = $(this).val();
+                    var inputType = $(this).attr('type');
+
+                    if (key) {
+                        if (inputType !== 'hidden' && inputType !== 'checkbox'){
+                           results[key] = parseToBoolean(value);
+                        }
+                        else if(inputType === 'checkbox'){
+                            results[key] = parseToBoolean(this.checked)
+                        }
+                    }
+                });
+                $(`#${id} textarea`).each(function() {
+                    var key = $(this).attr('name');
+                    var value = $(this).val();
+            
+                    if (key) {
+                        results[key] = value
+                    }
+                });
+                $(`#${id} select`).each(function() {
+                    var key = $(this).attr('name');
+                    var value = $(this).val();
+
+                    if (key) {
+                        results[key] = value
+                    }
+                });
+                console.log(results);
+                return results
+            }
+            function sendSmsForm(){
+             var postData = getDivInputs('smsForm');
+             addAntiForgeryToken(postData);
+             
+             $.ajax({
+                 cache: false,
+                 type: "POST",
+                 url: "@Url.Action("UpdateSmsConfiguration", "SmsAdmin")",
+                 data: postData,
+                 success: function (data) {
+                     if (data.Result) {
+                         alert('success');
+                     } else {
+                         //display errors if returned
+                         display_nop_error(data);
+                     }
+                 },
+                 complete: function () {
+                 }
+             });
+            }
+            
+            function sendPushForm(){
+             var postData = getDivInputs('pushForm');
+             addAntiForgeryToken(postData);
+             
+             $.ajax({
+                 cache: false,
+                 type: "POST",
+                 url: "@Url.Action("Configure", "PushNotificationAdmin")",
+                 data: postData,
+                 success: function (data) {
+                     if (data.Result) {
+                         alert('success');
+                     } else {
+                         //display errors if returned
+                         display_nop_error(data);
+                     }
+                 },
+                 complete: function () {
+                 }
+             });
+            }
+            
+            function sendWhatsAppForm() {
+                const postData = getDivInputs('whatsAppFrom');
+                addAntiForgeryToken(postData);
+
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: "@Url.Action("UpdateWhatsAppConfiguration", "WhatsAppAdmin")",
+                    data: postData,
+                    success: function () {
+                        alert('saved.');
+                    },
+                    complete: function () {
+                    }
+                });
+                
+            }
+            
+            $(document).ready(function () {
+                // to whom it may concern : don't panic it's just a jspath to hide button :D
+                $("body > div.wrapper > div.content-wrapper > section > div > div > form > div > div > div > div > div > input").hide()
+               
+            });
+        </script>
+
+
+        <nop-tabs id="pushnotification-config-tabs"
+                  asp-tab-name-to-select="tab-basic-setting"
+                  asp-render-selected-tab-input="false">
+            <nop-tab asp-name="tab-basic-setting"
+                     asp-title="Push Notification"
+                     asp-default="true">
+                <div id="pushForm">
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="DisableNotification"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="DisableNotification"/>
+                            <span asp-validation-for="DisableNotification"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="Strategy"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-select asp-for="Strategy" asp-items="@Model.StrategiesListItems"/>
+                            <span asp-validation-for="Strategy"></span>
+                        </div>
+                    </div>
+                    <div id="firebase-config-container" class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="@Model.FireBaseConfig"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-TextArea asp-for="@Model.FireBaseConfig"/>
+                            <span asp-validation-for="@Model.FireBaseConfig"></span>
+                        </div>
+                    </div>
+                    <div id="server-key-container" class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="@Model.ServerKey"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-TextArea asp-for="@Model.ServerKey"/>
+                            <span asp-validation-for="@Model.ServerKey"></span>
+                        </div>
+                    </div>
+                    <div id="private-key-config-container" class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="PrivateKeyConfig"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-TextArea asp-for="PrivateKeyConfig"/>
+                            <span asp-validation-for="PrivateKeyConfig"></span>
+                        </div>
+                    </div>
+                    <div id="private-key-config-container" class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="SoundFileName"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="SoundFileName"/>
+                            <span asp-validation-for="SoundFileName"></span>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    const strategySelect = $("#@Html.IdFor(model => model.Strategy)");
+                    const fireBaseConfigContainer = $("#firebase-config-container");
+                    const serverKeyContainer = $("#server-key-container");
+                    const privateKeyConfigContainer = $("#private-key-config-container");
+                    
+                    $(document).ready(function (){
+                        
+                        strategySelect.on("change", onStrategyChanged);
+                        onStrategyChanged();
+                    });
+                    
+                    function onStrategyChanged() {
+                        const selectedValue = strategySelect.val();
+                        if (selectedValue === "1"){
+                            fireBaseConfigContainer.hide();
+                            serverKeyContainer.hide();
+                            privateKeyConfigContainer.show();
+                            return;
+                        }
+                        if (selectedValue === "2"){
+                            fireBaseConfigContainer.show();
+                            serverKeyContainer.show();
+                            privateKeyConfigContainer.hide();
+                        }
+                    }
+                    
+                
+                </script>
+                <div class="form-group row">
+                    <div class="col-md-9 col-md-offset-3">
+                        <button type="button" onclick="sendPushForm()" id="save-subscription-product" class="btn btn-primary">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </nop-tab>
+            <nop-tab asp-name="tab-sms"
+                     asp-title="Sms Setting"
+                     asp-default="false">
+                <div id="smsForm">
+                    @await Html.PartialAsync("~/Plugins/Baramjk.PushNotification/Views/Menu/Sms/Form.cshtml", _Sms)
+
+                    <div class="content-header clearfix">
+                        <div class="float-right">
+                            <div class="float-right">
+                                <button type="button" onclick="sendSmsForm()" class="btn btn-primary">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </nop-tab>
+
+            <nop-tab asp-name="tab-whatsApp"
+                     asp-title="@T("Baramjk.PushNotification.Configuration.WhatsAppSettings")"
+                     asp-default="false">
+                <div id="whatsAppFrom">
+                    @await Html.PartialAsync("~/Plugins/Baramjk.PushNotification/Views/Menu/WhatsApp/Configure.cshtml", Model.WhatsAppSettings)
+
+                    <div class="content-header clearfix">
+                        <div class="float-right">
+                            <div class="float-right">
+                                <button type="button" onclick="sendWhatsAppForm()" class="btn btn-primary">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </nop-tab>
+        </nop-tabs>
+    </div>
+</nop-card>

@@ -1,0 +1,79 @@
+﻿@model Nop.Plugin.Baramjk.SocialLinks.Domain.SocialLinkSearchModel
+@using Nop.Web.Framework.Models.DataTables
+@using Nop.Plugin.Baramjk.SocialLinks.Domain
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    SetActiveMenuByMenuSystemName("BaramjkMenu_SocialLinks_SocialLinks_ListSocialMedia");
+}
+<div class="content-header clearfix">
+    
+    <h1 class="float-left">
+        @T("Admin.Plugin.SocialLinks.SocialLinks.Title")
+    </h1>
+
+    <div class="float-right">
+        <a asp-action="CreateSocialMedia" asp-controller="SocialLinksEntity" class="btn bg-blue">
+            <i class="fa fa-plus-square"></i>
+            Add
+        </a>
+    </div>
+</div>
+<div class="card card-default">
+    <div class="card-body">
+        @* ReSharper disable once Mvc.PartialViewNotResolved *@
+        @await Html.PartialAsync("Table", new DataTablesModel
+               {
+                   Name = "social-links-grid",
+                   UrlRead = new DataUrl("ListSocialMediaData", "SocialLinksEntity", null),
+                   UrlDelete = new DataUrl("Delete", "SocialLinksEntity", null),
+                   Length = Model.PageSize,
+                   LengthMenu = Model.AvailablePageSizes,
+                   ColumnCollection = new List<ColumnProperty>
+                   {
+                       new ColumnProperty(nameof(SocialLink.Id))
+                       {
+                           IsMasterCheckBox = true,
+                           Render = new RenderCheckBox("checkbox_products"),
+                           ClassName = NopColumnClassDefaults.CenterAll,
+                           Width = "50",
+                           Visible = false
+                       },
+                       new ColumnProperty(nameof(SocialLink.Name))
+                       {
+                           Title = T("Admin.Plugins.SocialLinks.SocialLink.Name").Text,
+                           Width = "100",
+                       },
+                       new ColumnProperty(nameof(SocialLinkDto.ImageUrl))
+                       {
+                           Title = T("Admin.Plugins.SocialLinks.SocialLink.ImageId").Text,
+                           Width = "20",
+                           Render = new RenderPicture()
+                       },
+                       new ColumnProperty(nameof(SocialLink.Link))
+                       {
+                           Title = T("Admin.Plugins.SocialLinks.SocialLink.Link").Text,
+                           Width = "300"
+                       },
+                       new ColumnProperty(nameof(SocialLink.Priority))
+                       {
+                           Title = T("Admin.Plugins.SocialLinks.SocialLink.Priority").Text,
+                           Width = "300"
+                       },
+                       new ColumnProperty(nameof(SocialLink.Id))
+                       {
+                           Title = T("Admin.Common.Edit").Text,
+                           Width = "100",
+                           ClassName = NopColumnClassDefaults.Button,
+                           Render = new RenderButtonEdit(new DataUrl("Edit"))
+                       },
+                       new ColumnProperty(nameof(SocialLink.Id))
+                       {
+                           Title = T("Admin.Common.Delete").Text,
+                           Width = "100",
+                           ClassName = NopColumnClassDefaults.Button,
+                           Render = new RenderButtonRemove("Delete")
+                       }
+                   }
+               })
+    </div>
+</div>

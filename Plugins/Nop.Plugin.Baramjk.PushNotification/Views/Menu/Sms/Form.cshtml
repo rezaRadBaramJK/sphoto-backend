@@ -1,0 +1,159 @@
+﻿@model Nop.Plugin.Baramjk.PushNotification.SmsProviderSetting
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="ProviderName"/>
+    </div>
+    <div class="col-md-9">
+        <nop-select asp-for="ProviderName" asp-items="@Model.AvailableProviders"/>
+        <span asp-validation-for="ProviderName"></span>
+    </div>
+</div>
+<hr/>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="IsTransactionalEnabled"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="IsTransactionalEnabled"/>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="TransactionalUserName"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="TransactionalUserName"/>
+        <span asp-validation-for="TransactionalUserName"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="TransactionalPassword"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="TransactionalPassword"/>
+        <span asp-validation-for="TransactionalPassword"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="TransactionalSource"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="TransactionalSource"/>
+        <span asp-validation-for="TransactionalSource"></span>
+    </div>
+</div>
+<div class="form-group row"  name="fcc-field">
+    <div class="col-md-3">
+        <nop-label asp-for="TransactionalAccountId"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="TransactionalAccountId"/>
+        <span asp-validation-for="TransactionalAccountId"></span>
+    </div>
+</div>
+<div class="form-group row"  name="fcc-field">
+    <div class="col-md-3">
+        <nop-label asp-for="TransactionalMSISDN"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="TransactionalMSISDN"/>
+        <span asp-validation-for="TransactionalMSISDN"></span>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="TransactionalUrl"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="TransactionalUrl"/>
+        <span asp-validation-for="TransactionalUrl"></span>
+    </div>
+</div>
+<hr/>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="IsPromotionalEnabled"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="IsPromotionalEnabled"/>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="PromotionalUserName"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="PromotionalUserName"/>
+        <span asp-validation-for="PromotionalUserName"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="PromotionalPassword"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="PromotionalPassword"/>
+        <span asp-validation-for="PromotionalPassword"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="PromotionalSource"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="PromotionalSource"/>
+        <span asp-validation-for="PromotionalSource"></span>
+    </div>
+</div>
+<div class="form-group row"  name="fcc-field">
+    <div class="col-md-3">
+        <nop-label asp-for="PromotionalAccountId"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="PromotionalAccountId"/>
+        <span asp-validation-for="PromotionalAccountId"></span>
+    </div>
+</div>
+<div class="form-group row" name="fcc-field">
+    <div class="col-md-3">
+        <nop-label asp-for="PromotionalMSISDN"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="PromotionalMSISDN"/>
+        <span asp-validation-for="PromotionalMSISDN"></span>
+    </div>
+</div>
+<div class="form-group row" >
+    <div class="col-md-3">
+        <nop-label asp-for="PromotionalUrl"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="PromotionalUrl"/>
+        <span asp-validation-for="PromotionalUrl"></span>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        showOrHideFCCFields();
+    });
+
+    $('#ProviderName').on('change', function () {
+        showOrHideFCCFields();
+    });
+    
+    function showOrHideFCCFields(){
+        var value = $('#ProviderName').val();
+        if (value === '1') {
+            $('div[name="fcc-field"]').show();
+        } else {
+            $('div[name="fcc-field"]').hide();
+        }
+    }
+
+</script>

@@ -1,0 +1,41 @@
+﻿@using Nop.Core;
+@using Nop.Plugin.Baramjk.SocialLinks.Domain
+@using Nop.Plugin.Baramjk.SocialLinks.Plugins
+@using Nop.Plugin.Baramjk.SocialLinks.Services
+@using Nop.Services.Media
+
+@inject IWebHelper webHelper
+@inject ISocialLinkEntityService _LinkEntityService
+@inject IPictureService _pictureService
+@inject SocialLinksSettings _Settings
+@model Nop.Web.Models.Catalog.ProductDetailsModel
+@{
+    var socials = await _LinkEntityService.GetSocialLinks(SocialLinkCategory.SocialMedia);
+
+    var shareUrl = webHelper.GetStoreLocation() + Model.SeName;
+}
+
+<div class="product-social-buttons">
+    <label class="product-social-label">@T("SevenSpikes.Themes.Emporium.Common.Share")</label>
+    <ul class="product-social-sharing">
+        @foreach (var social in socials.Where(x => x.ShowInProductDetails))
+        {
+            var fullUrl = social.SocialSharePrefix + shareUrl;
+            var imgUrl = await _pictureService.GetPictureUrlAsync(social.ImageId);
+            <a href="javascript:openShareWindow('@fullUrl')">
+                <img src="@imgUrl" alt="@social.Name" style="width:@_Settings.ProductDetailsIconSize">
+            </a>
+        }
+    </ul>
+
+    <script>
+        function openShareWindow(url) {
+            var winWidth = 520;
+            var winHeight = 400;
+            var winTop = (screen.height / 2) - (winHeight / 2);
+            var winLeft = (screen.width / 2) - (winWidth / 2);
+ 
+            window.open(url, 'sharer', 'top=' + winTop + ',left=' + winLeft + ',toolbar=0,status=0,width=' + winWidth + ',height=' + winHeight);
+        }
+    </script>
+</div>

@@ -1,0 +1,151 @@
+@model Nop.Plugin.Baramjk.PhotoPlatform.Models.Reports.Production.ActorReportModel
+
+@{ }
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8"/>
+    <title>@T("Nop.Plugin.Baramjk.PhotoPlatform.Production.Report.Pdf.Title").Text</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            direction: rtl;
+            color: #0066b3;
+        }
+
+        .logo {
+            margin-top: 20px;
+        }
+
+        h2 {
+            margin: 5px 0 20px 0;
+        }
+
+        .section-line {
+            border: none;
+            height: 4px;
+            background-color: #b0d235;
+            margin: 20px 0;
+        }
+
+        .info-table, .data-table {
+            width: 40%;
+            margin: 15px auto;
+            border-collapse: collapse;
+        }
+
+
+        .info-table td {
+            border: 2px solid #b0d235;
+            padding: 8px 15px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #0066b3;
+        }
+
+        .data-table th, .data-table td {
+            border: 2px solid #b0d235;
+            padding: 8px 12px;
+            font-size: 14px;
+            color: #0066b3;
+        }
+
+        .data-table th {
+            font-weight: bold;
+            background: #ffffff;
+        }
+
+        .summary-row td {
+            font-weight: bold;
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Logo + Title -->
+
+@foreach (var dateGroup in Model.GroupedByDate)
+{
+    @foreach (var item in dateGroup.TimeSlots)
+    {
+        <div style="text-align: center;">
+            <div class="logo">
+                <img src="~/Plugins/Baramjk.PhotoPlatform/Areas/Admin/Contents/Images/sami-main-logo.png"
+                     alt="logo"
+                     style="height: 60px; display: block; margin: 0 auto;"/>
+            </div>
+
+        </div>
+        <hr class="section-line"/>
+        <!-- Info Table -->
+        <table class="info-table" style="width: 60%">
+
+            <tr>
+                <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Production.Report.Pdf.EventName")</td>
+                <td>@dateGroup.EventName</td>
+            </tr>
+            <tr>
+                <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Production.Report.Pdf.Date")</td>
+                <td>@dateGroup.EventDate.ToString("dd-MM-yyyy")</td>
+            </tr>
+            <tr>
+                <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Production.Report.Pdf.TimeSlot")</td>
+                <td>@item.StartTime.ToString(@"hh\:mm")</td>
+            </tr>
+        </table>
+
+        <hr class="section-line"/>
+
+
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Production.Report.Pdf.RowNumber")</th>
+                <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Production.Report.Pdf.ActorName")</th>
+
+                @if (Model.ShowTickets)
+                {
+                    <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Production.Report.Pdf.TotalPhotoCount")</th>
+                }
+
+            </tr>
+            </thead>
+            <tbody>
+
+            @for (var i = 0; i < item.ActorsData.Count; i++)
+            {
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@item.ActorsData[i].ActorName</td>
+                    @if (Model.ShowTickets)
+                    {
+                        <td>@item.ActorsData[i].TotalPhotoCount</td>
+                    }
+
+
+                </tr>
+            }
+
+            </tbody>
+        </table>
+
+        @if (item != dateGroup.TimeSlots.Last())
+        {
+            <div class="page-break"></div>
+        }
+    }
+
+    @if (dateGroup != Model.GroupedByDate.Last())
+    {
+        <div class="page-break"></div>
+    }
+}
+
+
+</body>
+</html>

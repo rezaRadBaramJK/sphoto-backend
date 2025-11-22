@@ -1,0 +1,104 @@
+@using Nop.Web.Framework.Models.DataTables
+@using Nop.Plugin.Baramjk.PushNotification.Models
+@using Nop.Plugin.Baramjk.Framework
+@* @model Nop.Plugin.Baramjk.PushNotification.Models.Search.SmsSearchModel *@
+@model Nop.Plugin.Baramjk.Framework.Models.DataTable.DefaultListViewModel
+@{
+    Layout = FrameworkDefaultValues.ListLayoutViewPath;
+}
+
+
+@* <div class="form-horizontal"> *@
+@*     <div class="cards-group"> *@
+@*         <div class="card card-default card-search"> *@
+@*             <div class="card-body"> *@
+@*                 <div class="row search-row"> *@
+@*                     <div class="search-text">@T("Admin.Common.Search")</div> *@
+@*                     <div class="icon-search"> *@
+@*                         <i class="fa fa-search" aria-hidden="true"></i> *@
+@*                     </div> *@
+@*                     <div class="icon-collapse"> *@
+@*                         <i class="fa fa-angle-down" aria-hidden="true"></i> *@
+@*                     </div> *@
+@*                 </div> *@
+@* *@
+@*                 <div class="search-body"> *@
+@*                     <div class="row"> *@
+@*                         <div class="col-md-6"> *@
+@*                             <div class="form-group row"> *@
+@*                                 <div class="col-md-4"> *@
+@*                                     <nop-label asp-for="Receptor"/> *@
+@*                                 </div> *@
+@*                                 <div class="col-md-8"> *@
+@*                                     <nop-editor asp-for="Receptor"/> *@
+@*                                 </div> *@
+@*                             </div> *@
+@*                             <div class="form-group row"> *@
+@*                                 <div class="col-md-4"> *@
+@*                                     <nop-label asp-for="Status"/> *@
+@*                                 </div> *@
+@*                                 <div class="col-md-8"> *@
+@*                                     <nop-select asp-for="Status" /> *@
+@*                                 </div> *@
+@*                             </div> *@
+@*                         </div> *@
+@*                         <div class="col-md-6"> *@
+@*                             <div class="form-group row"> *@
+@*                                 <div class="col-md-4"> *@
+@*                                     <nop-label asp-for="From"/> *@
+@*                                 </div> *@
+@*                                 <div class="col-md-8"> *@
+@*                                     <nop-editor asp-for="To"/> *@
+@*                                 </div> *@
+@*                             </div> *@
+@*                         </div> *@
+@*                     </div> *@
+@*                     <div class="form-group row"> *@
+@*                         <div class="text-center col-12"> *@
+@*                             <button type="button" id="user-search-products" class="btn btn-primary btn-search"> *@
+@*                                 <i class="fa fa-search"></i> *@
+@*                                 @T("Admin.Common.Search") *@
+@*                             </button> *@
+@*                         </div> *@
+@*                     </div> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@
+@* *@
+@* <div class="card card-default"> *@
+@*     <div class="card-body"> *@
+@*         $1$ ReSharper disable once Mvc.PartialViewNotResolved #1# *@
+@*         @await Html.PartialAsync("Table", new DataTablesModel *@
+@*                { *@
+@*                    Name = "subscriber-grid", *@
+@*                    UrlRead = new DataUrl("ListAsync", "SmsListController", null), *@
+@*                    SearchButtonId = "user-search-products", *@
+@*                    Length = Model.PageSize, *@
+@*                    LengthMenu = Model.AvailablePageSizes, *@
+@*                    Filters = new List<FilterParameter> *@
+@*                    { *@
+@*                        new(nameof(Model.Receptor)), *@
+@*                        new(nameof(Model.Status)), *@
+@*                    }, *@
+@*                    ColumnCollection = new List<ColumnProperty> *@
+@*                    { *@
+@*                        // new ColumnProperty(nameof(SmsSearchModel.DateTime)) *@
+@*                        // { *@
+@*                        //     IsMasterCheckBox = true, *@
+@*                        //     Render = new RenderCheckBox("checkbox_products"), *@
+@*                        //     ClassName = NopColumnClassDefaults.CenterAll, *@
+@*                        //     Width = "50", *@
+@*                        //     Visible = false *@
+@*                        // }, *@
+@*                        new ColumnProperty(nameof(SendSmsModel.Receptor)) *@
+@*                        { *@
+@*                            Title ="Receptor", *@
+@*                            Width = "300" *@
+@*                        }, *@
+@*                         *@
+@*                    } *@
+@*                }) *@
+@*     </div> *@
+@* </div> *@

@@ -1,0 +1,72 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <CheckEolTargetFramework>false</CheckEolTargetFramework>
+        <Copyright>Copyright © Baramjk</Copyright>
+        <Company>Baramjk</Company>
+        <Authors>Baramjk</Authors>
+        <PackageProjectUrl>https://www.baramjk.com/</PackageProjectUrl>
+        <RepositoryUrl>https://www.baramjk.com/</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <OutputPath>..\..\Presentation\Nop.Web\Plugins\Baramjk.FrontendApi</OutputPath>
+
+        <OutDir>$(OutputPath)</OutDir>
+        <AssemblyName>Nop.Plugin.Baramjk.FrontendApi</AssemblyName>
+        <RootNamespace>Nop.Plugin.Baramjk.FrontendApi</RootNamespace>
+        <ExcludeXmlAssemblyFiles>false</ExcludeXmlAssemblyFiles>
+
+        <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
+        <EnableDefaultContentItems>false</EnableDefaultContentItems>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+        <NoWarn>$(NoWarn);IDE1006</NoWarn>
+        <OutputType>Library</OutputType>
+
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
+        <RazorCompileOnBuild>false</RazorCompileOnBuild>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="logo.png" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="plugin.json" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="Views\**" CopyToOutputDirectory="PreserveNewest" LinkBase="Views\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Nop.Plugin.Baramjk.Framework\Nop.Plugin.Baramjk.Framework.csproj" />
+        <ClearPluginAssemblies Include="$(MSBuildProjectDirectory)\..\..\Build\ClearPluginAssemblies.proj" />
+    </ItemGroup>
+
+    <Target Name="NopTarget" AfterTargets="Build">
+        <RemoveDir Directories="$(OutDir)runtimes\osx" />
+        <RemoveDir Directories="$(OutDir)runtimes\linux-arm" />
+        <RemoveDir Directories="$(OutDir)runtimes\linux-arm64" />
+        <RemoveDir Directories="$(OutDir)runtimes\linux-musl-x64" />
+        <RemoveDir Directories="$(OutDir)runtimes\linux-x64" />
+        <RemoveDir Directories="$(OutDir)runtimes\unix" />
+        <RemoveDir Directories="$(OutDir)runtimes\win" />
+        <RemoveDir Directories="$(OutDir)runtimes\win-arm64" />
+        <RemoveDir Directories="$(OutDir)runtimes\win-x86" />
+        <MSBuild Projects="@(ClearPluginAssemblies)" Properties="PluginPath=$(MSBuildProjectDirectory)\$(OutDir)" Targets="NopClear" />
+    </Target>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.6" />
+    </ItemGroup>
+
+<!--    <ItemGroup>-->
+<!--      <Folder Include="Components\" />-->
+<!--      <Folder Include="Views\WidgetsProductVisits\" />-->
+<!--    </ItemGroup>-->
+
+<!--    <ItemGroup>-->
+<!--      <Folder Include="Services\Models\Files\" />-->
+<!--    </ItemGroup>-->
+
+<!--    <ItemGroup>-->
+<!--      <Compile Remove="Services\Models\Files\FileValidationResult.cs" />-->
+<!--      <Compile Remove="Services\FrontendFileService.cs" />-->
+<!--    </ItemGroup>-->
+
+
+</Project>

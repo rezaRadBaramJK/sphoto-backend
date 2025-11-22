@@ -1,0 +1,13 @@
+﻿{
+  "Group": "Baramjk",
+  "FriendlyName": "Web API BackendApi",
+  "SystemName": "Baramjk.BackendApi",
+  "Version": "1.0",
+  "SupportedVersions": [
+    "4.40"
+  ],
+  "Author": "",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Baramjk.BackendApi.dll",
+  "Description": "Web API for BackendApi"
+}

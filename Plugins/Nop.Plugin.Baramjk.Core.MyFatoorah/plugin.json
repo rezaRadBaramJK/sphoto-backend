@@ -1,0 +1,13 @@
+﻿{
+  "Group": "Baramjk",
+  "FriendlyName": "My Fatoorah",
+  "SystemName": "Payments.MyFatoorah",
+  "Version": "1.0",
+  "SupportedVersions": [
+    "4.40"
+  ],
+  "Author": "Baramjk team",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Baramjk.Core.MyFatoorah.dll",
+  "Description": "Baramjk"
+}

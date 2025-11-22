@@ -1,0 +1,94 @@
+﻿@using Nop.Services
+@using Nop.Plugin.Baramjk.SocialLinks.Domain
+@model Nop.Plugin.Baramjk.SocialLinks.Domain.SocialLink
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    Html.SetActiveMenuItemSystemName("BaramjkMenu_SocialLinks_SocialLinks_Create");
+    var category = ViewBag.category is SocialLinkCategory ? (SocialLinkCategory)ViewBag.category : (SocialLinkCategory)0;
+}
+<form asp-controller="SocialLinksEntity" asp-action="Update" asp-route-id="@Model.Id" method="post">
+    <input type="hidden" asp-for="Category" value="@category"/>
+    <div class="content-header clearfix">
+        <h1 class="float-left">
+            @* @T("Admin.Plugin.Subcription.Food.CreateFood") *@
+            @* <small> *@
+            @*     <i class="fa fa-arrow-circle-left"></i> *@
+            @*     <a asp-action="List">@T("Admin.Plugin.Subcription.Food.BackToFoodList")</a> *@
+            @* </small> *@
+        </h1>
+        <div class="float-right">
+            <button type="submit" name="save" class="btn bg-blue">
+                <i class="fa fa-floppy-o"></i>
+                @T("Admin.Common.Save")
+            </button>
+        </div>
+    </div>
+    <div class="content">
+        <div class="form-horizontal">
+            <div class="card-group">
+                <div class="card card-default">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="Name"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="Name" asp-required="true"/>
+                                <span asp-validation-for="Name"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="Link"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="Link" asp-required="true"/>
+                                <span asp-validation-for="Link"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="ImageId"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="ImageId"/>
+                                <span asp-validation-for="ImageId"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="Priority"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="Priority"/>
+                                <span asp-validation-for="Priority"></span>
+                            </div>
+                        </div>
+                        @if (category == SocialLinkCategory.SocialMedia)
+                        {
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="ShowInProductDetails"/>
+                                </div>
+                                <div class="col-md-9">
+                                    <nop-editor asp-for="ShowInProductDetails"/>
+                                    <span asp-validation-for="ShowInProductDetails"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="SocialSharePrefix"/>
+                                </div>
+                                <div class="col-md-9">
+                                    <nop-editor asp-for="SocialSharePrefix"/>
+                                    <span asp-validation-for="SocialSharePrefix"></span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,87 @@
+﻿@using Nop.Web.Framework.TagHelpers.Admin
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Nop.Plugin.Baramjk.Framework
+@using Nop.Plugin.Baramjk.Framework.Models.ViewModels
+@using Nop.Plugin.Baramjk.OtpAuthentication.Plugin
+@model Nop.Plugin.Baramjk.OtpAuthentication.Models.Settings.OtpAuthenticationSettingsModel
+
+@{
+    Layout = FrameworkDefaultValues.ConfigureLayoutViewPath;
+    ViewBag.ConfigureModel = new DefaultConfigureViewModel(typeof(OtpAuthenticationPlugin), "OtpAuthenticate");
+}
+
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="Message"/>
+    </div>
+    <div class="col-md-9">
+        <textarea class="form-control text-box" asp-for="Message"></textarea>
+        <span asp-validation-for="Message"></span>
+        <span>You can use {otp} where ever you need in your message.</span>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="Source"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="Source"/>
+        <span asp-validation-for="Source"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="TokenLifetimeSeconds"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="TokenLifetimeSeconds"/>
+        <span asp-validation-for="TokenLifetimeSeconds"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="RefreshTokenLifetimeSeconds"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="RefreshTokenLifetimeSeconds"/>
+        <span asp-validation-for="RefreshTokenLifetimeSeconds"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="AllowRegisterationAsVendor"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="AllowRegisterationAsVendor"/>
+        <span asp-validation-for="AllowRegisterationAsVendor"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="DontRegisterIfUserNotExists"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="DontRegisterIfUserNotExists"/>
+        <span asp-validation-for="DontRegisterIfUserNotExists"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="ShowOtpCodeInResponse"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="ShowOtpCodeInResponse"/>
+        <span asp-validation-for="ShowOtpCodeInResponse"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="SendMethodId"/>
+    </div>
+    <div class="col-md-9">
+        <nop-select asp-for="SendMethodId" asp-items="@Model.AvailableMethods"/>
+        <span asp-validation-for="SendMethodId"></span>
+    </div>
+</div>

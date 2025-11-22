@@ -1,0 +1,16 @@
+﻿@using Nop.Plugin.Baramjk.PushNotification.Plugins
+@using Nop.Core
+@model bool
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-messaging.js"></script>
+@{
+    Html.AddScriptParts(ResourceLocation.Footer, "/Plugins/Baramjk.PushNotification/Content/pushNotification.js");
+}
+
+@inject PushNotificationSettings _settings
+@inject IWorkContext _workContext
+
+
+@Html.Hidden("firebaseConfigHidden", _settings.FireBaseConfig)
+@Html.Hidden("IsRegistered", Model)
+@Html.Hidden("firebaseUserId", (await _workContext.GetCurrentCustomerAsync()).Id)

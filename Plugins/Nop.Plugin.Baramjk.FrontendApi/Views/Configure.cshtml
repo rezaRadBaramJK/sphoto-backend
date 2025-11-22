@@ -1,0 +1,227 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Nop.Web.Framework.TagHelpers.Admin
+@model Nop.Plugin.Baramjk.FrontendApi.Models.ConfigurationModel
+
+@{
+    // ReSharper disable once Razor.LayoutNotResolved
+    Layout = "_ConfigurePlugin";
+}
+
+<form asp-controller="FrontendApi" asp-action="Configure" method="post">
+    <div class="content-header clearfix">
+        <div class="float-right">
+            <button type="submit" name="save" class="btn btn-primary">
+                <i class="far fa-save"></i>
+                @T("Admin.Common.Save")
+            </button>
+        </div>
+    </div>
+    <div class="cards-group">
+        <div class="card card-default">
+            <div class="card-body">
+                <p>
+                    Please find the documentation <a href="https://docs.nopcommerce.com/developer/web-api/index.html" target="_blank">here.</a>
+                </p>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="DeveloperMode"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="DeveloperMode"/>
+                        <span asp-validation-for="DeveloperMode"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="SecretKey"/>
+                    </div>
+                    <div class="col-md-7">
+                        <nop-editor asp-for="SecretKey"/>
+                        <span asp-validation-for="SecretKey"></span>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="button" id="generate-secret-key" class="btn btn-primary" value="@T("Baramjk.FrontendApi.Settings.SecretKey.Generate")"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="TokenLifetimeMinutes"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="TokenLifetimeMinutes"/>
+                        <span asp-validation-for="TokenLifetimeMinutes"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="TokenLifetimeDays"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="TokenLifetimeDays"/>
+                        <span asp-validation-for="TokenLifetimeDays"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="GoogleIOSClientId"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="GoogleIOSClientId"/>
+                        <span asp-validation-for="GoogleIOSClientId"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="AppleIOSClientId"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="AppleIOSClientId"/>
+                        <span asp-validation-for="AppleIOSClientId"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="FaceBookIOSClientId"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="FaceBookIOSClientId"/>
+                        <span asp-validation-for="FaceBookIOSClientId"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="GoogleAndroidClientId"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="GoogleAndroidClientId"/>
+                        <span asp-validation-for="GoogleAndroidClientId"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="AppleAndroidClientId"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="AppleAndroidClientId"/>
+                        <span asp-validation-for="AppleAndroidClientId"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="FaceBookAndroidClientId"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="FaceBookAndroidClientId"/>
+                        <span asp-validation-for="FaceBookAndroidClientId"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="GoogleWebClientId"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="GoogleWebClientId"/>
+                        <span asp-validation-for="GoogleWebClientId"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="AppleWebClientId"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="AppleWebClientId"/>
+                        <span asp-validation-for="AppleWebClientId"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="FaceBookWebClientId"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="FaceBookWebClientId"/>
+                        <span asp-validation-for="FaceBookWebClientId"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="DontRequireAddress"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="DontRequireAddress"/>
+                        <span asp-validation-for="DontRequireAddress"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="UploadFileSupportedTypes"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="UploadFileSupportedTypes"/>
+                        <span asp-validation-for="UploadFileSupportedTypes"></span>
+                        <p>Separate them with ','</p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="UploadFileMaxSize"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="UploadFileMaxSize"/>
+                        <span asp-validation-for="UploadFileMaxSize"></span>
+                        
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="CustomFrontendBaseUrl"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="CustomFrontendBaseUrl"/>
+                        <span asp-validation-for="CustomFrontendBaseUrl"></span>
+
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="PasswordRecoveryStrategy"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-select asp-for="PasswordRecoveryStrategy" asp-items="Model.PasswordRecoveryStrategies"/>
+                        <span asp-validation-for="PasswordRecoveryStrategy"></span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#generate-secret-key').click(function () {
+            let postData = {};
+            addAntiForgeryToken(postData);
+
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: "@Url.Action("Generate", "FrontendApi")",
+                data: postData,
+                success: function (data, textStatus, jqXHR) {
+                    $('#@Html.IdFor(model => model.SecretKey)').val(data);
+                }
+            });
+        });
+    });
+</script>

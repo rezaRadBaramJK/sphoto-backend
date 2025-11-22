@@ -1,0 +1,59 @@
+@using Nop.Plugin.Baramjk.SocialLinks.Services
+@using Nop.Plugin.Baramjk.SocialLinks.Domain
+@using Nop.Services.Media
+@model Nop.Plugin.Baramjk.SocialLinks.Plugins.SocialLinksSettings
+@{
+    Layout = "";
+}
+@inject ISocialLinkEntityService _LinkEntityService
+@inject IPictureService _pictureService
+
+@{
+    var socials = await _LinkEntityService.GetSocialLinks(SocialLinkCategory.SocialMedia);
+
+}
+
+<div id="SocialLinksContainer">
+    @foreach (var social in socials.Where(x=>x.ShowInWidget))
+    {
+        var url = await _pictureService.GetPictureUrlAsync(social.ImageId);
+
+        <div class="SocialLinkItem">
+            <a href="@social.Link" target="_blank">
+                <img src="@url" alt="@social.Name" style="width:@Model.WidgetIconSize">
+            </a>
+        </div>
+    }
+</div>
+
+
+<style>
+    #SocialLinksContainer{
+position: fixed;
+    width: 100%;
+    height: 100px;
+    z-index: 100;
+    bottom: 0;
+    display: flex;
+    left: 0;
+    justify-content: right;
+
+    }
+    #SocialLinksContainer .SocialLinkItem{
+     z-index: 1000;
+     margin: 3px;
+     padding: 3px;
+     }
+         #SocialLinksContainer .SocialLinkItem a{
+       display: block;
+           width: 100%;
+           height: 100%;
+               height: auto;
+          }
+        #SocialLinksContainer .SocialLinkItem a img{
+       width: 100%;
+       height: auto;
+       display: block;
+          }
+          
+</style>

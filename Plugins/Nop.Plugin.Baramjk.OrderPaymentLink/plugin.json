@@ -1,0 +1,13 @@
+﻿{
+  "Group": "Baramjk",
+  "FriendlyName": "Order Payment Link",
+  "SystemName": "Baramjk.OrderPaymentLink",
+  "Version": "1.0",
+  "SupportedVersions": [
+    "4.40"
+  ],
+  "Author": "Baramjk team",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Baramjk.OrderPaymentLink.dll",
+  "Description": "OrderPaymentLink"
+}

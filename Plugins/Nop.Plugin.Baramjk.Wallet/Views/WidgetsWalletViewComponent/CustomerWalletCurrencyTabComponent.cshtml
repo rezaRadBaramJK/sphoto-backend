@@ -1,0 +1,142 @@
+﻿@using Nop.Web.Framework.TagHelpers.Admin
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Nop.Plugin.Baramjk.Wallet.Models.ViewModels.WalletViewModel
+
+@{
+    var amountToUpdateId = $"amount_to_update_{Model.Id}";
+    var historyTypeId = $"history_type_{Model.Id}";
+    var datePickerId = $"expiration_date_picker_{Model.Id}";
+    var expirationDateDivId = $"expiration_date_div_{Model.Id}";
+}
+
+@* <div class="form-group row"> *@
+@*     <div class="col-md-3"> *@
+@*         <nop-label asp-for="CurrentAmount"/> *@
+@*     </div> *@
+@*     <div class="col-md-9 one-line-container"> *@
+@*         <p id="current_amount_@Model.Id" class="form-control borderless">@Model.CurrentAmount</p> *@
+@*     </div> *@
+@* </div> *@
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="BalanceAmount"/>
+    </div>
+    <div class="col-md-9 one-line-container">
+        <p id="current_amount_@Model.Id" class="form-control borderless">@Model.BalanceAmount</p>
+    </div>
+</div>
+@* <div class="form-group row"> *@
+@*     <div class="col-md-3"> *@
+@*         <nop-label asp-for="ActiveRewardAmount"/> *@
+@*     </div> *@
+@*     <div class="col-md-9 one-line-container"> *@
+@*         <p id="current_amount_@Model.Id" class="form-control borderless">@Model.ActiveRewardAmount</p> *@
+@*     </div> *@
+@* </div> *@
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="HistoryTypeId"/>
+    </div>
+    <div class="col-md-9 one-line-container">
+        <select id="@historyTypeId"
+                class="form-control valid default-width"
+                asp-items="@Model.HistoryTypes">
+        </select>
+    </div>
+</div>
+
+<div class="form-group row" id="@expirationDateDivId">
+    <div class="col-md-3">
+        <nop-label asp-for="ExpirationDate" />
+    </div>
+    <div class="col-md-9 one-line-container">
+        @* <nop-editor id="expiration_date_picker_@Model.Id" asp-for="ExpirationDate"/> *@
+        <span style=""
+              class="k-widget k-datetimepicker">
+            <span class="k-picker-wrap k-state-default">
+                <input id="@datePickerId"
+                       name="expiration_date_picker_@Model.Id"
+                       data-role="datetimepicker"
+                       style="width: 100%;"
+                       type="text"
+                       class="k-input"
+                       role="combobox"
+                       aria-expanded="false"
+                       autocomplete="off">
+                <span unselectable="on" class="k-select">
+                    <span class="k-link k-link-date"
+                          aria-label="Open the date view"
+                          aria-controls="expiration_date_picker_dateview_@Model.Id">
+                        <span unselectable="on" class="k-icon k-i-calendar"></span>
+                    </span>
+                    <span class="k-link k-link-time"
+                          aria-label="Open the time view"
+                          aria-controls="expiration_date_picker_dateview_@Model.Id">
+                        <span unselectable="on" class="k-icon k-i-clock"></span>
+                    </span>
+                </span>
+            </span>
+        </span>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="AmountToUpdate"/>
+    </div>
+    <div class="col-md-9 one-line-container">
+        <input
+            type="text"
+            id="@amountToUpdateId"
+            name="Amount"
+            value="@Model.AmountToUpdate"/>
+
+        <button type="button" class="btn btn-primary save-button" onclick="updateCustomerWallet(@Model.Id, @Model.CurrencyId, @Model.CustomerId)">
+            <i class="far fa-save"></i>
+            @T("Admin.Common.Update")
+        </button>
+    </div>
+</div>
+
+<script>
+$(document).ready(function(){
+    $("#@amountToUpdateId").kendoNumericTextBox({
+    min:0,max:79228162514264337593543950335,decimals:4,restrictDecimals:!0,format:"#.00 "}
+    );
+});
+
+$(document).ready(function(){
+    $("#@datePickerId").kendoDateTimePicker({popup:{position:"bottom right",origin:"top right"}}
+    );
+});
+
+$(document).ready(function(){
+    $("#@historyTypeId").change(function (){
+        const selectedVal = $(":selected",this).val();
+        const datePickerDiv = $("#@expirationDateDivId");
+        if (selectedVal === "7")
+            datePickerDiv.hide();
+        else 
+            datePickerDiv.show();
+    });
+});
+
+
+</script>
+<style>
+.borderless {
+    border-width: 0;
+}
+.one-line-container {
+    display: flex;
+    flex-direction: row;
+}
+.save-button{
+    margin-left: 5px;
+}
+.default-width{
+    width: 300px;
+}
+
+</style>

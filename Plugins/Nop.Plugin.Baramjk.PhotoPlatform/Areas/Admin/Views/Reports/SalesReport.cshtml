@@ -1,0 +1,66 @@
+@model Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.Reports.Cashier.SalesReportViewModel
+@{
+    var title = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Sales.Title").Text;
+    ViewBag.PageTitle = title;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    Html.SetActiveMenuItemSystemName($"{SystemName}.SalesReport");
+}
+
+<form asp-controller="Report" asp-action="GenerateSalesReport" method="post">
+
+    <div class="content-header clearfix">
+        <h1 class="float-left">
+            @T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Sales.Title")
+        </h1>
+
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="form-horizontal">
+                <div class="card card-default">
+
+                    <div class="card-body">
+
+                        <div class="form-group row mt-2">
+                            <div class="col-md-2">
+                                <nop-label asp-for="EventId"/>
+                            </div>
+                            <div class="col-md-4">
+                                <nop-select
+                                    asp-for="EventId"
+                                    asp-items="Model.AvailableEvents"
+                                    id="EventId"/>
+
+                                <span asp-validation-for="EventId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row mt-2">
+                            <div class="col-md-2">
+                                <nop-label asp-for="OnlyShowConfirmedTickets"/>
+                            </div>
+                            <div class="col-md-4">
+                                <nop-editor asp-for="OnlyShowConfirmedTickets"/>
+                                <span asp-validation-for="OnlyShowConfirmedTickets" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row mt-2">
+                            <div class="col-md-2 float-right">
+
+                            </div>
+                            <div class="col-md-4 float-right">
+                                <button type="submit"
+                                        class="btn btn-primary ">@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Sales.GenerateReportButton")</button>
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+</form>

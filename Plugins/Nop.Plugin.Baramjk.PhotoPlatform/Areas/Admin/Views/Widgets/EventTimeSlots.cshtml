@@ -1,0 +1,145 @@
+@using Microsoft.AspNetCore.Routing
+@using Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.TimeSlots
+@using Nop.Web.Framework.Models.DataTables
+
+@model Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.Events.EventTimeSlotsViewModel
+
+@{
+}
+
+<div class="card-body">
+    <div class="cards-group">
+        <div class="card card-default">
+            <div class="card-header">
+                <h5 class="float-left">
+                    @T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Widget.TimeSlot.Title")
+                </h5>
+
+
+                <div class="card-tools float-right" id="timeslot-create-button">
+
+                    <button type="submit" id="btnAddNewTimeSlot"
+                            onclick="OpenWindow('@(Url.Action("Create", "TimeSlot", new { Model.EventId, RefreshBtnId = "btnRefreshTimeSlots" }))', 800, 800, true); return false;"
+                            class="btn btn-primary">
+                        <i class="fas fa-plus-square"></i>
+                        @T("Admin.Common.AddNew")
+                    </button>
+
+                    <button type="submit" id="btnRefreshTimeSlots" style="display: none"></button>
+                    <script>
+                        $(document).ready(function () {
+                            $('#btnRefreshTimeSlots').click(function () {
+                                updateTable('#time-slots-grid');
+                                return false;
+                            });
+                        });
+                    </script>
+
+                </div>
+
+
+            </div>
+            <div class="card-body">
+
+
+                <script>
+                    document
+                        .getElementById('timeslot-create-button')
+                        .addEventListener('click', function (e) {
+                            const link = e.target.closest('a');
+                            if (!link) return;
+
+                            const url = link.dataset.url;
+
+                            window.open(
+                                url,
+                                'timeslotCreatePopup',
+                                'width=800,height=600,resizable=yes,scrollbars=yes'
+                            );
+                        });
+                </script>
+
+                @await Html.PartialAsync("Table", new DataTablesModel
+                {
+                    Name = "time-slots-grid",
+                    UrlRead = new DataUrl("List", "TimeSlot", new RouteValueDictionary
+                    {
+                        [nameof(Model.EventId)] = Model.EventId
+                    }),
+                    UrlDelete = new DataUrl("DeleteById", "TimeSlot", null),
+                    Length = Model.PageSize,
+                    LengthMenu = Model.AvailablePageSizes,
+                    ColumnCollection = new List<ColumnProperty>
+                    {
+                        new(nameof(TimeSlotItemModel.Date))
+                        {
+                            Title = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.TimeSlot.Date").Text,
+                            ClassName = NopColumnClassDefaults.CenterAll
+                        },
+                        new(nameof(TimeSlotItemModel.StartTime))
+                        {
+                            Title = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.TimeSlot.StartTime").Text,
+                            ClassName = NopColumnClassDefaults.CenterAll
+                        },
+                        new(nameof(TimeSlotItemModel.EndTime))
+                        {
+                            Title = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.TimeSlot.EndTime").Text,
+                            ClassName = NopColumnClassDefaults.CenterAll
+                        },
+                        new(nameof(TimeSlotItemModel.Note))
+                        {
+                            Title = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.TimeSlot.Note").Text,
+                            ClassName = NopColumnClassDefaults.CenterAll,
+                        },
+                        new(nameof(TimeSlotItemModel.Active))
+                        {
+                            Title = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.TimeSlot.Active").Text,
+                            ClassName = NopColumnClassDefaults.CenterAll,
+                            Render = new RenderBoolean()
+                        },
+
+                        new(nameof(TimeSlotItemModel.Id))
+                        {
+                            Title = T("Admin.Common.Edit").Text,
+                            Width = "100",
+                            ClassName = NopColumnClassDefaults.Button,
+                            Render = new RenderButtonEdit(new DataUrl("~/Admin/PhotoPlatform/TimeSlot/Edit/"))
+                        },
+
+                        new(nameof(TimeSlotItemModel.Id))
+                        {
+                            Title = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.ActorEventTimeSlots.ViewActors").Text,
+                            Width = "120",
+                            ClassName = NopColumnClassDefaults.Button,
+                            Render = new RenderCustom("viewActorsButton")
+                        },
+
+                        new(nameof(TimeSlotItemModel.Id))
+                        {
+                            Title = T("Admin.Common.Delete").Text,
+                            Width = "80",
+                            ClassName = NopColumnClassDefaults.Button,
+                            Render = new RenderButtonRemove(T("Admin.Common.Delete").Text)
+                        }
+                    }
+                })
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function viewActorsButton(data, type, row, _meta) {
+        const fullDateTime = encodeURIComponent(row.Date + ' ' + row.StartTime);
+        return `<button type="button" class="btn btn-info" 
+                    onclick="openActorSlots(${row.Id}, '${fullDateTime}')">
+                <i class="fas fa-users"></i> View Actors
+            </button>`;
+    }
+
+    function openActorSlots(timeSlotId, timeSlotDateTime) {
+        const url = '@Url.Action("List", "ActorEventTimeSlot")?TimeSlotId=' 
+                    + timeSlotId + '&TimeSlotDate=' + timeSlotDateTime;
+        window.open(url, 'ActorEventTimeSlots', 'width=900,height=900,resizable=yes,scrollbars=yes');
+    }
+</script>

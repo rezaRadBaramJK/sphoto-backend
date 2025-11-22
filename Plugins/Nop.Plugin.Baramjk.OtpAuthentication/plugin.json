@@ -1,0 +1,13 @@
+﻿{
+  "Group": "Baramjk",
+  "FriendlyName": "Otp Authentication",
+  "SystemName": "Baramjk.OtpAuthentication",
+  "Version": "1.0",
+  "SupportedVersions": [
+    "4.40"
+  ],
+  "Author": "Baramjk team",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Baramjk.OtpAuthentication.dll",
+  "Description": "Adds support login with otp"
+}

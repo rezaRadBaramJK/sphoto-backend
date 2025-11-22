@@ -1,0 +1,134 @@
+﻿@using Nop.Web.Models.Customer
+@model List<Nop.Plugin.Baramjk.Wallet.Services.Models.CustomerWallet>
+
+@{
+    Layout = "_ColumnsTwo";
+}
+
+@section left
+{
+    @await Component.InvokeAsync("CustomerNavigation", new { selectedTabId = CustomerNavigationEnum.ProductReviews })
+}
+
+@* @inject WalletPackageService _walletPackageService; *@
+@* @{ *@
+@*     var packageModels = await _walletPackageService.GetPackageModelsAsync(); *@
+@* } *@
+
+<div class="page account-page my-product-reviews-list-page">
+    <div class="page-title">
+        <h1> Wallet Withdraw</h1>
+    </div>
+    <div class="page-body">
+        <div class="panel-body">
+            <table id="bid_table" class="table-style table table-bordered table-hover table-striped dataTable no-footer">
+                <thead>
+                <tr>
+                    <th>Currency</th>
+                    <th>Current Balance</th>
+                    <th>Withdraw Amount</th>
+                    <th>Card No.</th>
+                    <th>Account No.</th>
+                    <th>IBAN</th>
+                    <th>Bank Name</th>
+                    <th>Action</th>
+                    <th></th>
+                </tr>
+                </thead>
+                @foreach (var  item in Model.Where(x => x.Wallet.Amount > decimal.Zero))
+                {
+                    <tr>
+                        @* <form asp-action="AddWithdrawRequest"> *@
+
+                        <td>@item.Currency.Name</td>
+                        <td>@item.Wallet.Amount</td>
+                        <td>
+                            <input name="Amount" type="number" id="@(item.Currency.CurrencyCode)_amount" min="0" max="@item.Wallet.Amount" required="required"/>
+                        </td>
+
+                        <input name="CurrencyCode" type="hidden" value="@item.Currency.CurrencyCode"/>
+
+                        <td>
+                            <input name="CardNumber" id="@(item.Currency.CurrencyCode)_cardnumber" type="text" required="required"/>
+                        </td>
+                        <td>
+                            <input name="AccountNumber" id="@(item.Currency.CurrencyCode)_accountnumber" type="text" required="required"/>
+                        </td>
+                        <td>
+                            <input name="IBAN" id="@(item.Currency.CurrencyCode)_iban" type="text" required="required"/>
+                        </td>
+                        <td>
+                            <input name="BankName" id="@(item.Currency.CurrencyCode)_bankname" type="text" required="required"/>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary" onclick='SendRequest("@item.Currency.CurrencyCode")'>Submit</button>
+                        </td>
+
+                        @* </form> *@
+                    </tr>
+                }
+                <script>
+                    function SendRequest(CurrencyCode){
+                        var amount = $(`#${CurrencyCode}_amount`).val();
+                        var card = $(`#${CurrencyCode}_cardnumber`).val();
+                        var account = $(`#${CurrencyCode}_accountnumber`).val();
+                        var iban = $(`#${CurrencyCode}_iban`).val();
+                        var bank = $(`#${CurrencyCode}_bankname`).val();
+                        $.ajax('/en/Wallet/AddWithdrawRequest', {
+                            type: 'POST',
+                            contentType: "application/json",
+                            data: JSON.stringify({ CurrencyCode : CurrencyCode,Amount:amount,CartNumber:card , AccountNumber :account , IBAN:iban ,BankName:bank }),  // data to submit
+                            success: function (data, status, xhr) {
+                               alert(data.Message);
+                                //$('p').append('status: ' + status + ', data: ' + data);
+                            },
+                            error: function (jqXhr, textStatus, errorMessage) {
+                                alert(data.Message);
+                                   // $('p').append('Error' + errorMessage);
+                            }
+                        });
+                    }
+                </script>
+
+            </table>
+            <br/>
+            <br/>
+
+        </div>
+    </div>
+</div>
+<style>
+.table-style  {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table-style  td, .table-style  th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.table-style  tr:nth-child(even){background-color: #f2f2f2;}
+
+.table-style  tr:hover {background-color: #ddd;}
+
+.table-style  th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+
+
+.buyBtn {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 18px;
+    border: 1px #4ab2f1 solid;
+    background: #4ab2f1;
+    border-radius: 5px;
+    padding: 6px;
+}
+</style>

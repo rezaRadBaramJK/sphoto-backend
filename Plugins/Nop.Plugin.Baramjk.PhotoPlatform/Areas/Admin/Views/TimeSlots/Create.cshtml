@@ -1,0 +1,55 @@
+@model Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.TimeSlots.TimeSlotViewModel
+
+@{
+    var title = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.TimeSlot.CreateNewTitle").Text;
+    ViewBag.PageTitle = title;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminPopupLayout.cshtml";
+}
+
+<form asp-controller="TimeSlot" asp-action="Create" method="post" id="time-slot-form">
+    <div class="content-header clearfix">
+        <h1 class="float-left">
+            @title
+            <small>
+                <i class="fas fa-arrow-circle-left"></i>
+                <a asp-controller="Product" asp-action="Edit" asp-route-id="@Model.EventId">
+                    @T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.TimeSlot.BackToEventDetails")
+                </a>
+            </small>
+        </h1>
+        <div class="float-right">
+            <button type="submit" name="save" class="btn btn-primary">
+                <i class="far fa-save"></i>
+                @T("Admin.Common.Save")
+            </button>
+        </div>
+    </div>
+    @await Html.PartialAsync($"~/Plugins/{SystemName}/Areas/Admin/Views/TimeSlots/_CreateOrUpdate.cshtml", Model)
+</form>
+
+<script>
+    $('#time-slot-form').on('submit', function (e) {
+        e.preventDefault();
+        const form = this;
+        
+
+        const datePicker = $("#Date").data("kendoDatePicker");
+        const dateValue = datePicker?.value();
+
+        if (dateValue) {
+            $("#Date").val(kendo.toString(dateValue, "yyyy-MM-dd"));
+        }
+
+        const data = $(form).serialize();
+        $.post(form.action, data)
+            .done(function () {
+                const refreshBtnId = @Html.Raw(Json.Serialize(Context.Request.Query["RefreshBtnId"]));
+                window.opener?.document.getElementById(refreshBtnId)?.click();
+                window.close();
+            })
+            .fail(function (err) {
+                console.log(err)
+
+            });
+    });
+</script>

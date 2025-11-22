@@ -1,0 +1,105 @@
+﻿@model List<Nop.Plugin.Baramjk.Framework.Domain.GatewayPaymentTranslation>
+
+<nop-panel>
+    <div class="advanced-setting panel panel-default collapsible-panel"
+         data-panel-name="customer-wallet" id="customer-wallet">
+        <div class="opened panel-heading" data-hideattribute="CustomerPage.HidePlaceOrderBlock">
+            <div class="icon-container">
+                <i class="fa fa-sticky-note-o panel-icon"></i>
+            </div><span>Create Invoice</span><i class="fa-minus toggle-icon fa"></i>
+        </div>
+        <div class="panel-container">
+            <div class="panel-body">
+                <button type="button" name="impersonate" class="btn btn-primary"
+                        onclick="CreateInvoice()">
+                    <i class="fa fa-sticky-note-o panel-icon"></i>
+                    Create Invoice
+                </button>
+
+                <a id="invoiceUrl"></a>
+                <br/>
+                <br/>
+                <table class="table table-bordered table-hover table-striped dataTable">
+                    <tr>
+                        <td>
+                            Invoice Id
+                        </td>
+                        <td>
+                            Payment Id
+                        </td>
+                        <td>
+                            Status
+                        </td>
+                        <td>
+                            On CreateDate Time Utc
+                        </td>
+                        <td>
+                            Payment Url
+                        </td>
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.InvoiceId
+                            </td>
+                            <td>
+                                @item.PaymentId
+                            </td>
+                            <td>
+                                @item.Status.ToString()
+                            </td>
+                            <td>
+                                @item.OnCreateDateTimeUtc
+                            </td>
+                            <td>
+                                <a href="@item.PaymentUrl">@item.PaymentUrl</a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</nop-panel>
+
+<script>
+function  CreateInvoice(force=false){
+    fetch("/OrderPaymentLink/CreateInvoice?orderId=@ViewBag.Id&force="+force, {
+    method: "GET",
+    mode: "no-cors",
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+    },
+    })
+     .then(response => response.json())
+    .then((data)=>{
+        if (data.IsSuccess===false)
+        {
+            invoiceUrl.innerHTML=data.Message
+            return;
+        }
+        
+          if (data.Data==="Already paid")
+          {
+             let createLink= confirm('The order already paid. Do you want create link?')
+             if (createLink)
+                CreateInvoice(true);
+             
+            return;
+          }
+          
+        let url = data.Data;
+        invoiceUrl.innerHTML=url;
+        invoiceUrl.href=url;
+        alert("email is sent");
+     })
+    .catch(function(error) {
+        console.log(error)
+         alert("Can't create invoice");
+    });
+    }
+</script>

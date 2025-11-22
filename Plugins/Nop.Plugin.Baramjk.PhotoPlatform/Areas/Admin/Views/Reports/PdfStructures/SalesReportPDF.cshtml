@@ -1,0 +1,244 @@
+@model Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.Reports.Sales.SalesReportPdfDataModel
+@{ }
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8"/>
+    <title>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.Sales.Title").Text</title>
+    <style>
+
+
+        body {
+            font-size: 22px;
+            font-family: Arial, sans-serif;
+            direction: rtl;
+
+        }
+
+        table {
+            page-break-inside: auto !important;
+            border-collapse: collapse;
+            margin-top: 20px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        tr {
+            page-break-inside: avoid !important;
+            page-break-after: auto !important;
+        }
+
+        thead {
+            display: table-header-group !important;
+        }
+
+        tbody {
+            display: table-row-group;
+        }
+
+        thead th {
+            text-align: right;
+            padding: 10px 5px;
+
+        }
+
+
+        td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 10px;
+
+        }
+        .logo h2 {
+            display: inline-block;
+        }
+
+        .logo img {
+            width: 100%;
+        }
+
+        .section-title {
+            background: #7AB0CD;
+            color: #fff;
+            font-weight: bold;
+            width: 100%;
+            border-bottom: 0;
+
+        }
+
+        .summary-table-section-title {
+            background-color: #7AB0CD;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            margin-bottom: 20px;
+            margin-top: 100px;
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .summary-table td {
+            border-bottom: 0;
+            padding: 10px 20px;
+            vertical-align: top;
+        }
+
+        .summary-table .label {
+            font-weight: bold;
+        }
+
+        .summary-table .value {
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+
+<table style="border-collapse: collapse;">
+    <tr>
+
+        <td style="vertical-align: middle;">
+            <div style="display: flex; align-items: center; height: 100%;">
+                <h2 style="margin: 0; font-weight: normal">@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.Sales.Title").Text</h2>
+            </div>
+        </td>
+
+        <td style="vertical-align: middle; padding-right: 10px;">
+            <img src="~/Plugins/Baramjk.PhotoPlatform/Areas/Admin/Contents/Images/sami-main-logo.png" alt="logo" style="height: 70px;" />
+        </td>
+    </tr>
+</table>
+
+
+@for (var i = 0; i < Model.EachDayData.Count; i++)
+{
+    var dayData = Model.EachDayData[i];
+
+    var rowCount = dayData.ReservationsDetails.Count;
+    const int rowsPerPage = 20;
+    var pageCount = (int)Math.Ceiling((double)rowCount / rowsPerPage);
+
+    for (var page = 0; page < pageCount; page++)
+    {
+        <div>
+
+
+            <div style="font-weight:bold; font-size:24px; margin-top: 20px;">
+
+            </div>
+
+            <table>
+                <thead>
+                <tr class="section-title">
+                    <th colspan="1">@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.Sales.EventName").Text:</th>
+                    <th colspan="1"> @Model.EventName</th>
+                    <th colspan="5"></th>
+                </tr>
+
+
+                </thead>
+                <tbody style="padding-top: 50px">
+
+                <tbody>
+                @if (page == 0)
+                {
+                    <tr>
+                        <td style="text-align:right; font-weight:bold; padding: 20px 5px 50px 0">@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.Sales.Day").Text: @dayData.DayNumber</td>
+                    </tr>
+                }
+
+
+                <tr>
+                    <th style="text-align: right"> @T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.Sales.ActorName").Text</th>
+                    <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.Sales.NumberOfTickets").Text</th>
+                    <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.Sales.UnitPrice").Text</th>
+                    <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.Sales.TotalPrice").Text</th>
+                    <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.Sales.ProductionShare").Text</th>
+                    <th> @T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.Sales.ActorShare").Text</th>
+                    <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.Sales.PhotoShootShare").Text</th>
+                </tr>
+
+
+                @foreach (var res in dayData.ReservationsDetails.Skip(page * rowsPerPage).Take(rowsPerPage))
+                {
+                    <tr style="border-bottom: 1px solid #000">
+                        <td style="text-align: right">@res.ActorName</td>
+                        <td>@res.NumberOfTickets</td>
+                        <td>@res.UnitPrice.ToString("N3")</td>
+                        <td>@res.TotalPrice.ToString("N3")</td>
+                        <td>@res.ProductionShare.ToString("N3")</td>
+                        <td>@res.ActorShare.ToString("N3")</td>
+                        <td>@res.PhotoShootShare.ToString("N3")</td>
+                    </tr>
+
+                }
+
+                @if (page == pageCount - 1)
+                {
+                    <tr style="font-weight: bold;">
+                        <td style="text-align: center">@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.Sales.Total").Text</td>
+                        <td>@dayData.TotalNumberOfTickets</td>
+                        <td></td>
+                        <td>@dayData.TotalPrice.ToString("N3")</td>
+                        <td>@dayData.TotalProductionShare.ToString("N3")</td>
+                        <td>@dayData.TotalActorShare.ToString("N3")</td>
+                        <td>@dayData.TotalPhotoShootShare.ToString("N3")</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+        @if (!(i == Model.EachDayData.Count - 1 && page == pageCount - 1))
+        {
+            <div style="page-break-after: always;"></div>
+        }
+    }
+
+    if (i == Model.EachDayData.Count - 1)
+    {
+        <div class="summary-table-section-title">@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.Sales.Summary").Text</div>
+
+        <table class="summary-table">
+            <tr>
+                <td>
+                    <span class="label">@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.Sales.SumNumberOfTickets").Text</span>
+                    <span class="value">@Model.TotalNumberOfTickets</span>
+                </td>
+                <td>
+                    <span class="label">@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.Sales.SumTotalPrices").Text</span>
+                    <span class="value">@Model.TotalPrice.ToString("N3")</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="label">@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.Sales.SumTotalProductionShare").Text</span>
+                    <span class="value">@Model.TotalProductionShare.ToString("N3")</span>
+                </td>
+                <td>
+                    <span class="label">@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.Sales.SumTotalPhotoShootShare").Text</span>
+                    <span class="value">@Model.TotalPhotoShootShare.ToString("N3")</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="label">@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.Sales.SumTotalActorShare").Text</span>
+                    <span class="value">@Model.TotalActorShare.ToString("N3")</span>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    }
+}
+</body>
+</html>

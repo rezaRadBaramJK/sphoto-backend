@@ -1,0 +1,13 @@
+﻿{
+  "Group": "Baramjk",
+  "FriendlyName": "Web API Frontend",
+  "SystemName": "Baramjk.FrontendApi",
+  "Version": "1.0",
+  "SupportedVersions": [
+    "4.40"
+  ],
+  "Author": "",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Baramjk.FrontendApi.dll",
+  "Description": "Web API for frontend"
+}

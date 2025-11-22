@@ -1,0 +1,122 @@
+﻿@using Nop.Plugin.Baramjk.PushNotification
+@model Nop.Plugin.Baramjk.PushNotification.Models.Admin.EventNotificationConfigs.EventNotificationConfigModel
+
+<input asp-for="Id" type="hidden"/>
+<section class="content">
+    <div class="container-fluid">
+        <div class="form-horizontal">
+            <div class="card card-default">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="EventName"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-select asp-for="EventName" asp-items="@Model.AvailableEventNames"/>
+                            <span asp-validation-for="EventName"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" id="status-name-container">
+                        <div class="col-md-3">
+                            <nop-label asp-for="StatusName"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-select name="StatusName" asp-for="StatusName"/>
+                            <span asp-validation-for="StatusName"></span>
+                        </div>
+                        <script>
+                            const statusNameSelect = $('#@Html.IdFor(model => model.StatusName)');
+                            const eventNamesSelect = $('#@Html.IdFor(model => model.EventName)');
+                            
+                            $(document).ready(function(){
+                                eventNamesSelect.change(prepareAvailableStatusNames);
+                                prepareAvailableStatusNames();
+                            });
+                            
+                            function prepareAvailableStatusNames(){
+                                const eventNamesSelectValue = eventNamesSelect.val();
+
+                                const statusNameContainer = $("#status-name-container");
+                                if (eventNamesSelectValue === '@DefaultValue.OrderNoteInsertedEventKey')
+                                {
+                                    statusNameContainer.hide();
+                                    return
+                                }
+                                else {
+                                    statusNameContainer.show();
+                                }
+                                
+                                $.ajax({
+                                    cache: false,
+                                    type: "GET",
+                                    url: "@(Url.Action("GetStatusByEventName", "EventNotificationConfig"))?eventName=" + eventNamesSelectValue + "&configId=" + @Model.Id,
+                                    success: function (data) {
+                                        if (data){
+                                            statusNameSelect.empty();
+                                            data.Data.forEach(function (item){
+                                                let newOption = $('<option></option>').attr('value', item.Id).text(item.Name);
+                                                
+                                                if (item.Selected)
+                                                    newOption.attr('selected', 'selected');
+                                                statusNameSelect.append(newOption);
+                                            });
+                                            
+                                        }
+                                    },
+                                    statusCode: {
+                                        400 : function(responseObject, textStatus, jqXHR) {
+                                            alert("error: " + responseObject.toString())
+                                        }
+                                    }
+                                });
+                                
+                            }
+                        </script>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="TemplateName"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="TemplateName"/>
+                            <span asp-validation-for="TemplateName"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="UseFirebase"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="UseFirebase"/>
+                            <span asp-validation-for="UseFirebase"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="UseSms"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="UseSms"/>
+                            <span asp-validation-for="UseSms"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="UseWhatsApp"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="UseWhatsApp"/>
+                            <span asp-validation-for="UseWhatsApp"></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

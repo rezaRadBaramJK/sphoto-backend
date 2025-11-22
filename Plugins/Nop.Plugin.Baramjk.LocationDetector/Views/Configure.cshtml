@@ -1,0 +1,43 @@
+﻿@using Nop.Plugin.Baramjk.Framework
+@using Nop.Web.Framework.TagHelpers.Admin
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Nop.Plugin.Baramjk.Framework.Models.ViewModels
+@using Nop.Plugin.Baramjk.LocationDetector.Plugin
+@model Nop.Plugin.Baramjk.LocationDetector.Models.LocationDetectorSettingsModel
+
+@{
+    InitConfigureView(new DefaultConfigureViewModel(typeof(LocationDetectorPlugin), "LocationDetectorConfigurationAdmin"));
+}
+
+<div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="DefaultCurrency"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="DefaultCurrency"/>
+            <span asp-validation-for="DefaultCurrency"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="Ip2LocationToken"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="Ip2LocationToken"/>
+            <span asp-validation-for="Ip2LocationToken"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="SwitchCustomerCurrencyOnChangingCountry"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="SwitchCustomerCurrencyOnChangingCountry"/>
+            <span asp-validation-for="SwitchCustomerCurrencyOnChangingCountry"></span>
+        </div>
+    </div>
+    
+</div>

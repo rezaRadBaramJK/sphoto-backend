@@ -1,0 +1,253 @@
+@model Nop.Plugin.Baramjk.PhotoPlatform.Models.Reports.Supervisor.SupervisorReportModel
+@inject Nop.Services.Catalog.IPriceFormatter PriceFormatter
+@{ }
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8"/>
+    <title>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.Title").Text</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            direction: rtl;
+            color: #0066b3;
+        }
+
+        .logo {
+            margin-top: 20px;
+        }
+
+        h2 {
+            margin: 5px 0 20px 0;
+        }
+
+        .section-line {
+            border: none;
+            height: 4px;
+            background-color: #b0d235;
+            margin: 20px 0;
+        }
+
+        .info-table, .data-table {
+            width: 100%;
+            margin: 15px auto;
+            border-collapse: collapse;
+        }
+
+
+        .info-table td {
+            border: 2px solid #b0d235;
+            padding: 8px 15px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #0066b3;
+        }
+
+        .data-table th, .data-table td {
+            border: 2px solid #b0d235;
+            padding: 8px 12px;
+            font-size: 14px;
+            color: #0066b3;
+        }
+
+        .data-table th {
+            font-weight: bold;
+            background: #ffffff;
+        }
+
+        .summary-row td {
+            font-weight: bold;
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Logo + Title -->
+
+@foreach (var dateGroup in Model.GroupedByDate)
+{
+    if (Model.ShowActors == false)
+    {
+        <div style="text-align: center;">
+            <div class="logo">
+                <img src="~/Plugins/Baramjk.PhotoPlatform/Areas/Admin/Contents/Images/sami-main-logo.png"
+                     alt="logo"
+                     style="height: 60px; display: block; margin: 0 auto;"/>
+            </div>
+
+        </div>
+        <hr class="section-line"/>
+
+        <!-- Info Table -->
+        <table class="info-table" style="width: 60%">
+
+            <tr>
+                <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.EventName")</td>
+                <td>@dateGroup.EventName</td>
+            </tr>
+            <tr>
+                <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.Date")</td>
+                <td>@dateGroup.EventDate.ToString("dd-MM-yyyy")</td>
+            </tr>
+            <tr>
+                <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.ReportType")</td>
+                <td>@Model.ReportType</td>
+            </tr>
+
+        </table>
+
+        <hr class="section-line"/>
+
+
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.TimeSlot")</th>
+                <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.TicketPrice")</th>
+                <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.ActorShare")</th>
+                <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.ProductionShare")</th>
+                <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.PhotoShootShare")</th>
+                <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.TotalPhotoCount")</th>
+                <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.TotalPhotosPrice")</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            @foreach (var item in dateGroup.TimeSlotsData)
+            {
+                <tr>
+                    <td>@item.EventTime.ToString(@"hh\:mm")</td>
+                    <td>@await PriceFormatter.FormatPriceAsync(Model.GeneralPhotoPrice)</td>
+                    <td>@await PriceFormatter.FormatPriceAsync(Model.GeneralActorShare) </td>
+                    <td>@await PriceFormatter.FormatPriceAsync(Model.GeneralProductionShare) </td>
+                    <td>@await PriceFormatter.FormatPriceAsync(Model.GeneralPhotoShootShare)</td>
+                    <td>@item.TotalTimeSlotPhotoCount</td>
+                    <td>@await PriceFormatter.FormatPriceAsync(item.TotalTimeSlotPhotoPrice)</td>
+                </tr>
+
+                @* @if (item != dateGroup.TimeSlotsData.Last()) *@
+                @* { *@
+                @*     <div class="page-break"></div> *@
+                @* } *@
+            }
+            </tbody>
+        </table>
+
+        @if (dateGroup != Model.GroupedByDate.Last())
+        {
+            <div class="page-break"></div>
+        }
+    }
+    else
+    {
+        @foreach (var item in dateGroup.TimeSlotsData)
+        {
+            <div style="text-align: center;">
+                <div class="logo">
+                    <img src="~/Plugins/Baramjk.PhotoPlatform/Areas/Admin/Contents/Images/sami-main-logo.png"
+                         alt="logo"
+                         style="height: 60px; display: block; margin: 0 auto;"/>
+                </div>
+
+            </div>
+            <hr class="section-line"/>
+            <!-- Info Table -->
+            <table class="info-table" style="width: 60%">
+
+                <tr>
+                    <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.EventName")</td>
+                    <td>@dateGroup.EventName</td>
+                </tr>
+                <tr>
+                    <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.Date")</td>
+                    <td>@dateGroup.EventDate.ToString("dd-MM-yyyy")</td>
+                </tr>
+                <tr>
+                    <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.TimeSlot")</td>
+                    <td>@item.EventTime.ToString(@"hh\:mm")</td>
+                </tr>
+                <tr>
+                    <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.ReportType")</td>
+                    <td>@Model.ReportType</td>
+                </tr>
+            </table>
+
+            <hr class="section-line"/>
+
+
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.ActorName")</th>
+                    <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.TicketPrice")</th>
+                    <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.ActorShare")</th>
+                    <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.ProductionShare")</th>
+                    <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.PhotoShootShare")</th>
+                    <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.TotalPhotoCount")</th>
+                    <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.TotalPhotosPrice")</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var actor in item.ActorsData)
+                {
+                    <tr>
+                        <td>@actor.ActorName</td>
+                        <td>@await PriceFormatter.FormatPriceAsync(actor.TicketPrice) </td>
+                        <td>@await PriceFormatter.FormatPriceAsync(actor.ActorShare) </td>
+                        <td>@await PriceFormatter.FormatPriceAsync(actor.ProductionShare) </td>
+                        <td>@await PriceFormatter.FormatPriceAsync(Model.GeneralPhotoShootShare)</td>
+                        <td>@actor.TotalPhotoCount</td>
+                        <td>@await PriceFormatter.FormatPriceAsync(actor.TotalPhotoPrice) </td>
+                    </tr>
+                }
+
+                <!-- Summary Row -->
+                <tr class="summary-row">
+                    <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.Total")</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>@item.TotalTimeSlotPhotoCount</td>
+                    <td>@await PriceFormatter.FormatPriceAsync(item.TotalTimeSlotPhotoPrice)</td>
+                </tr>
+                </tbody>
+            </table>
+
+            @if (item != dateGroup.TimeSlotsData.Last())
+            {
+                <div class="page-break"></div>
+            }
+        }
+
+        @if (dateGroup != Model.GroupedByDate.Last())
+        {
+            <div class="page-break"></div>
+        }
+    }
+}
+
+@if (Model.GroupedByDate.Count > 1)
+{
+    <!-- Grand Totals -->
+    <hr class="section-line"/>
+    <table class="info-table" style="width: 50%">
+        <tr>
+            <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.TotalPhotoCount")</td>
+            <td>@Model.TotalPhotoCount</td>
+        </tr>
+        <tr>
+            <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Supervisor.Report.Pdf.TotalPhotosPrice") </td>
+            <td>@await PriceFormatter.FormatPriceAsync(Model.TotalPhotoPrice) </td>
+        </tr>
+    </table>
+}
+
+
+</body>
+</html>

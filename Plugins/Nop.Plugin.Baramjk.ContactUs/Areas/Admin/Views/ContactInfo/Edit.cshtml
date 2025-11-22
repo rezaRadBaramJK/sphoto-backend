@@ -1,0 +1,148 @@
+﻿@model Nop.Plugin.Baramjk.ContactUs.Areas.Admin.Models.ViewModels.ContactInfos.ContactInfoViewModel
+
+@{
+    ViewBag.PageTitle = T("Baramjk.ContactUs.Admin.ContactInfos.Edit").Text;
+    Html.SetActiveMenuItemSystemName($"{SystemName}.ContactInfos.List");
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form asp-controller="ContactInfo" asp-action="Edit" method="post" id="items-form">
+    <div class="content-header clearfix">
+        <h1 class="float-left">
+            @T("Baramjk.ContactUs.Admin.ContactInfos.Edit")
+            <small>
+                <i class="fas fa-arrow-circle-left"></i>
+                <a asp-controller="ContactInfo" asp-action="List">@T("Baramjk.ContactUs.Admin.ContactInfos.BackToContactInfoList")</a>
+            </small>
+        </h1>
+        <div class="float-right">
+            <button type="submit" name="save" class="btn btn-primary">
+                <i class="far fa-save"></i>
+                @T("Admin.Common.Save")
+            </button>
+            <button type="submit" name="save-continue" class="btn btn-primary">
+                <i class="far fa-save"></i>
+                @T("Admin.Common.SaveContinue")
+            </button>
+            <span id="item-delete" class="btn btn-danger">
+                <i class="far fa-trash-alt"></i>
+                @T("Admin.Common.Delete")
+            </span>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="form-horizontal">
+                <div class="card card-default">
+                    <div class="card-body">
+                        <input asp-for="Id" type="hidden"/>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="FirstName"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="FirstName"/>
+                                <span asp-validation-for="FirstName"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="LastName"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="LastName"/>
+                                <span asp-validation-for="LastName"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="CountryId"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-select asp-for="CountryId" asp-items="Model.AvailableCountries"/>
+                                <span asp-validation-for="CountryId"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="PhoneNumber"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="PhoneNumber"/>
+                                <span asp-validation-for="PhoneNumber"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="Email"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="Email"/>
+                                <span asp-validation-for="Email"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="SubjectId"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-select asp-for="SubjectId" asp-items="Model.AvailableSubjects"/>
+                                <span asp-validation-for="SubjectId"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="FileId"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="FileId"/>
+                                <span asp-validation-for="FileId"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="Message"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-textarea asp-for="Message"/>
+                                <span asp-validation-for="Message"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="HasBeenPaid"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="HasBeenPaid"/>
+                                <span asp-validation-for="HasBeenPaid"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="PaymentDateTime"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="PaymentDateTime" asp-disabled="true"/>
+                                <span asp-validation-for="PaymentDateTime"></span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</form>
+<nop-delete-confirmation asp-model-id="@Model.Id" asp-button-id="item-delete"/>

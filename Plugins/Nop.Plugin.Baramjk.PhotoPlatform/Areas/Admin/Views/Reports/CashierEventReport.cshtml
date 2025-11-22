@@ -1,0 +1,210 @@
+@model Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.Reports.EventCashier.CashierEventReportViewModel
+@{
+    var title = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.CashierEvent.Title").Text;
+    ViewBag.PageTitle = title;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    Html.SetActiveMenuItemSystemName($"{SystemName}.CashierEventReport");
+}
+
+<form asp-controller="Report" asp-action="GenerateCashierEventReport" method="post">
+
+    <div class="content-header clearfix">
+        <h1 class="float-left">
+            @T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.CashierEvent.Title")
+        </h1>
+
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="form-horizontal">
+                <div class="card card-default">
+
+                    <div class="card-body">
+
+                        <div class="form-group row mt-2">
+                            <div class="col-md-2">
+                                <nop-label asp-for="EventId"/>
+                            </div>
+                            <div class="col-md-4">
+                                <nop-select
+                                    asp-for="EventId"
+                                    asp-items="Model.AvailableEvents"
+                                    id="EventId"/>
+
+                                <span asp-validation-for="EventId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-2">
+                            <div class="col-md-2">
+                                <nop-label asp-for="EventDate"/>
+                            </div>
+                            <div class="col-md-4">
+                                <nop-select
+                                    asp-for="EventDate"
+                                    asp-items="Model.AvailableDates"
+                                    id="EventDate"/>
+                                <span asp-validation-for="EventDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-2">
+                            <div class="col-md-2">
+                                <nop-label asp-for="TimeSlotId"/>
+                            </div>
+                            <div class="col-md-4">
+                                <nop-select
+                                    asp-for="TimeSlotId"
+                                    asp-items="Model.AvailableTimeSlots"
+                                    id="TimeSlotId"/>
+
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row mt-2">
+                            <div class="col-md-2">
+                                <nop-label asp-for="CashierId"/>
+                            </div>
+                            <div class="col-md-4">
+                                <nop-select
+                                    asp-for="CashierId"
+                                    asp-items="Model.AvailableCashiers"
+                                    id="CashierId"/>
+                                <span asp-validation-for="CashierId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row mt-2">
+                            <div class="col-md-2 float-right">
+
+                            </div>
+                            <div class="col-md-4 float-right">
+                                <button type="submit"
+                                        class="btn btn-primary ">@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.CashierEvent.GenerateReportButton")
+                                </button>
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</form>
+
+
+<script>
+    $(function () {
+        const eventIdElement = $('#EventId'),
+            dateElement = $('#EventDate'),
+            timeSlotElement = $('#TimeSlotId'),
+            cashierElement = $('#CashierId');
+
+        function refreshPlugin(selectedElement) {
+
+            if (selectedElement.hasClass('chosen-select')) {
+                selectedElement.trigger('chosen:updated');
+            } else if (selectedElement.hasClass('select2-hidden-accessible')) {
+                selectedElement.select2({width: '100%'});
+            }
+        }
+
+
+        if (eventIdElement.val() === "0") {
+            dateElement.prop('disabled', true).empty().append(new Option('Select Event first', ''));
+            timeSlotElement.prop('disabled', true).empty().append(new Option('Select date first', ''));
+            cashierElement.prop('disabled', true).empty().append(new Option('Select Event first', ''));
+
+
+        }
+
+
+        eventIdElement.on('change', function () {
+
+            const eventId = eventIdElement.val();
+
+            if (eventId === "0") {
+                dateElement.prop('disabled', true).empty().append(new Option('Select Event first', ''));
+                timeSlotElement.prop('disabled', true).empty().append(new Option('Select date first', ''));
+                cashierElement.prop('disabled', true).empty().append(new Option('Select Event first', ''));
+
+
+            }
+
+            if (eventId !== "0") {
+                dateElement.prop('disabled', true).empty().append(new Option('Loading dates…', ''));
+                timeSlotElement.prop('disabled', true).empty().append(new Option('Select date first', ''));
+                cashierElement.prop('disabled', true).empty().append(new Option('Select Event first', ''));
+
+                if (!eventId) {
+                    dateElement.empty().append(new Option('Select event first', ''));
+                    return;
+                }
+
+                $.get('@Url.Action("GetDatesByEvent", "Report")', {eventId: eventId})
+                    .done(function (dates) {
+                        dateElement.prop('disabled', false).empty().append(new Option('Select date', ''));
+                        $.each(dates, function (_, d) {
+                            dateElement[0].add(new Option(d.Text, d.Value));
+                        });
+                        refreshPlugin(dateElement);
+                    })
+                    .fail(function () {
+                        alert('Could not load dates.');
+                    });
+
+                $.get('@Url.Action("GetEventCashiers", "Report")', {eventId: eventId})
+                    .done(function (cashiers) {
+                        cashierElement.prop('disabled', false).empty().append(new Option('Select Cashier', ''));
+                        $.each(cashiers, function (_, d) {
+                            cashierElement[0].add(new Option(d.Text, d.Value));
+                        });
+                        refreshPlugin(cashierElement);
+                    })
+                    .fail(function () {
+                        alert('Could not load Cashiers.');
+                    });
+            }
+        });
+
+        dateElement.on('change', function () {
+            const selectedDate = dateElement.val(),
+                eventId = eventIdElement.val();
+            timeSlotElement.prop('disabled', true).empty().append(new Option('Loading time slots…', ''));
+
+            if (!selectedDate) {
+                timeSlotElement.empty().append(new Option('Select date first', ''));
+                return;
+            }
+
+            $.get('@Url.Action("GetEventTimeSlotsByEventAndDate", "Report")', {
+                date: selectedDate,
+                eventId: eventId
+            })
+                .done(function (slots) {
+                    timeSlotElement.prop('disabled', false).empty().append(new Option('Select time slot', ''));
+                    $.each(slots, function (_, s) {
+                        timeSlotElement[0].add(new Option(s.Text, s.Value));
+                    });
+                    refreshPlugin(timeSlotElement);
+                })
+                .fail(function () {
+                    alert('Could not load time slots.');
+                });
+        });
+
+        refreshPlugin(eventIdElement);
+        refreshPlugin(dateElement);
+        refreshPlugin(timeSlotElement);
+        refreshPlugin(cashierElement);
+    });
+</script>
+

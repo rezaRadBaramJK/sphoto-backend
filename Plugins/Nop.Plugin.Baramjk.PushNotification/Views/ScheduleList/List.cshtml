@@ -1,0 +1,61 @@
+﻿@using Nop.Web.Framework.Models.DataTables
+@using Nop.Plugin.Baramjk.Framework.Utils
+@using Microsoft.AspNetCore.Routing
+@using Nop.Plugin.Baramjk.PushNotification.Models
+@model Nop.Plugin.Baramjk.PushNotification.Models.ScheduleNotificationModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    Html.SetActiveMenuItemSystemName($"{MenuUtils.BaramjkMenuSystemName}_GymServices");
+    var auxField = "aux";
+}
+
+<div class="content-header clearfix">
+    <h1 class="float-left">
+        Bundles
+    </h1>
+
+
+</div>
+<div class="card card-default">
+    <div class="card-body">
+        @* ReSharper disable once Mvc.PartialViewNotResolved *@
+        @await Html.PartialAsync("Table", new DataTablesModel
+               {
+                   Name = "foods-grid",
+                   UrlRead = new DataUrl("ListAsync", "ScheduleList", new RouteValueDictionary()
+                   {
+                       { "id", ViewBag.id }
+                   }),
+                   // Length = Model.PageSize,
+                   // LengthMenu = Model.AvailablePageSizes,
+                   ColumnCollection = new List<ColumnProperty>
+                   {
+                       new ColumnProperty(nameof(ScheduleNotificationModel.Id))
+                       {
+                           IsMasterCheckBox = true,
+                           Render = new RenderCheckBox("checkbox_products"),
+                           ClassName = NopColumnClassDefaults.CenterAll,
+                           Width = "50",
+                           Visible = false
+                       },
+                       new ColumnProperty(nameof(ScheduleNotificationModel.JobId))
+                       {
+                           Title = "Job id",
+                           Width = "100"
+                       },
+                       new ColumnProperty(nameof(ScheduleNotificationModel.OnDateTime))
+                       {
+                           Title = "On DateTime",
+                           Width = "100",
+                       },
+                       new ColumnProperty(nameof(ScheduleNotificationModel.Id))
+                       {
+                           Title = "Delete",
+                           Width = "100",
+                           ClassName = NopColumnClassDefaults.Button,
+                           Render = new RenderButtonView(new DataUrl("/Admin/ScheduleList/Delete"))
+                       },
+                   }
+               })
+    </div>
+</div>

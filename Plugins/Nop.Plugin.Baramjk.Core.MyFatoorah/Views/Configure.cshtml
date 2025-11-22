@@ -1,0 +1,138 @@
+﻿@using Nop.Plugin.Baramjk.Core.MyFatoorah.Plugins
+@using Nop.Plugin.Baramjk.Framework.Models.ViewModels
+@model Nop.Plugin.Baramjk.Core.MyFatoorah.Models.MyFatoorahSettingModel
+
+@{
+    InitConfigureView(new DefaultConfigureViewModel(typeof(MyFatoorahPlugin), "MyFatoorahAdmin"));
+}
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="MyFatoorahAccessKey"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="MyFatoorahAccessKey"/>
+        <span asp-validation-for="MyFatoorahAccessKey"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="MyFatoorahUseSandbox"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="MyFatoorahUseSandbox"/>
+        <span asp-validation-for="MyFatoorahUseSandbox"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="WebhookSecretKey"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="WebhookSecretKey"/>
+        <span asp-validation-for="WebhookSecretKey"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="EnableRedirect"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="EnableRedirect"/>
+        <span asp-validation-for="EnableRedirect"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="BackendBase"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="BackendBase"/>
+        <span asp-validation-for="BackendBase"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="FrontendBase"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="FrontendBase"/>
+        <span asp-validation-for="FrontendBase"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="SuccessFrontendCallback"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="SuccessFrontendCallback"/>
+        <span asp-validation-for="SuccessFrontendCallback"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="FailedFrontendCallback"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="FailedFrontendCallback"/>
+        <span asp-validation-for="FailedFrontendCallback"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="DisplayCurrencyIsoAlpha"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="DisplayCurrencyIsoAlpha"/>
+        <span asp-validation-for="DisplayCurrencyIsoAlpha"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="AdditionalFee"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="AdditionalFee"/>
+        <span asp-validation-for="AdditionalFee"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="AdditionalFeePercentage"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="AdditionalFeePercentage"/>
+        <span asp-validation-for="AdditionalFeePercentage"></span>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="DefaultSupplierId"/>
+    </div>
+    <div class="col-md-9">
+        <nop-select asp-for="DefaultSupplierId" asp-items="Model.AvailableSuppliers"/>
+        <span asp-validation-for="DefaultSupplierId"></span>
+    </div>
+</div>
+
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="SkipPaymentInfo"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="SkipPaymentInfo"/>
+        <span asp-validation-for="SkipPaymentInfo"></span>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="ChargeOnCustomer"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="ChargeOnCustomer"/>
+        <span asp-validation-for="ChargeOnCustomer"></span>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+﻿@model Nop.Plugin.Baramjk.PushNotification.Models.WhatsApp.WhatsAppSettingViewModel
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="Username"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="Username"/>
+        <span asp-validation-for="Username"></span>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="Password"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="Password"/>
+        <span asp-validation-for="Password"></span>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="ProviderName"/>
+    </div>
+    <div class="col-md-9">
+        <nop-select asp-for="ProviderName" asp-items="@Model.AvailableProviders"/>
+        <span asp-validation-for="ProviderName"></span>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="ApiSid"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="ApiSid"/>
+        <span asp-validation-for="ApiSid"></span>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="ApiSecret"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="ApiSecret"/>
+        <span asp-validation-for="ApiSecret"></span>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="SenderPhoneNumber"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="SenderPhoneNumber"/>
+        <span asp-validation-for="SenderPhoneNumber"></span>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="OtpTemplateName"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="OtpTemplateName"/>
+        <span asp-validation-for="OtpTemplateName"></span>
+    </div>
+</div>
+

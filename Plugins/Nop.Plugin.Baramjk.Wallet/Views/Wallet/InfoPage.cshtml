@@ -1,0 +1,104 @@
+﻿@using Nop.Web.Models.Customer
+@using Nop.Plugin.Baramjk.Wallet.Services
+@model List<Nop.Plugin.Baramjk.Wallet.Services.Models.CustomerWallet>
+
+@{
+    Layout = "_ColumnsTwo";
+}
+
+@section left
+{
+    @await Component.InvokeAsync("CustomerNavigation", new { selectedTabId = CustomerNavigationEnum.ProductReviews })
+}
+
+@inject WalletPackageService _walletPackageService;
+@{
+    var packageModels = await _walletPackageService.GetPackageModelsAsync();
+}
+
+<div class="page account-page my-product-reviews-list-page">
+    <div class="page-title">
+        <h1> Wallet </h1>
+    </div>
+    <a class="btn btn-primary" href="/wallet/withdraw">Withdraw</a>
+    <div class="page-body">
+        <div class="panel-body">
+            <table id="bid_table" class="table-style table table-bordered table-hover table-striped dataTable no-footer">
+                <tr>
+                    <th>Name</th>
+                    <th>Details</th>
+                    <th></th>
+                </tr>
+                @foreach (var  packageModel in packageModels)
+                {
+                    <tr>
+                        <td>@packageModel.Name</td>
+                        <td>
+                            <ul>
+                                @foreach (var  ItemPackage in packageModel.Items)
+                                {
+                                    <li>
+                                        <span> @ItemPackage.CurrencyName </span> :
+                                        <span> @ItemPackage.Amount </span>
+                                    </li>
+                                }
+                            </ul>
+                        </td>
+                        <td>
+                            <a class="btn btn-default buyBtn"
+                               href="/WalletCharge/ChargePaymentByPackageId?packageId=@packageModel.Id">
+                                <i class="fa fa-buy"></i> buy
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </table>
+            <br/>
+            <br/>
+
+            <ul class="common-list">
+                @foreach (var item in Model)
+                {
+                    <li>
+                        @item.Currency.Name -<b> @item.Wallet.Amount</b>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+<style>
+.table-style  {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table-style  td, .table-style  th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.table-style  tr:nth-child(even){background-color: #f2f2f2;}
+
+.table-style  tr:hover {background-color: #ddd;}
+
+.table-style  th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+
+
+.buyBtn {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 18px;
+    border: 1px #4ab2f1 solid;
+    background: #4ab2f1;
+    border-radius: 5px;
+    padding: 6px;
+}
+</style>

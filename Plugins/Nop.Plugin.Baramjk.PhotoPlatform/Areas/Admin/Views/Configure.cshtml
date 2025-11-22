@@ -1,0 +1,63 @@
+@using Nop.Plugin.Baramjk.Framework.Models.ViewModels
+@using Nop.Plugin.Baramjk.PhotoPlatform.Plugins
+@model Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.PhotoPlatformSettingsModel
+@{
+    InitConfigureView(new DefaultConfigureViewModel(typeof(PhotoPlatformPlugin), "PhotoPlatformAdmin"));
+}
+
+<div>
+    <div class="form-group row ">
+        <div class="col-md-3">
+            <nop-label asp-for="TimeSlotLabelTypeId"/>
+        </div>
+        <div class="col-md-9">
+            <nop-select
+                asp-for="TimeSlotLabelTypeId"
+                asp-items="Model.AvailableTimeSlotLabelTypes"
+                id="TimeSlotLabelTypeId"/>
+
+            <span asp-validation-for="TimeSlotLabelTypeId" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="ShowTicketsInProductionReports"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="ShowTicketsInProductionReports"/>
+            <span asp-validation-for="ShowTicketsInProductionReports"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="OrderDetailsFrontendBaseUrl"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="OrderDetailsFrontendBaseUrl"/>
+            <span asp-validation-for="OrderDetailsFrontendBaseUrl"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="TicketSmsMessage"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="TicketSmsMessage"/>
+            <span asp-validation-for="TicketSmsMessage"></span>
+        </div>
+    </div>
+
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="BirthDayRewardPoints"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="BirthDayRewardPoints"/>
+            <span asp-validation-for="BirthDayRewardPoints"></span>
+        </div>
+    </div>
+</div>

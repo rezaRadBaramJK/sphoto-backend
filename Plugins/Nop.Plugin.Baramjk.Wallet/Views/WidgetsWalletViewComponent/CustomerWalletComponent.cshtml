@@ -1,0 +1,151 @@
+﻿@using Nop.Web.Framework.Models.DataTables
+@using Nop.Web.Framework.TagHelpers.Admin
+@using Microsoft.AspNetCore.Routing
+@using Nop.Plugin.Baramjk.Wallet.Models.ViewModels
+@model Nop.Plugin.Baramjk.Wallet.Models.ViewModels.CustomerWalletViewModel
+
+@{
+    var firstTabName = $"currency_tab_{Model.Wallets.First().Id}";
+}
+
+<nop-card asp-name="order-info"
+          asp-icon="fas fa-wallet"
+          asp-title="@T("Nop.Plugin.Baramjk.Wallet")"
+          asp-hide-block-attribute-name="WalletBlock"
+          asp-hide="true"
+          asp-advanced="false">
+    
+    <div class="card-body">
+        <div class="content" id="walletContainer">
+            
+            <nop-tabs id="wallet-menu-tabs"
+                      asp-tab-name-to-select= "@firstTabName"
+                      asp-render-selected-tab-input="false">
+                @foreach(var vm in Model.Wallets)
+                {
+                    var tabName = $"currency_tab_{vm.Id}";
+                    
+                    <nop-tab asp-name="@tabName"
+                             asp-title="@vm.CurrencyName"
+                             asp-default="true">
+                        @await Html.PartialAsync("~/Plugins/Baramjk.Wallet/Views/WidgetsWalletViewComponent/CustomerWalletCurrencyTabComponent.cshtml", vm)
+                    </nop-tab>
+                    
+                }
+            </nop-tabs>
+            <div class="card card-default no-margin">
+                <div class="card-header">
+                    <h3>@T("Nop.Plugin.Baramjk.Wallet.Admin.Widget.Customers.Histories")</h3>
+                </div>
+                <div class="card-body">
+                    @await Html.PartialAsync("Table", new DataTablesModel
+                    {
+                        Name = "customer-wallet-histories-grid",
+                        UrlRead = new DataUrl("CustomerWalletHistory", "HistoryAdmin", new RouteValueDictionary { [nameof(Model.CustomerHistorySearchModel.CustomerId)] = Model.CustomerHistorySearchModel.CustomerId }),
+                        Length = Model.CustomerHistorySearchModel.PageSize,
+                        LengthMenu = Model.CustomerHistorySearchModel.AvailablePageSizes,
+                        ColumnCollection = new List<ColumnProperty>
+                        {
+                            new(nameof(CustomerHistoryViewModel.CurrencyCode))
+                            {
+                                Title = T("Nop.Plugin.Baramjk.Wallet.Admin.Widget.Customers.Histories.CurrencyCode").Text,
+                                ClassName = NopColumnClassDefaults.CenterAll
+                            },
+                            new(nameof(CustomerHistoryViewModel.Amount))
+                            {
+                                Title = T("Nop.Plugin.Baramjk.Wallet.Admin.Widget.Customers.Histories.Amount").Text,
+                                ClassName = NopColumnClassDefaults.CenterAll
+                            },
+                            new(nameof(CustomerHistoryViewModel.Type))
+                            {
+                                Title = T("Nop.Plugin.Baramjk.Wallet.Admin.Widget.Customers.Histories.Type").Text,
+                                ClassName = NopColumnClassDefaults.CenterAll,
+                            },
+                            new(nameof(CustomerHistoryViewModel.OriginatedEntityId))
+                            {
+                                Title = T("Nop.Plugin.Baramjk.Wallet.Admin.Widget.Customers.Histories.OriginatedEntityId").Text,
+                                ClassName = NopColumnClassDefaults.CenterAll
+                            },
+                            new(nameof(CustomerHistoryViewModel.ExpirationDateTime))
+                            {
+                                Title = T("Nop.Plugin.Baramjk.Wallet.Admin.Widget.Customers.Histories.ExpirationDateTime").Text,
+                                ClassName = NopColumnClassDefaults.CenterAll
+                            },
+                            new(nameof(CustomerHistoryViewModel.CreateDateTime))
+                            {
+                                Title = T("Nop.Plugin.Baramjk.Wallet.Admin.Widget.Customers.Histories.CreateDateTime").Text,
+                                ClassName = NopColumnClassDefaults.CenterAll
+                            },
+                            new(nameof(CustomerHistoryViewModel.Note))
+                            {
+                                Title = T("Nop.Plugin.Baramjk.Wallet.Admin.Widget.Customers.Histories.Note").Text
+                            }
+                        }
+                    })
+                </div>
+            </div>
+        </div>
+    </div>
+</nop-card>
+
+<script>
+function updateCustomerWallet(walletId, currencyId, customerId) {
+    
+    const amountToUpdateTextBox = $("#amount_to_update_" + walletId).data("kendoNumericTextBox");
+    const amountToUpdate = parseFloat(amountToUpdateTextBox.value());
+    
+    if(amountToUpdate === 0.0){
+        alert('@T("Nop.Plugin.Baramjk.Wallet.Admin.AddAmountToUpdateErrorMessage")');
+        return;
+    }
+    
+    const historyTypeSelectedValue = $("#history_type_" + walletId).find(":selected").val();
+    
+    const expirationDateTextBox = $("#expiration_date_picker_" + walletId).data("kendoDateTimePicker");
+    const expirationDate = expirationDateTextBox.value();
+    
+    
+    
+    let postData = {
+        CurrencyId: currencyId,
+        CustomerId: customerId,
+        AmountToUpdate: amountToUpdate,
+        ExpirationDate: expirationDate,
+        HistoryTypeId: historyTypeSelectedValue
+    };
+    addAntiForgeryToken(postData);
+   
+    fetch("/Admin/Wallet/Amount", {
+        method: "POST", 
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(postData)
+    }).then((response) => {
+        if(response.ok) {
+            updateCurrentAmount(walletId, amountToUpdate, historyTypeSelectedValue);
+            $('#customer-wallet-histories-grid').DataTable().ajax.reload();
+            return "customer wallet updated successfully.";
+        }
+        else return response.text();
+    }).then((message) => {
+        alert(message);
+        
+    }).catch(function (error) {
+        alert(error);
+    })
+}
+
+function updateCurrentAmount(walletId, amountToUpdate, historyTypeSelectedValue){
+    const currentWalletAmountParagraph = $("#current_amount_" + walletId);
+    let currentValue = parseFloat(currentWalletAmountParagraph.text());
+    let floatAmountToUpdate = parseFloat(amountToUpdate);
+    
+    if (historyTypeSelectedValue === "7")
+    {
+        console.log()
+        floatAmountToUpdate *= -1;    
+    }
+    currentValue += floatAmountToUpdate;
+    currentWalletAmountParagraph.text(currentValue);
+}
+    
+</script>

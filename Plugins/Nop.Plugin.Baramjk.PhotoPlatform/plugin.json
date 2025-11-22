@@ -1,0 +1,13 @@
+{
+  "Group": "Baramjk",
+  "FriendlyName": "Photo Platform",
+  "SystemName": "Baramjk.PhotoPlatform",
+  "Version": "1.0",
+  "SupportedVersions": [
+    "4.40"
+  ],
+  "Author": "Baramjk team - Fayyaz",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Baramjk.PhotoPlatform.dll",
+  "Description": "Photo Platform special entities and apis"
+}

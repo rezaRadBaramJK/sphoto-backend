@@ -1,0 +1,37 @@
+@using Nop.Core
+@using Nop.Services.Common
+@model Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.Events.ProductDetailsWidgetViewModel
+
+@inject IGenericAttributeService GenericAttributeService
+@inject IWorkContext WorkContext
+
+@{
+    var customer = await WorkContext.GetCurrentCustomerAsync();
+
+    const string hideEventDetailsBlockAttributeName = "ProductPage.HideEventDetailBlock";
+    var hideProductAttributesBlock = await GenericAttributeService.GetAttributeAsync(customer, hideEventDetailsBlockAttributeName, defaultValue: true);
+}
+
+<nop-card
+    asp-name="event-details"
+    asp-icon="fa fa-book"
+    asp-title="@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Event.Details")"
+    asp-hide-block-attribute-name="@hideEventDetailsBlockAttributeName"
+    asp-hide="@hideProductAttributesBlock"
+    asp-advanced="false">
+
+    @await Html.PartialAsync("EventDetails.cshtml", Model.EventDetails)
+    @await Html.PartialAsync("EventTimeSlots.cshtml", Model.TimeSlots)
+    @await Html.PartialAsync("ActorEvent.cshtml", Model.ActorEvents)
+    @await Html.PartialAsync("CashierEvent.cshtml", Model.CashierEvents)
+    @await Html.PartialAsync("EventCashierBalances.cshtml", Model.EventCashiersDailyBalances);
+    @await Html.PartialAsync("SupervisorEvent.cshtml", Model.SupervisorEvents)
+    @await Html.PartialAsync("ProductionEvent.cshtml", Model.ProductionEvents)
+
+
+</nop-card>
+
+
+    
+    
+    

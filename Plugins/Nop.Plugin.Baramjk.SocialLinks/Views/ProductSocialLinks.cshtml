@@ -1,0 +1,29 @@
+@using Nop.Plugin.Baramjk.SocialLinks.Services
+@using Nop.Plugin.Baramjk.SocialLinks.Domain
+@using Nop.Services.Media
+@model Nop.Plugin.Baramjk.SocialLinks.Plugins.SocialLinksSettings
+@{
+    Layout = "";
+}
+@inject ISocialLinkEntityService _LinkEntityService
+@inject IPictureService _pictureService
+
+@{
+    var socials = await _LinkEntityService.GetSocialLinks(SocialLinkCategory.SocialMedia);
+
+}
+@if (Model.EnableFooter)
+{
+    <div >
+        @foreach (var social in socials.Where(x => x.ShowInProductDetails))
+        {
+            var url = await _pictureService.GetPictureUrlAsync(social.ImageId);
+
+            <div>
+                <a href="@social.Link" target="_blank">
+                    <img src="@url" alt="@social.Name" style="width:@Model.ProductDetailsIconSize">
+                </a>
+            </div>
+        }
+    </div>
+}

@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <CheckEolTargetFramework>false</CheckEolTargetFramework>
+        <Copyright>Copyright © Nop Solutions, Ltd</Copyright>
+        <Company>Nop Solutions, Ltd</Company>
+        <Authors>Nop Solutions, Ltd</Authors>
+        <PackageProjectUrl>http://www.nopcommerce.com/</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/nopSolutions/nopCommerce</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <OutputPath>..\..\Presentation\Nop.Web\Plugins\Baramjk.LocationDetector</OutputPath>
+        <OutDir>$(OutputPath)</OutDir>
+        <!--Set this parameter to true to get the dlls copied from the NuGet cache to the output of your project.
+        You need to set this parameter to true if your plugin has a nuget package 
+        to ensure that the dlls copied from the NuGet cache to the output of your project-->
+        <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+        <AssemblyName>Nop.Plugin.Baramjk.LocationDetector</AssemblyName>
+        <RootNamespace>Nop.Plugin.Baramjk.LocationDetector</RootNamespace>
+    </PropertyGroup>
+    <ItemGroup>
+        <ClearPluginAssemblies Include="$(MSBuildProjectDirectory)\..\..\Build\ClearPluginAssemblies.proj" />
+        <ProjectReference Include="..\..\Libraries\Nop.Services\Nop.Services.csproj" />
+        <ProjectReference Include="..\..\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj" />
+        <ProjectReference Include="..\..\Presentation\Nop.Web\Nop.Web.csproj" />
+        <ProjectReference Include="..\Nop.Plugin.Baramjk.Framework\Nop.Plugin.Baramjk.Framework.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="plugin.json" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <Content Include="Views\**" CopyToOutputDirectory="PreserveNewest" LinkBase="Views\" />
+    </ItemGroup>
+
+
+    <Target Name="NopTarget" AfterTargets="Build">
+        <MSBuild Projects="@(ClearPluginAssemblies)" Properties="PluginPath=$(MSBuildProjectDirectory)\$(OutDir)" Targets="NopClear" />
+    </Target>
+</Project>

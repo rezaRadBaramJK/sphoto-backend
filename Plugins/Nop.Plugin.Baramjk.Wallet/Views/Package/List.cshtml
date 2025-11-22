@@ -1,0 +1,147 @@
+@using Nop.Plugin.Baramjk.Framework
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Nop.Plugin.Baramjk.Wallet.Models.ViewModels.Packages
+@using Nop.Web.Framework.Models.DataTables
+@using Nop.Web.Framework.UI
+
+@model Nop.Plugin.Baramjk.Wallet.Models.ViewModels.Packages.PackageSearchModel
+
+@{
+    Layout = FrameworkDefaultValues.FormLayoutViewPath;
+    ViewBag.PageTitle = T("Nop.Plugin.Baramjk.Wallet.Admin.Packages").Text;
+    Html.SetActiveMenuItemSystemName($"{SystemName}_Wallet_Packages");
+}
+
+
+<div class="content-header clearfix">
+    <h1 class="float-left">
+        @T("Nop.Plugin.Baramjk.Wallet.Admin.Packages")
+    </h1>
+    <div class="float-right">
+        <a asp-action="AddOrEdit" asp-controller="Package" class="btn btn-primary">
+            <i class="fas fa-plus-square"></i>
+            @T("Admin.Common.AddNew")
+        </a>
+    </div>
+</div>
+
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="form-horizontal">
+            <div class="card card-default">
+                <div class="card-body">
+                    @await Html.PartialAsync("Table", new DataTablesModel
+                    {
+                        Name = "packages-grid",
+                        UrlRead = new DataUrl("List", "Package", null),
+                        UrlDelete = new DataUrl("Delete", "Package", null),
+                        Length = Model.PageSize,
+                        LengthMenu = Model.AvailablePageSizes,
+                        ColumnCollection = new List<ColumnProperty>
+                        {
+                            new(nameof(PackageListModelItem.Name))
+                            {
+                                Title = T("Nop.Plugin.Baramjk.Wallet.Admin.Packages.Name").Text,
+                                ClassName = NopColumnClassDefaults.CenterAll,
+                            },
+                            new(nameof(PackageListModelItem.AmountValues))
+                            {
+                                Title = T("Nop.Plugin.Baramjk.Wallet.Admin.Packages.Amount").Text,
+                                // ClassName = NopColumnClassDefaults.CenterAll,
+                                Render = new RenderCustom("renderPackageAmountValuesHtml")
+                            },
+                            new(nameof(PackageListModelItem.Id))
+                            {
+                                Title = T("Admin.Common.Delete").Text,
+                                Width = "80",
+                                ClassName = NopColumnClassDefaults.Button,
+                                Render = new RenderButtonRemove("Delete")
+                            },
+                            new(nameof(PackageListModelItem.Id))
+                            {
+                                Title = T("Admin.Common.Edit").Text,
+                                Width = "80",
+                                ClassName = NopColumnClassDefaults.Button,
+                                Render = new RenderCustom("editPackageButton")
+                            },
+                            new(nameof(PackageListModelItem.Id))
+                            {
+                                Title = T("Nop.Plugin.Baramjk.Wallet.Admin.Packages.AddPackageItem").Text,
+                                Width = "80",
+                                ClassName = NopColumnClassDefaults.Button,
+                                Render = new RenderCustom("addPackageItemButton")
+                            }
+                        }
+                    })
+                    <div class="card-footer">
+
+                        <button type="submit" id="btnRefresh" style="display: none"></button>
+                        <script>
+
+                            $(document).ready(function () {
+                                $('#btnRefresh').click(function () {
+                                    updateTable('#packages-grid');
+                                    return false;
+                                });
+                            });
+
+                            function editPackageButton(data, type, row, meta) {
+                                return `<a href="/Admin/Package/AddOrEdit?id=${row.Id}" class="btn btn-primary" ><i class="far fa-edit"></i> Edit </a>`;
+                            }
+                            
+                            function addPackageItemButton(data, type, row, meta) {
+                                return `<a href="/admin/package/AddOrEditItem?packageId=${row.Id}" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add new amount </a>`;
+                            }
+                            
+                            function renderPackageAmountValuesHtml(data, type, row, meta) {
+                            let result='';
+                            for (var i=0;i<row.AmountValues.length;i++)  
+                            {
+                                result+= `<li>
+                                          ${row.AmountValues[i].Title} | 
+                                          <a href="/admin/package/AddOrEditItem?id=${row.AmountValues[i].Id}" class="btn btn-sm btn-primary"><i class="far fa-edit"></i> Edit </a> | 
+                                          <button class="btn btn-sm btn-default" onclick="deletePackageItem('${row.AmountValues[i].Id}')"><i class="far fa-trash-alt"></i> Delete </button>
+                                          </li>`;
+                            }
+                            return `<ul>${result}</ul>`;
+                            }
+                            
+                            function deletePackageItem(id){
+                                if (confirm('Are you sure you want to delete this item?'))
+                                {
+                                    $.ajax({
+                                        type: "get",
+                                        url:`/Admin/Package/DeletePackageItem?id=${id}`,
+                                        success: function (response) {
+                                            updateTable('#packages-grid');
+                                        },
+                                        error: function (err) {
+                                            alert(err.message)
+                                        }
+                                    });
+                                }
+                            }
+
+                            function deletePackage(id){
+                                if (confirm('Are you sure you want to delete this item?'))
+                                {
+                                    $.ajax({
+                                        type: "get",
+                                        url:`/Admin/Package/Delete?id=${id}`,
+                                        success: function (response) {
+                                            updateTable('#packages-grid');
+                                        },
+                                        error: function (err) {
+                                            alert(err.message)
+                                        }
+                                    });
+                                }
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

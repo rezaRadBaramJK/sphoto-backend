@@ -1,0 +1,214 @@
+
+@model Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.Reports.EventCashier.CashierEventReportPdfDataModel
+@{ }
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.Title").Text</title>
+    <style>
+        body {
+            width: 100%;
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            padding: 0;
+            margin: 0;
+
+
+        }
+
+        .report-container {
+            width: 100%;
+            display: inline-block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: right;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .header-table td {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+            border-bottom: 2px solid #333;
+        }
+
+        .info-table td:first-child {
+            font-weight: bold;
+            width: 30%;
+        }
+
+        .totals-table {
+            margin-top: 10px;
+        }
+        
+        .info-table td {
+            border: none;
+            padding: 4px 0;
+        }
+
+        .main-data-table {
+            border: 1px solid #000000;
+        }
+
+        .main-data-table th {
+            border-bottom: 1px solid #000000;
+            border-left: 1px solid #000000;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        .main-data-table td {
+            border-left: 1px solid #000000;
+            text-align: center;
+        }
+
+        .totals-table td:first-child {
+            font-weight: bold;
+        }
+
+        .totals-table td {
+            text-align: left;
+        }
+
+        .totals-table .final-total td {
+            border-top: 2px solid #333;
+            font-weight: bold;
+        }
+
+        .no-border-table td {
+            border: none;
+            padding: 2px 0;
+        }
+
+        .left-align {
+            text-align: left !important;
+        }
+    </style>
+</head>
+<body>
+<div class="report-container">
+    <table class="header-table">
+        <tr>
+            <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.Title").Text</td>
+        </tr>
+    </table>
+
+    <table class="info-table">
+
+
+        @if (Model.IncludeTimeSlot)
+        {
+            <tr style="border-bottom: 2px solid #333">
+                <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.Day").Text</td>
+                <td>@Model.DayDateTime.ToString("d")</td>
+                <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.TimeSlot").Text</td>
+                <td>@Model.TimeSlot</td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.Day").Text</td>
+                <td>@Model.DayDateTime.ToString("d")</td>
+            </tr>
+        }
+  
+        <tr>
+            <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.EventName").Text</td>
+            <td>@Model.EventName </td>
+
+        <tr>
+            <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.PrintedDate").Text</td>
+            <td>@DateTime.Now.ToString("d")</td>
+        </tr>
+        <tr>
+            <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.CashierName").Text</td>
+            <td>@Model.CashierName</td>
+        </tr>
+    </table>
+
+    <table class="main-data-table">
+        <thead>
+        <tr>
+            <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.TableTitle").Text <br/></th>
+            <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.NumberOfTickets").Text <br/></th>
+            <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.PriceKD").Text <br/></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.CameraPhotoData").Text </td>
+            <td>@Model.TotalCameraManPhotoCount</td>
+            <td>@Model.TotalCameraManPhotoPrice.ToString("N2")</td>
+        </tr>
+        <tr>
+            <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.CustomerMobilePhotoData").Text </td>
+            <td>@Model.TotalCustomerMobilePhotoCount</td>
+            <td>@Model.TotalCustomerMobilePhotoPrice.ToString("N2")</td>
+        </tr>
+        <tr>
+            <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.TotalPhotoData").Text </td>
+            <td>@Model.TotalPhotoCount</td>
+            <td>@Model.TotalPhotoPrice.ToString("N2")</td>
+        </tr>
+        <tr>
+            <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.RefundPhotoData").Text </td>
+            <td>@Model.TotalRefundedPhotoCount</td>
+            <td>@Model.TotalRefundedPrice.ToString("N2")</td>
+        </tr>
+        <tr>
+            <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.NetPhotoData").Text </td>
+            <td>@Model.PhotoCountNetProfit</td>
+            <td>@Model.TotalPhotoPriceNetProfit.ToString("N2")</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table class="totals-table no-border-table">
+        <tr>
+            <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.OpeningFundBalance").Text:</td>
+            <td class="left-align">@Model.OpeningFundBalance.ToString("N2")</td>
+        </tr>
+        <tr>
+            <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.CashPayments").Text:</td>
+            <td class="left-align">@Model.TotalCashPayments.ToString("N2")</td>
+        </tr>
+        <tr>
+            <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.TotalFundBalance").Text:</td>
+            <td class="left-align">@Model.TotalFundBalance.ToString("N2")</td>
+        </tr>
+        <tr>
+            <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.KNetPayments").Text:</td>
+            <td class="left-align">@Model.TotalKNetPayments.ToString("N2")</td>
+        </tr>
+        <tr>
+            <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.OnlinePayments").Text:</td>
+            <td class="left-align">@Model.TotalOnlinePayments.ToString("N2")</td>
+        </tr>
+
+        <tr class="final-total">
+            <td>@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.Pdf.CashierEvent.NetProfit").Text:</td>
+            <td class="left-align">@Model.TotalNetProfit.ToString("N2")</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

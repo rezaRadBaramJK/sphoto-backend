@@ -1,0 +1,57 @@
+﻿@using Nop.Plugin.Baramjk.Framework.Utils
+@model Nop.Plugin.Baramjk.LocationDetector.Models.CountryCurrencyMappingModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    Html.SetActiveMenuItemSystemName($"{MenuUtils.BaramjkMenuSystemName}_LocationDetector");
+
+}
+<div class="content-header clearfix">
+    <h1 class="float-left">
+        Create Gym service
+    </h1>
+    <h1 class="float-left">
+        <small>
+            <i class="fa fa-arrow-circle-left"></i>
+            <a asp-action="List" asp-controller="LocationDetectorAdmin">Back to List</a>
+        </small>
+    </h1>
+</div>
+<div class="content">
+    <div class="form-horizontal">
+        <div class="card-group">
+            <div class="card card-default">
+                <div class="card-body">
+                    <form method="post" asp-controller="LocationDetectorAdmin" asp-action="Store">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="IsoCountryCode"/>
+                                </div>
+                                <div class="col-md-9">
+                                    <nop-editor asp-for="IsoCountryCode" asp-required="true"/>
+                                    <span asp-validation-for="IsoCountryCode"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="IsoCurrencyCode"/>
+                                </div>
+                                <div class="col-md-9">
+                                    <nop-editor asp-for="IsoCurrencyCode" asp-required="true"/>
+                                    <span asp-validation-for="IsoCurrencyCode"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="panel-footer">
+                            <button type="submit" class="btn bg-blue">
+                                <i class="fa fa-envelope-open-o"></i>
+                                Create
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

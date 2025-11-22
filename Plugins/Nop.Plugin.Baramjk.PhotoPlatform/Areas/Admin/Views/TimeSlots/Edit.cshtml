@@ -1,0 +1,44 @@
+
+@model Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.TimeSlots.TimeSlotViewModel
+
+@{
+    var title = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.TimeSlot.EditTimeSlot").Text;
+    ViewBag.PageTitle = title;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form asp-controller="TimeSlot" asp-action="EditData" method="post" id="time-slot-form">
+    <div class="content-header clearfix">
+        <h1 class="float-left">
+            @title @Model.Date.ToString("MM/dd/yyyy")
+            <small>
+                <i class="fas fa-arrow-circle-left"></i>
+                <a asp-controller="Product" asp-action="Edit" asp-route-id="@Model.EventId">
+                    @T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.TimeSlot.BackToEventDetails")
+                </a>
+            </small>
+        </h1>
+        <div class="float-right">
+            <button type="submit" name="save" class="btn btn-primary">
+                <i class="far fa-save"></i>
+                @T("Admin.Common.Save")
+            </button>
+
+            <button type="submit" name="save-continue" class="btn btn-primary">
+                <i class="far fa-save"></i>
+                @T("Admin.Common.SaveContinue")
+            </button>
+
+            <span id="time-slot-delete" class="btn btn-danger">
+                <i class="far fa-trash-alt"></i>
+                @T("Admin.Common.Delete")
+            </span>
+
+        </div>
+    </div>
+    @Html.HiddenFor(model => model.Id)
+    @await Html.PartialAsync($"~/Plugins/{SystemName}/Areas/Admin/Views/TimeSlots/_CreateOrUpdate.cshtml", Model)
+
+
+</form>
+<nop-delete-confirmation asp-model-id="@Model.Id" asp-button-id="time-slot-delete"/>

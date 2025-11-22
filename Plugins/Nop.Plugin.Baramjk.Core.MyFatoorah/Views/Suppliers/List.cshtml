@@ -1,0 +1,76 @@
+﻿@using Nop.Plugin.Baramjk.Core.MyFatoorah.Models.Suppliers
+@using Nop.Web.Framework.Models.DataTables
+
+@model Nop.Plugin.Baramjk.Core.MyFatoorah.Models.Suppliers.SupplierSearchModel
+
+@{
+    ViewBag.PageTitle = T("Nop.Plugin.Baramjk.Core.MyFatoorah.Admin.Suppliers").Text;
+    Html.SetActiveMenuItemSystemName("Baramjk.Core.MyFatoorah.Suppliers.List");
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content-header clearfix">
+    <h1 class="float-left">
+        @T("Nop.Plugin.Baramjk.Core.MyFatoorah.Admin.Suppliers")
+    </h1>
+    <div class="float-right">
+        <a asp-action="Sync" asp-controller="SupplierAdmin" class="btn btn-primary">
+            <i class="fas fa-sync"></i>
+            @T("Nop.Plugin.Baramjk.Core.MyFatoorah.Admin.Suppliers.Sync")
+        </a>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="form-horizontal">
+            <div class="card card-default">
+                <div class="card-body">
+                    @await Html.PartialAsync("Table", new DataTablesModel
+                    {
+                        Name = "supplier-grid",
+                        UrlRead = new DataUrl("List", "SupplierAdmin", null),
+                        UrlDelete = new DataUrl("Delete", "SupplierAdmin", null),
+                        UrlUpdate = new DataUrl("Edit", "SupplierAdmin", null),
+                        Length = Model.PageSize,
+                        LengthMenu = Model.AvailablePageSizes,
+                        ColumnCollection = new List<ColumnProperty>
+                        {
+                            new(nameof(SupplierViewModel.Name))
+                            {
+                                Title = T("Nop.Plugin.Baramjk.Core.MyFatoorah.Admin.Suppliers.Name").Text,
+                                Width = "300",
+                                ClassName = NopColumnClassDefaults.CenterAll,
+                            },
+                            new(nameof(SupplierViewModel.Email))
+                            {
+                                Title = T("Nop.Plugin.Baramjk.Core.MyFatoorah.Admin.Suppliers.Email").Text,
+                                Width = "300",
+                                ClassName = NopColumnClassDefaults.CenterAll,
+                            },
+                            new(nameof(SupplierViewModel.SupplierCode))
+                            {
+                                Title = T("Nop.Plugin.Baramjk.Core.MyFatoorah.Admin.Suppliers.SupplierCode").Text,
+                                Width = "80",
+                                ClassName = NopColumnClassDefaults.CenterAll,
+                            },
+                            new(nameof(SupplierViewModel.Status))
+                            {
+                                Title = T("Nop.Plugin.Baramjk.Core.MyFatoorah.Admin.Suppliers.Status").Text,
+                                Width = "80",
+                                ClassName = NopColumnClassDefaults.CenterAll,
+                            },
+                            new(nameof(SupplierViewModel.Id))
+                            {
+                                Title = T("Admin.Common.Edit").Text,
+                                Width = "80",
+                                ClassName = NopColumnClassDefaults.Button,
+                                Render = new RenderButtonEdit(new DataUrl("Edit"))
+                            }
+                        }
+                    })
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

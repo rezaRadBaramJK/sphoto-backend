@@ -1,0 +1,350 @@
+﻿@using Nop.Plugin.Baramjk.PushNotification.Services
+@model Nop.Plugin.Baramjk.PushNotification.SmsTemplateSetting
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    Html.SetActiveMenuItemSystemName("BaramjkMenu_PushNotification_SmsTemplate");
+
+}
+
+<form asp-controller="SmsTemplateAdmin" asp-action="UpdateSmsTemplateConfiguration" method="post">
+<div class="content-header clearfix">
+    <h1 class="float-left">
+        <small>
+            <i class="fa fa-arrow-circle-left"></i>
+        </small>
+    </h1>
+    <div class="float-right">
+        <button type="submit" name="save" class="btn bg-blue">
+            <i class="fa fa-floppy-o"></i>
+            @T("Admin.Common.Save")
+        </button>
+        <button type="submit" name="save-continue" class="btn bg-blue">
+            <i class="far fa-save"></i>
+            @T("Admin.Common.SaveContinue")
+        </button>
+    </div>
+</div>
+<div class="content">
+<table class="table">
+    <thead>
+    <tr>
+        <th>Token</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var keyValuePair in TextTemplate.KeywordDescription)
+    {
+        <tr>
+            <td>@(TextTemplate.TOKEN_PREFIX)@keyValuePair.Key</td>
+            <td>@keyValuePair.Value</td>
+        </tr>
+    }
+
+    </tbody>
+</table>
+<div class="form-horizontal">
+<div class="card-group">
+<div class="card card-default">
+<div class="card-body">
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="IsOrderNoteEnabled"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="IsOrderNoteEnabled" asp-required="false"/>
+        <span asp-validation-for="IsOrderNoteEnabled"></span>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="OrderNote"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="OrderNote" asp-required="false"/>
+        <span asp-validation-for="OrderNote"></span>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="IsOrderPaymentStatusPendingEnabled"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="IsOrderPaymentStatusPendingEnabled" asp-required="false"/>
+        <span asp-validation-for="IsOrderPaymentStatusPendingEnabled"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="OrderPaymentStatusPending"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="OrderPaymentStatusPending" asp-required="false"/>
+        <span asp-validation-for="OrderPaymentStatusPending"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="IsOrderPaymentStatusAuthorizedEnabled"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="IsOrderPaymentStatusAuthorizedEnabled" asp-required="false"/>
+        <span asp-validation-for="IsOrderPaymentStatusAuthorizedEnabled"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="OrderPaymentStatusAuthorized"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="OrderPaymentStatusAuthorized" asp-required="false"/>
+        <span asp-validation-for="OrderPaymentStatusAuthorized"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="IsOrderPaymentStatusPaidEnabled"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="IsOrderPaymentStatusPaidEnabled" asp-required="false"/>
+        <span asp-validation-for="IsOrderPaymentStatusPaidEnabled"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="OrderPaymentStatusPaid"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="OrderPaymentStatusPaid" asp-required="false"/>
+        <span asp-validation-for="OrderPaymentStatusPaid"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="IsOrderPaymentStatusPartiallyRefundedEnabled"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="IsOrderPaymentStatusPartiallyRefundedEnabled" asp-required="false"/>
+        <span asp-validation-for="IsOrderPaymentStatusPartiallyRefundedEnabled"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="OrderPaymentStatusPartiallyRefunded"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="OrderPaymentStatusPartiallyRefunded" asp-required="false"/>
+        <span asp-validation-for="OrderPaymentStatusPartiallyRefunded"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="IsOrderPaymentStatusRefundedEnabled"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="IsOrderPaymentStatusRefundedEnabled" asp-required="false"/>
+        <span asp-validation-for="IsOrderPaymentStatusRefundedEnabled"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="OrderPaymentStatusRefunded"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="OrderPaymentStatusRefunded" asp-required="false"/>
+        <span asp-validation-for="OrderPaymentStatusRefunded"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="IsOrderPaymentStatusVoidedEnabled"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="IsOrderPaymentStatusVoidedEnabled" asp-required="false"/>
+        <span asp-validation-for="IsOrderPaymentStatusVoidedEnabled"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="OrderPaymentStatusVoided"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="OrderPaymentStatusVoided" asp-required="false"/>
+        <span asp-validation-for="OrderPaymentStatusVoided"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="IsOrderShippingNotRequiredStatusEnabled"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="IsOrderShippingNotRequiredStatusEnabled" asp-required="false"/>
+        <span asp-validation-for="IsOrderShippingNotRequiredStatusEnabled"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="OrderShippingNotRequiredStatus"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="OrderShippingNotRequiredStatus" asp-required="false"/>
+        <span asp-validation-for="OrderShippingNotRequiredStatus"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="IsOrderShippingNotYetShippedStatusEnabled"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="IsOrderShippingNotYetShippedStatusEnabled" asp-required="false"/>
+        <span asp-validation-for="IsOrderShippingNotYetShippedStatusEnabled"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="OrderShippingNotYetShippedStatus"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="OrderShippingNotYetShippedStatus" asp-required="false"/>
+        <span asp-validation-for="OrderShippingNotYetShippedStatus"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="IsOrderShippingPartiallyShippedStatusEnabled"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="IsOrderShippingPartiallyShippedStatusEnabled" asp-required="false"/>
+        <span asp-validation-for="IsOrderShippingPartiallyShippedStatusEnabled"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="OrderShippingPartiallyShippedStatus"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="OrderShippingPartiallyShippedStatus" asp-required="false"/>
+        <span asp-validation-for="OrderShippingPartiallyShippedStatus"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="IsOrderShippingDeliveredStatusEnabled"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="IsOrderShippingDeliveredStatusEnabled" asp-required="false"/>
+        <span asp-validation-for="IsOrderShippingDeliveredStatusEnabled"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="OrderShippingShippedStatus"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="OrderShippingShippedStatus" asp-required="false"/>
+        <span asp-validation-for="OrderShippingShippedStatus"></span>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="IsOrderShippingDeliveredStatusEnabled"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="IsOrderShippingDeliveredStatusEnabled" asp-required="false"/>
+        <span asp-validation-for="IsOrderShippingDeliveredStatusEnabled"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="OrderShippingDeliveredStatus"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="OrderShippingDeliveredStatus" asp-required="false"/>
+        <span asp-validation-for="OrderShippingDeliveredStatus"></span>
+    </div>
+</div>
+
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="IsOrderStatusPendingEnabled"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="IsOrderStatusPendingEnabled" asp-required="false"/>
+        <span asp-validation-for="IsOrderStatusPendingEnabled"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="OrderStatusPending"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="OrderStatusPending" asp-required="false"/>
+        <span asp-validation-for="OrderStatusPending"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="IsOrderStatusProcessingEnabled"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="IsOrderStatusProcessingEnabled" asp-required="false"/>
+        <span asp-validation-for="IsOrderStatusProcessingEnabled"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="OrderStatusProcessing"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="OrderStatusProcessing" asp-required="false"/>
+        <span asp-validation-for="OrderStatusProcessing"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="IsOrderStatusCompleteEnabled"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="IsOrderStatusCompleteEnabled" asp-required="false"/>
+        <span asp-validation-for="IsOrderStatusCompleteEnabled"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="OrderStatusComplete"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="OrderStatusComplete" asp-required="false"/>
+        <span asp-validation-for="OrderStatusComplete"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="IsOrderStatusCancelledEnabled"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="IsOrderStatusCancelledEnabled" asp-required="false"/>
+        <span asp-validation-for="IsOrderStatusCancelledEnabled"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="OrderStatusCancelled"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="OrderStatusCancelled" asp-required="false"/>
+        <span asp-validation-for="OrderStatusCancelled"></span>
+    </div>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</form>

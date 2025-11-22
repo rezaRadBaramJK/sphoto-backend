@@ -1,0 +1,75 @@
+﻿@using Nop.Plugin.Baramjk.ContactUs.Areas.Admin.Models.ViewModels.Subjects
+@using Nop.Web.Framework.Models.DataTables
+@model Nop.Plugin.Baramjk.ContactUs.Areas.Admin.Models.ViewModels.Subjects.SubjectSearchModel
+
+@{
+    ViewBag.PageTitle = T("Baramjk.ContactUs.Admin.Subjects.Title").Text;
+    Html.SetActiveMenuItemSystemName($"{SystemName}.Subjects.List");
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content-header clearfix">
+    <h1 class="float-left">
+        @T("Baramjk.ContactUs.Admin.Subjects.Title")
+    </h1>
+    <div class="float-right">
+        <a asp-action="Create" asp-controller="Subject" class="btn btn-primary">
+            <i class="fas fa-plus-square"></i>
+            @T("Admin.Common.AddNew")
+        </a>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="form-horizontal">
+            <div class="card card-default">
+                <div class="card-body">
+                    @await Html.PartialAsync("Table", new DataTablesModel
+                    {
+                        Name = "subjects-grid",
+                        UrlRead = new DataUrl("List", "Subject", null),
+                        UrlUpdate = new DataUrl("Edit", "Subject", null),
+                        UrlDelete = new DataUrl("DeleteById", "Subject", null),
+                        Length = Model.PageSize,
+                        LengthMenu = Model.AvailablePageSizes,
+                        ColumnCollection = new List<ColumnProperty>
+                        {
+                            new(nameof(SubjectViewModel.Name))
+                            {
+                                Title = T("Baramjk.ContactUs.Admin.Subjects.Name").Text,
+                            },
+                            new(nameof(SubjectViewModel.IsPayable))
+                            {
+                                Title = T("Baramjk.ContactUs.Admin.Subjects.IsPayable").Text,
+                                Width = "100",
+                                Render = new RenderBoolean(),
+                                ClassName = NopColumnClassDefaults.CenterAll,
+                            },
+                            new(nameof(SubjectViewModel.Price))
+                            {
+                                Title = T("Baramjk.ContactUs.Admin.Subjects.Price").Text,
+                                Width = "50",
+                                ClassName = NopColumnClassDefaults.CenterAll,
+                            },
+                            new(nameof(SubjectViewModel.Id))
+                            {
+                                Title = T("Admin.Common.Edit").Text,
+                                Width = "50",
+                                ClassName = NopColumnClassDefaults.Button,
+                                Render = new RenderButtonEdit(new DataUrl("Edit"))
+                            },
+                            new(nameof(SubjectViewModel.Id))
+                            {
+                                Title = T("Admin.Common.Delete").Text,
+                                Width = "50",
+                                ClassName = NopColumnClassDefaults.Button,
+                                Render = new RenderButtonRemove(T("Admin.Common.Delete").Text)
+                            }
+                        }
+                    })
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,160 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Routing
+@using Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.ActorEvents
+@using Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.Actors
+@using Nop.Web.Framework.Models.DataTables
+@model Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.Actors.ActorSearchModel
+
+@{
+    ViewBag.PageTitle = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Actor").Text;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminPopupLayout.cshtml";
+    Html.SetActiveMenuItemSystemName($"{SystemName}.PhotoPlatform.Actors");
+    var eventId = Context.Request.Query["EventId"];
+}
+
+
+<form asp-controller="ActorEvent" asp-action="AddEventActorEvent" method="post" id="add-actor-form">
+    <input type="hidden" name="EventId" value="@eventId"/>
+    <div class="content-header clearfix">
+        <h1 class="float-left">
+            @T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Actor")
+        </h1>
+        <div class="float-right">
+            <button type="submit" name="save" class="btn btn-primary">
+                <i class="far fa-save"></i>
+                @T("Admin.Common.Save")
+            </button>
+
+
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="form-horizontal">
+                <div class="cards-group">
+                    <div class="card card-default card-search">
+                        <div class="card-body">
+                            <div class="row search-row ">
+                                <div class="search-text">@T("Admin.Common.Search")</div>
+                                <div class="icon-search"><i class="fas fa-search" aria-hidden="true"></i></div>
+
+                            </div>
+
+
+                            <div class="search-body">
+
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group row">
+                                            <div class="col-md-4">
+                                                <nop-label asp-for="SearchEmail"/>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <nop-editor asp-for="SearchEmail"/>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group row">
+                                            <div class="col-md-4">
+                                                <nop-label asp-for="SearchName"/>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <nop-editor asp-for="SearchName"/>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="text-center col-12">
+                                        <button type="button" id="search-actors" class="btn btn-primary btn-search">
+                                            <i class="fas fa-search"></i>
+                                            @T("Admin.Common.Search")
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="card card-default">
+                        <div class="card-body">
+
+                            @await Html.PartialAsync("Table", new DataTablesModel
+                            {
+                                Name = "actors-popup-grid",
+                                UrlRead = new DataUrl("ListEventActors", "ActorEvent", new RouteValueDictionary { ["EventId"] = eventId }),
+                                SearchButtonId= "search-actors",
+                                Length = Model.PageSize,
+                                LengthMenu = Model.AvailablePageSizes,
+                                Filters = new List<FilterParameter>
+                                {
+                                    new FilterParameter(nameof(Model.SearchEmail)),
+                                    new FilterParameter(nameof(Model.SearchName)),
+                                },
+                                ColumnCollection = new List<ColumnProperty>
+                                {
+                                    new(nameof(ActorListItemModel.Id))
+                                    {
+                                        IsMasterCheckBox = true,
+                                        Render = new RenderCheckBox(nameof(AddActorToActorEventsModel.SelectedActorIds)),
+                                        Width = "50",
+                                        ClassName = NopColumnClassDefaults.CenterAll,
+                                    },
+                                    new(nameof(ActorListItemModel.Email))
+                                    {
+                                        Width = "200",
+                                        Title = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Actor.Email").Text,
+                                        ClassName = NopColumnClassDefaults.CenterAll,
+                                    },
+                                    new(nameof(ActorListItemModel.Name))
+                                    {
+                                        Width = "200",
+                                        Title = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Actor.Name").Text,
+                                        ClassName = NopColumnClassDefaults.CenterAll,
+                                    },
+                                    new(nameof(ActorListItemModel.PictureUrl))
+                                    {
+                                        Title = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Actor.Picture").Text,
+                                        Width = "200",
+                                        ClassName = NopColumnClassDefaults.CenterAll,
+                                        Render = new RenderPicture()
+                                    },
+                                }
+                            })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</form>
+
+
+<script>
+    $('#add-actor-form').on('submit', function (e) {
+        e.preventDefault();
+        const form = this;
+        const data = $(form).serialize();
+        $.post(form.action, data)
+            .done(function () {
+                const refreshBtnId = @Html.Raw(Json.Serialize(Context.Request.Query["RefreshBtnId"]));
+                window.opener?.document.getElementById(refreshBtnId)?.click();
+                window.close();
+            })
+            .fail(function (err) {
+                let errorMessage = err.responseJSON?.Data?.Message ?? 'An error occurred. Please try again.';
+                alert(errorMessage);
+
+            });
+    });
+</script>

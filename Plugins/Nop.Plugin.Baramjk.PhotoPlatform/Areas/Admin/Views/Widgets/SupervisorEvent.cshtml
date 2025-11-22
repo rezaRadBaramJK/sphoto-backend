@@ -1,0 +1,102 @@
+﻿@using Microsoft.AspNetCore.Routing
+@using Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.SupervisorEvents
+@using Nop.Web.Framework.Models.DataTables
+@{
+}
+
+<div class="card-body">
+    <div class="cards-group">
+        <div class="card card-default">
+            <div class="card-header">
+                <h5 class="float-left">
+                    @T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Widget.SupervisorEvent.Title")
+                </h5>
+                <div class="card-tools float-right">
+                    <button type="submit" id="btnAddNewSupervisor"
+                            onclick="OpenWindow('@(Url.Action("SupervisorAddPopUp", "SupervisorEvent", new { Model.EventId, RefreshBtnId = "btnRefreshSupervisors" }))', 800, 800, true); return false;"
+                            class="btn btn-primary">
+                        <i class="fas fa-plus-square"></i>
+                        @T("Admin.Common.AddNew")
+                    </button>
+                    <button type="submit" id="btnRefreshSupervisors" style="display: none"></button>
+                    <script>
+                        $(document).ready(function () {
+                            $('#btnRefreshSupervisors').click(function () {
+                                updateTable('#supervisors-events-grid');
+                                return false;
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="card-body">
+
+                @await Html.PartialAsync("Table", new DataTablesModel
+                {
+                    Name = "supervisors-events-grid",
+                    UrlRead = new DataUrl("List", "SupervisorEvent", new RouteValueDictionary
+                    {
+                        [nameof(Model.EventId)] = Model.EventId
+                    }),
+                    UrlUpdate = new DataUrl("Edit", "SupervisorEvent", null),
+                    UrlDelete = new DataUrl("DeleteById", "SupervisorEvent", null),
+                    Length = Model.PageSize,
+                    LengthMenu = Model.AvailablePageSizes,
+                    ColumnCollection = new List<ColumnProperty>
+                    {
+                        new(nameof(SupervisorEventsItemModel.SupervisorEmail))
+                        {
+                            Width = "100",
+                            Title = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.SupervisorEvents.SupervisorEmail").Text,
+                            ClassName = NopColumnClassDefaults.CenterAll
+                        },
+                        new ColumnProperty(nameof(SupervisorEventsItemModel.SupervisorPictureUrl))
+                        {
+                            Title = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.SupervisorEvents.SupervisorPictureUrl").Text,
+                            Width = "80",
+                            ClassName = NopColumnClassDefaults.CenterAll,
+                            Render = new RenderPicture()
+                        },
+
+
+                        new(nameof(SupervisorEventsItemModel.Active))
+                        {
+                            Width = "50",
+                            Title = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.SupervisorEvents.Active").Text,
+                            ClassName = NopColumnClassDefaults.CenterAll,
+                            Editable = true,
+                            EditType = EditType.Checkbox,
+                            Render = new RenderBoolean(),
+                        },
+
+                        new(nameof(SupervisorEventsItemModel.Id))
+                        {
+                            Title = T("Admin.Common.Edit").Text,
+                            Width = "100",
+                            ClassName = NopColumnClassDefaults.Button,
+                            Render = new RenderButtonsInlineEdit()
+                        },
+
+                        new(nameof(SupervisorEventsItemModel.Id))
+                        {
+                            Title = T("Admin.Common.Delete").Text,
+                            Width = "80",
+                            ClassName = NopColumnClassDefaults.Button,
+                            Render = new RenderButtonRemove(T("Admin.Common.Delete").Text)
+                        }
+                    }
+                })
+
+            </div>
+        </div>
+        <script>
+
+            $(document).ready(function () {
+                $('#btnRefreshSupervisors').click(function () {
+                    updateTable("supervisors-events-grid");
+                    return false;
+                });
+            });
+        </script>
+    </div>
+</div>

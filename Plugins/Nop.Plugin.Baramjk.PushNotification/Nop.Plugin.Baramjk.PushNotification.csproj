@@ -1,0 +1,79 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <CheckEolTargetFramework>false</CheckEolTargetFramework>
+        <Copyright>Copyright © Baramjk</Copyright>
+        <Company>Baramjk</Company>
+        <Authors>hos.hajizadeh@gmail.com</Authors>
+        <PackageProjectUrl>https://baramjk.com/</PackageProjectUrl>
+        <OutputPath>..\..\Presentation\Nop.Web\Plugins\Baramjk.PushNotification</OutputPath>
+        <OutDir>$(OutputPath)</OutDir>
+        <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+        <AssemblyName>Nop.Plugin.Baramjk.PushNotification</AssemblyName>
+        <RootNamespace>Nop.Plugin.Baramjk.PushNotification</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Content Include="logo.jpg" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="plugin.json" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="Views\**" CopyToOutputDirectory="PreserveNewest" LinkBase="Views\" />
+        <None Include="Content\**" CopyToOutputDirectory="PreserveNewest" LinkBase="Content\" />
+        <None Remove="Microsoft.Bcl.AsyncInterfaces.dll" />
+        <None Update="Dlls\FirebaseAdmin.dll">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Dlls\Google.Api.Gax.dll">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Dlls\Google.Api.Gax.Rest.dll">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Dlls\Google.Apis.dll">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Dlls\Google.Apis.Auth.dll">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Dlls\Google.Apis.Auth.PlatformServices.dll">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Dlls\Google.Apis.Core.dll">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ClearPluginAssemblies Include="$(MSBuildProjectDirectory)\..\..\Build\ClearPluginAssemblies.proj" />
+    </ItemGroup>
+
+    <Target Name="NopTarget" AfterTargets="Build">
+        <MSBuild Projects="@(ClearPluginAssemblies)" Properties="PluginPath=$(MSBuildProjectDirectory)\$(OutDir)" Targets="NopClear" />
+    </Target>
+    <ItemGroup>
+        <ProjectReference Include="..\Nop.Plugin.Baramjk.Framework\Nop.Plugin.Baramjk.Framework.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Reference Include="FirebaseAdmin">
+        <HintPath>Dlls\FirebaseAdmin.dll</HintPath>
+      </Reference>
+      <Reference Include="Google.Api.Gax">
+        <HintPath>Dlls\Google.Api.Gax.dll</HintPath>
+      </Reference>
+      <Reference Include="Google.Api.Gax.Rest">
+        <HintPath>Dlls\Google.Api.Gax.Rest.dll</HintPath>
+      </Reference>
+      <Reference Include="Google.Apis">
+        <HintPath>Dlls\Google.Apis.dll</HintPath>
+      </Reference>
+      <Reference Include="Google.Apis.Auth">
+        <HintPath>Dlls\Google.Apis.Auth.dll</HintPath>
+      </Reference>
+      <Reference Include="Google.Apis.Auth.PlatformServices">
+        <HintPath>Dlls\Google.Apis.Auth.PlatformServices.dll</HintPath>
+      </Reference>
+      <Reference Include="Google.Apis.Core">
+        <HintPath>Dlls\Google.Apis.Core.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+</Project>

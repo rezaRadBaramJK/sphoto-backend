@@ -1,0 +1,63 @@
+﻿@{
+    //  Layout = "";
+}
+
+@using Nop.Services.Configuration
+@inject ISettingService Settingservice; 
+@model List<Nop.Plugin.Baramjk.Core.MyFatoorah.Models.MyFatoorahPaymentMethods>
+<p>@T("Plugins.Payments.MyFatoorah.Fields.RedirectionTip")</p>
+
+<br/>
+<br/>
+
+<div class="section payment-method">
+
+    <ul class="method-list" id="payment-method-block">
+        @foreach (var item in Model)
+        {
+            <li class="" onclick="onClick('CH_'+@item.PaymentMethodId)">
+                <div class="method-name">
+                    <div class="payment-details">
+                        <input for="PM_@item.PaymentMethodId" type="radio" name="PaymentMethodId" id="CH_@item.PaymentMethodId" value="@item.PaymentMethodId" checked="checked">
+                        <label for="PM_@item.PaymentMethodId" class="payment-details-label">
+
+
+                            <div class="payment-logo">
+                                <label for="PM_@item.PaymentMethodId">
+                                    <img src="@item.ImageUrl" alt="@item.PaymentMethodEn">
+                                </label>
+                            </div>
+                            <div class="payment-description">@item.PaymentMethodEn</div>
+                        </label>
+                    </div>
+                </div>
+            </li>
+        }
+
+    </ul>
+
+</div>
+
+<style>
+    .payment-details-label{
+        display: flex !important;
+        align-items: center;
+    }
+    .payment-logo{
+        display: block;
+    }
+    
+    .payment-method .method-name .payment-logo img{
+        width: 65px;
+    }
+    .method-list li{
+    cursor: pointer;
+    }
+</style>
+
+<script>
+function onClick(event) {
+        window[event].checked = true;
+    }
+    
+</script>

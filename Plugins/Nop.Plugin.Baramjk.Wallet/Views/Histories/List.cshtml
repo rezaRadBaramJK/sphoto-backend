@@ -1,0 +1,197 @@
+﻿@using Nop.Services.Common
+@using Nop.Core
+@using Nop.Web.Areas.Admin.Models.Orders
+@using Nop.Web.Framework.Models.DataTables
+@using Nop.Web.Framework.TagHelpers.Admin
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Nop.Plugin.Baramjk.Wallet.Models.ViewModels
+
+@model Nop.Plugin.Baramjk.Wallet.Models.Search.HistoriesSearchModel
+
+@inject IGenericAttributeService GenericAttributeService;
+@inject IWorkContext WorkContext;
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    const string regHideSearchBlockAttributeName = "WalletHistoriesPage.HideSearchBlock";
+    var hideSearchBlock = await GenericAttributeService.GetAttributeAsync<bool>(await WorkContext.GetCurrentCustomerAsync(), regHideSearchBlockAttributeName);
+    SetActiveMenu();
+}
+
+
+<form asp-controller="Order" asp-action="List" method="post">
+    <div class="content-header clearfix">
+        <h1 class="float-left">
+            @T("Nop.Plugin.Baramjk.Wallet.Admin.Widget.Customers.Histories")
+        </h1>
+    </div>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="form-horizontal">
+                <div class="cards-group">
+                    <div class="card card-default card-search">
+                        <div class="card-body">
+                            <div class="row search-row @(!hideSearchBlock ? "opened" : "")" data-hideAttribute="@regHideSearchBlockAttributeName">
+                                <div class="search-text">@T("Admin.Common.Search")</div>
+                                <div class="icon-search"><i class="fas fa-search" aria-hidden="true"></i></div>
+                                <div class="icon-collapse"><i class="far fa-angle-@(!hideSearchBlock ? "up" : "down")" aria-hidden="true"></i></div>
+                            </div>
+
+                            <div class="search-body @(hideSearchBlock ? "closed" : "")">
+                                <div class="row">
+                                    @* left *@
+                                    <div class="col-md-5">
+                                        <div class="form-group row">
+                                            <div class="col-md-4">
+                                                <nop-label asp-for="StartDate"/>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <nop-editor asp-for="StartDate"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-md-4">
+                                                <nop-label asp-for="EndDate"/>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <nop-editor asp-for="EndDate"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-md-4">
+                                                <nop-label asp-for="SearchEmail"/>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <nop-editor asp-for="SearchEmail"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-md-4">
+                                                <nop-label asp-for="SearchUsername"/>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <nop-editor asp-for="SearchUsername"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @* right *@
+                                    <div class="col-md-7">
+                                        <div class="form-group row">
+                                            <div class="col-md-4">
+                                                <nop-label asp-for="HistoryTypeIds"/>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <nop-select asp-for="HistoryTypeIds" asp-items="Model.AvailableHistoryTypes" asp-multiple="true"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-md-4">
+                                                <nop-label asp-for="CurrencyIds"/>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <nop-select asp-for="CurrencyIds" asp-items="Model.AvailableCurrencies" asp-multiple="true"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-md-4">
+                                                <nop-label asp-for="SearchNote"/>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <nop-editor asp-for="SearchNote"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="row">
+                                    <div class="text-center col-12">
+                                        <button type="button" id="search-histories" class="btn btn-primary btn-search">
+                                            <i class="fas fa-search"></i>
+                                            @T("Admin.Common.Search")
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="card card-default">
+                        <div class="card-body">
+                            @await Html.PartialAsync("Table", new DataTablesModel
+                            {
+                                Name = "histories-grid",
+                                UrlRead = new DataUrl("HistoriesList", "HistoryAdmin", null),
+                                SearchButtonId = "search-histories",
+                                Length = Model.PageSize,
+                                LengthMenu = Model.AvailablePageSizes,
+                                Filters = new List<FilterParameter>
+                                {
+                                    new(nameof(Model.StartDate), typeof(DateTime?)),
+                                    new (nameof(Model.EndDate), typeof(DateTime?)),
+                                    new (nameof(Model.SearchEmail)),
+                                    new (nameof(Model.SearchUsername)),
+                                    new (nameof(Model.HistoryTypeIds)),
+                                    new (nameof(Model.CurrencyIds)),
+                                    new (nameof(Model.SearchNote))
+                                },
+                                ColumnCollection = new List<ColumnProperty>
+                                {
+                                    new(nameof(HistoryViewModel.Id))
+                                    {
+                                        Title = T("Nop.Plugin.Baramjk.Wallet.Admin.Widget.Customers.Histories.HistoryNumber").Text,
+                                        Width = "80"
+                                    },
+                                    new(nameof(HistoryViewModel.Amount))
+                                    {
+                                        Title = T("Nop.Plugin.Baramjk.Wallet.Admin.Widget.Customers.Histories.Amount").Text,
+                                        Width = "80"
+                                    },
+                                    new(nameof(HistoryViewModel.CurrencyName))
+                                    {
+                                        Title = T("Nop.Plugin.Baramjk.Wallet.Admin.Widget.Customers.Histories.CurrencyName").Text,
+                                        Width = "80"
+                                    },
+                                    new(nameof(HistoryViewModel.WalletHistoryType))
+                                    {
+                                        Title = T("Nop.Plugin.Baramjk.Wallet.Admin.Widget.Customers.Histories.Type").Text
+                                    },
+                                    new(nameof(OrderModel.CustomerEmail))
+                                    {
+                                        Title = T("Admin.Orders.Fields.Customer").Text,
+                                        Render = new RenderLink(new DataUrl("~/Admin/Customer/Edit", nameof(OrderModel.CustomerId)))
+                                    },
+                                    new(nameof(HistoryViewModel.OriginatedEntityId))
+                                    {
+                                        Title = T("Nop.Plugin.Baramjk.Wallet.Admin.Widget.Customers.Histories.OriginatedEntityId").Text,
+                                        Width = "80"
+                                    },
+                                    new(nameof(HistoryViewModel.RedeemedForEntityId))
+                                    {
+                                        Title = T("Nop.Plugin.Baramjk.Wallet.Admin.Widget.Customers.Histories.RedeemedForEntityId").Text,
+                                        Width = "80"
+                                    },
+                                    new(nameof(HistoryViewModel.Redeemed))
+                                    {
+                                        Title = T("Nop.Plugin.Baramjk.Wallet.Admin.Widget.Customers.Histories.Redeemed").Text,
+                                        Width = "80",
+                                        Render = new RenderBoolean()
+                                    },
+                                    new(nameof(HistoryViewModel.ExpirationDateTime))
+                                    {
+                                        Title = T("Nop.Plugin.Baramjk.Wallet.Admin.Widget.Customers.Histories.ExpirationDateTime").Text
+                                    },
+                                    new(nameof(HistoryViewModel.CreateDateTime))
+                                    {
+                                        Title = T("Nop.Plugin.Baramjk.Wallet.Admin.Widget.Customers.Histories.CreateDateTime").Text
+                                    },
+                                    new(nameof(HistoryViewModel.Note))
+                                    {
+                                        Title = T("Nop.Plugin.Baramjk.Wallet.Admin.Widget.Customers.Histories.Note").Text
+                                    }
+                                }
+                            })
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </section>
+</form>

@@ -1,0 +1,82 @@
+﻿@using Nop.Plugin.Baramjk.ContactUs.Plugin
+@using Nop.Plugin.Baramjk.Framework.Models.ViewModels
+@model Nop.Plugin.Baramjk.ContactUs.Areas.Admin.Models.ViewModels.Settings.ContactUsSettingsModel
+
+@{
+    InitConfigureView(new DefaultConfigureViewModel(typeof(ContactUsPlugin), "Plugin"));
+}
+
+<div>
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="PaymentCallbackUrl"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="PaymentCallbackUrl"/>
+            <span asp-validation-for="PaymentCallbackUrl"></span>
+            <span>You can use {paymentId} where ever you need in your url.</span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="NotifyAdminAfterPayment"/>
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="NotifyAdminAfterPayment"/>
+            <span asp-validation-for="NotifyAdminAfterPayment"></span>
+        </div>
+    </div>
+
+    <nop-nested-setting asp-for="NotifyAdminAfterPayment">
+        <div class="form-group row" id="pnlNotifyAdminAfterPayment">
+            <div class="col-md-3">
+                <nop-label asp-for="NotifyAdminEmail" />
+            </div>
+            <div class="col-md-9">
+                <nop-editor asp-for="NotifyAdminEmail" />
+                <span asp-validation-for="NotifyAdminEmail"></span>
+            </div>
+        </div>
+    </nop-nested-setting>
+    
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="OwnerAdminEmail" />
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="OwnerAdminEmail" />
+            <span asp-validation-for="OwnerAdminEmail"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-3">
+            <nop-label asp-for="OwnerPhoneNumber" />
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="OwnerPhoneNumber" />
+            <span asp-validation-for="OwnerPhoneNumber"></span>
+        </div>
+    </div>
+
+    <script>
+
+        $(document).ready(function() {
+            $("#@Html.IdFor(model => model.NotifyAdminAfterPayment)").click(toggleDriverCanRejectOrder);
+
+            toggleDriverCanRejectOrder();
+        });
+
+
+        function toggleDriverCanRejectOrder() {
+            if ($('#@Html.IdFor(model => model.NotifyAdminAfterPayment)').is(':checked')) {
+                $('#pnlNotifyAdminAfterPayment').showElement();
+
+            } else {
+                $('#pnlNotifyAdminAfterPayment').hideElement();
+            }
+
+        }
+    </script>
+</div>

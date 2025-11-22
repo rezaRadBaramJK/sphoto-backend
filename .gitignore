@@ -1,0 +1,19 @@
+[Bb]in/
+[Oo]bj/
+.idea/
+Build/
+Presentation/Nop.Web/Plugins/
+Presentation/Nop.Web/logs/
+Presentation/Nop.Web/node_modules/
+./.vs/
+Presentation/Nop.Web/wwwroot/images/thumbs/
+Presentation/Nop.Web/App_Data/DataProtectionKeys/
+Presentation/Nop.Web/App_Data/dataSettings.json
+Presentation/Nop.Web/App_Data/plugins.json
+Presentation/Nop.Web/App_Data/plugins - Copy.json
+/NopCommerce.sln.DotSettings.user
+/Plugins/Nop.Plugin.Baramjk.Banner/.gitignore
+/Plugins/Nop.Plugin.Baramjk.BarberShop/.gitignore
+/Plugins/Nop.Plugin.Baramjk.JCarousel/.gitignore
+/Plugins/Nop.Plugin.Baramjk.PureHealth/.gitignore
+/Plugins/Nop.Plugin.Baramjk.RealEstate/.gitignore

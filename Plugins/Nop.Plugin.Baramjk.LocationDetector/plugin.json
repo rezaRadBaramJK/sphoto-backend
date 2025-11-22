@@ -1,0 +1,13 @@
+﻿{
+  "Group": "Baramjk",
+  "FriendlyName": "LocationDetector",
+  "SystemName": "Baramjk.LocationDetector",
+  "Version": "1.9",
+  "SupportedVersions": [
+    "4.40"
+  ],
+  "Author": "Baramjk team - Hooman",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Baramjk.LocationDetector.dll",
+  "Description": "LocationDetector"
+}

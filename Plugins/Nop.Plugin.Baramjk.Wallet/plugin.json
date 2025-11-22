@@ -1,0 +1,13 @@
+﻿{
+  "Group": "Baramjk",
+  "FriendlyName": "Wallet",
+  "SystemName": "Baramjk.Wallet",
+  "Version": "2.2",
+  "SupportedVersions": [
+    "4.40"
+  ],
+  "Author": "Baramjk team",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Baramjk.Wallet.dll",
+  "Description": "Wallet"
+}

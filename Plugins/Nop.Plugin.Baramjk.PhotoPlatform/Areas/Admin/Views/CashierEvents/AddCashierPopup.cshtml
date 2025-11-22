@@ -1,0 +1,91 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Routing
+@using Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.CashierEvents
+@using Nop.Web.Areas.Admin.Models.Customers
+@using Nop.Web.Framework.Models.DataTables
+@model Nop.Web.Areas.Admin.Models.Customers.CustomerSearchModel
+
+@{
+    ViewBag.PageTitle = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.CashierEvent").Text;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminPopupLayout.cshtml";
+    var eventId = Context.Request.Query["EventId"];
+}
+
+
+<form asp-controller="CashierEvent" asp-action="AddEventCashierEvent" method="post" id="add-cashier-form">
+    <input type="hidden" name="EventId" value="@eventId"/>
+    <div class="content-header clearfix">
+        <h1 class="float-left">
+            @T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Cashier")
+        </h1>
+        <div class="float-right">
+            <button type="submit" name="save" class="btn btn-primary">
+                <i class="far fa-save"></i>
+                @T("Admin.Common.Save")
+            </button>
+
+
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="form-horizontal">
+                <div class="card card-default">
+                    <div class="card-body">
+
+                        @await Html.PartialAsync("Table", new DataTablesModel
+                        {
+                            Name = "cashiers-popup-grid",
+                            UrlRead = new DataUrl("ListCashiers", "CashierEvent", new RouteValueDictionary { ["EventId"] = eventId }),
+                            Length = Model.PageSize,
+                            LengthMenu = Model.AvailablePageSizes,
+
+                            ColumnCollection = new List<ColumnProperty>
+                            {
+                                new(nameof(CustomerModel.Id))
+                                {
+                                    IsMasterCheckBox = true,
+                                    Render = new RenderCheckBox(nameof(AddCashierToCashierEventsModel.SelectedCustomerIds)),
+                                    Width = "50",
+                                    ClassName = NopColumnClassDefaults.CenterAll,
+                                },
+                                new(nameof(CustomerModel.Email))
+                                {
+                                    Width = "200",
+                                    Title = T("Admin.Customers.Customers.Fields.Email").Text,
+                                    ClassName = NopColumnClassDefaults.CenterAll,
+                                },
+                                new(nameof(CustomerModel.FullName))
+                                {
+                                    Width = "200",
+                                    Title = T("Admin.Customers.Customers.Fields.FullName").Text,
+                                    ClassName = NopColumnClassDefaults.CenterAll,
+                                },
+                            }
+                        })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>
+
+
+<script>
+    $('#add-cashier-form').on('submit', function (e) {
+        e.preventDefault();
+        const form = this;
+        const data = $(form).serialize();
+        $.post(form.action, data)
+            .done(function () {
+                const refreshBtnId = @Html.Raw(Json.Serialize(Context.Request.Query["RefreshBtnId"]));
+                window.opener?.document.getElementById(refreshBtnId)?.click();
+                window.close();
+            })
+            .fail(function (err) {
+                console.log(err)
+
+            });
+    });
+</script>

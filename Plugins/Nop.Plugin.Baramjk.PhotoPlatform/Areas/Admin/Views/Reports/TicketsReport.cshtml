@@ -1,0 +1,182 @@
+@model Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.Reports.Tickets.TicketsReportViewModel
+@{
+    var title = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.TicketsReport.Title").Text;
+    ViewBag.PageTitle = title;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    Html.SetActiveMenuItemSystemName($"{SystemName}.TicketsReport");
+}
+
+<form asp-controller="Report" asp-action="GenerateTicketsReport" method="post">
+
+    <div class="content-header clearfix">
+        <h1 class="float-left">
+            @T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.TicketsReport.Title")
+        </h1>
+
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="form-horizontal">
+                <div class="card card-default">
+                    <div class="card-body">
+                        <div class="form-group row mt-2">
+                            <div class="col-md-2">
+                                <nop-label asp-for="EventIds"/>
+                            </div>
+                            <div class="col-md-4">
+                                <nop-select
+                                    asp-for="EventIds"
+                                    asp-items="Model.AvailableEvents"
+                                    asp-multiple="true"
+                                    id="EventIds"/>
+
+                                <span asp-validation-for="EventIds" class="text-danger"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row mt-2">
+                            <div class="col-md-2">
+                                <nop-label asp-for="FromDate"/>
+                            </div>
+                            <div class="col-md-4">
+                                <nop-editor asp-for="FromDate"/>
+                                <span asp-validation-for="FromDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row mt-2">
+                            <div class="col-md-2">
+                                <nop-label asp-for="ToDate"/>
+                            </div>
+                            <div class="col-md-4">
+                                <nop-editor asp-for="ToDate"/>
+                                <span asp-validation-for="ToDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row mt-2">
+                            <div class="col-md-2">
+                                <nop-label asp-for="TimeSlotStartTime"/>
+                            </div>
+                            <div class="col-md-4">
+                                <nop-select
+                                    asp-for="TimeSlotStartTime"
+                                    asp-items="Model.AvailableTimeSlots"/>
+                            </div>
+                        </div>
+                        <div class="form-group row mt-2">
+                            <div class="col-md-2 float-right">
+                            </div>
+                            <div class="col-md-4 float-right">
+                                <button type="submit"
+                                        class="btn btn-primary">@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Report.TicketsReport.ExportToExcel")
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>
+
+
+<script>
+    $(function () {
+        const eventIdElement = $('#EventIds'),
+            timeSlotElement = $('#TimeSlotStartTime'),
+            fromDateElement = $('#FromDate'),
+            toDateElement = $('#ToDate');
+
+        function refreshPlugin(selectedElement) {
+
+            if (selectedElement.hasClass('chosen-select')) {
+                selectedElement.trigger('chosen:updated');
+            } else if (selectedElement.hasClass('select2-hidden-accessible')) {
+                selectedElement.select({width: '100%'});
+            }
+        }
+
+
+        if (eventIdElement.val() === "0") {
+            timeSlotElement.prop('disabled', true).empty().append(new Option('Select date first', ''));
+
+
+        }
+
+
+        eventIdElement.on('change', function () {
+
+            const eventIds = eventIdElement.val();
+
+            if (eventIds === []) {
+                timeSlotElement.prop('disabled', true).empty().append(new Option('Select date first', ''));
+
+
+            }
+
+
+        });
+
+        fromDateElement.on('change', function () {
+
+            const selectedDate = fromDateElement.val(),
+                eventIds = eventIdElement.val();
+            timeSlotElement.prop('disabled', true).empty().append(new Option('Loading time slots…', ''));
+
+            if (!selectedDate) {
+                timeSlotElement.empty().append(new Option('Select date first', ''));
+                return;
+            }
+            const timeSlotUrl = '@Url.Action("GetEventTimeSlotsByDate", "Report")';
+            const timeSlotQuery = $.param({fromDate: selectedDate, toDate: toDateElement.val(), eventIds: eventIds}, true);
+
+            $.get(timeSlotUrl + "?" + timeSlotQuery)
+                .done(function (slots) {
+                    timeSlotElement.prop('disabled', false).empty().append(new Option('Select time slot', ''));
+                    $.each(slots, function (_, s) {
+                        timeSlotElement[0].add(new Option(s.Text, s.Value));
+                    });
+                    refreshPlugin(timeSlotElement);
+                })
+                .fail(function () {
+                    alert('Could not load time slots.');
+                });
+        });
+
+        toDateElement.on('change', function () {
+
+            const selectedDate = toDateElement.val(),
+                eventIds = eventIdElement.val();
+            timeSlotElement.prop('disabled', true).empty().append(new Option('Loading time slots…', ''));
+
+            if (!selectedDate) {
+                timeSlotElement.empty().append(new Option('Select date first', ''));
+                return;
+            }
+            const timeSlotUrl = '@Url.Action("GetEventTimeSlotsByDate", "Report")';
+            const timeSlotQuery = $.param({fromDate: fromDateElement.val(), toDate: selectedDate, eventIds: eventIds}, true);
+
+            $.get(timeSlotUrl + "?" + timeSlotQuery)
+                .done(function (slots) {
+                    timeSlotElement.prop('disabled', false).empty().append(new Option('Select time slot', ''));
+                    $.each(slots, function (_, s) {
+                        timeSlotElement[0].add(new Option(s.Text, s.Value));
+                    });
+                    refreshPlugin(timeSlotElement);
+                })
+                .fail(function () {
+                    alert('Could not load time slots.');
+                });
+        });
+
+
+        refreshPlugin(eventIdElement);
+        refreshPlugin(timeSlotElement);
+    });
+</script>
+

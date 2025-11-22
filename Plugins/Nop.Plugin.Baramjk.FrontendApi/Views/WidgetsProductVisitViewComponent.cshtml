@@ -1,0 +1,45 @@
+﻿<nop-panel>
+    <div class="advanced-setting panel panel-default collapsible-panel"
+         data-panel-names="customer-wallet" id="customer-wallet">
+        <div class="opened panel-heading" data-hideattribute="CustomerPage.HidePlaceOrderBlock">
+            <div class="icon-container">
+                <i class="fa fa-eye panel-icon"></i>
+            </div><span>Visit</span><i class="fa-minus toggle-icon fa"></i>
+        </div>
+        <div class="panel-container">
+            <div class="panel-body">
+                <input type="number" style="width: 80px" name="count" id="count" value="@ViewBag.Count"/>
+                <button type="button" name="impersonate" class="btn btn-primary" onclick="UpdateVisit()">
+                    <i class="fa fa-pencel"></i>
+                    Update
+                </button>
+            </div>
+        </div>
+    </div>
+</nop-panel>
+
+<script>
+function  UpdateVisit(){
+    let formData = new FormData();
+    formData.append("count", count.value);
+    
+    fetch("/admin/VisitAdminPanel/UpdateVisit?id=@ViewBag.Id", {
+    method: "POST",
+    mode: "no-cors",
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+    "Content-Type": "form-data"
+    },
+    body: formData
+    }).then(()=>{
+        alert("the visit is updated");
+                  //      displayBarNotification("the expected processing time is  updated", 'success', 2000)
+        })
+    .catch(function(error) {
+                alert("expected processing visit is not updated");
+
+               // displayBarNotification("expected processing time is not updated", 'error', 2000)
+    });
+    }
+</script>

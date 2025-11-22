@@ -1,0 +1,19 @@
+﻿using System.Collections.Generic;
+using Nop.Plugin.Baramjk.FrontendApi.Dto.Product;
+using Nop.Plugin.Baramjk.FrontendApi.Framework.Dto;
+
+namespace Nop.Plugin.Baramjk.FrontendApi.Dto.Catalog
+{
+    public class SubCategoryModelDto : ModelWithIdDto
+    {
+        public string Name { get; set; }
+
+        public string SeName { get; set; }
+
+        public string Description { get; set; }
+
+        public PictureModelDto PictureModel { get; set; }
+        
+        public IList<SubCategoryModelDto> SubCategories { get; set; }
+    }
+}

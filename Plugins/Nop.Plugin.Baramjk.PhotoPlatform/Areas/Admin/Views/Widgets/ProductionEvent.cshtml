@@ -1,0 +1,102 @@
+﻿@using Microsoft.AspNetCore.Routing
+@using Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.ProductionEvents
+@using Nop.Web.Framework.Models.DataTables
+@{
+}
+
+<div class="card-body">
+    <div class="cards-group">
+        <div class="card card-default">
+            <div class="card-header">
+                <h5 class="float-left">
+                    @T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Widget.ProductionEvent.Title")
+                </h5>
+                <div class="card-tools float-right">
+                    <button type="submit" id="btnAddNewProduction"
+                            onclick="OpenWindow('@(Url.Action("ProductionAddPopUp", "ProductionEvent", new { Model.EventId, RefreshBtnId = "btnRefreshProductions" }))', 800, 800, true); return false;"
+                            class="btn btn-primary">
+                        <i class="fas fa-plus-square"></i>
+                        @T("Admin.Common.AddNew")
+                    </button>
+                    <button type="submit" id="btnRefreshProductions" style="display: none"></button>
+                    <script>
+                        $(document).ready(function () {
+                            $('#btnRefreshProductions').click(function () {
+                                updateTable('#productions-events-grid');
+                                return false;
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class="card-body">
+
+                @await Html.PartialAsync("Table", new DataTablesModel
+                {
+                    Name = "productions-events-grid",
+                    UrlRead = new DataUrl("List", "ProductionEvent", new RouteValueDictionary
+                    {
+                        [nameof(Model.EventId)] = Model.EventId
+                    }),
+                    UrlUpdate = new DataUrl("Edit", "ProductionEvent", null),
+                    UrlDelete = new DataUrl("DeleteById", "ProductionEvent", null),
+                    Length = Model.PageSize,
+                    LengthMenu = Model.AvailablePageSizes,
+                    ColumnCollection = new List<ColumnProperty>
+                    {
+                        new(nameof(ProductionEventsItemModel.ProductionEmail))
+                        {
+                            Width = "100",
+                            Title = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.ProductionEvents.ProductionEmail").Text,
+                            ClassName = NopColumnClassDefaults.CenterAll
+                        },
+                        new ColumnProperty(nameof(ProductionEventsItemModel.ProductionPictureUrl))
+                        {
+                            Title = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.ProductionEvents.ProductionPictureUrl").Text,
+                            Width = "80",
+                            ClassName = NopColumnClassDefaults.CenterAll,
+                            Render = new RenderPicture()
+                        },
+
+
+                        new(nameof(ProductionEventsItemModel.Active))
+                        {
+                            Width = "50",
+                            Title = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.ProductionEvents.Active").Text,
+                            ClassName = NopColumnClassDefaults.CenterAll,
+                            Editable = true,
+                            EditType = EditType.Checkbox,
+                            Render = new RenderBoolean(),
+                        },
+
+                        new(nameof(ProductionEventsItemModel.Id))
+                        {
+                            Title = T("Admin.Common.Edit").Text,
+                            Width = "100",
+                            ClassName = NopColumnClassDefaults.Button,
+                            Render = new RenderButtonsInlineEdit()
+                        },
+
+                        new(nameof(ProductionEventsItemModel.Id))
+                        {
+                            Title = T("Admin.Common.Delete").Text,
+                            Width = "80",
+                            ClassName = NopColumnClassDefaults.Button,
+                            Render = new RenderButtonRemove(T("Admin.Common.Delete").Text)
+                        }
+                    }
+                })
+
+            </div>
+        </div>
+        <script>
+
+            $(document).ready(function () {
+                $('#btnRefreshProductions').click(function () {
+                    updateTable("productions-events-grid");
+                    return false;
+                });
+            });
+        </script>
+    </div>
+</div>

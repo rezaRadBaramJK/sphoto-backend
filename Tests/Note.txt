@@ -1,0 +1,6 @@
+﻿<nop-card asp-name="Booking" asp-icon="fa fa-hourglass-start" asp-title="Booking"
+          asp-hide-block-attribute-name="HideBooking" asp-hide="false" asp-advanced="false">
+    <div class="card-body">
+
+    </div>
+</nop-card>

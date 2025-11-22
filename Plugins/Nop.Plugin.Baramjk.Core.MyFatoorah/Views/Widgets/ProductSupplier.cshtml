@@ -1,0 +1,70 @@
+﻿
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Nop.Core
+@using Nop.Services.Common
+@using Nop.Web.Framework.TagHelpers.Admin
+@model Nop.Plugin.Baramjk.Core.MyFatoorah.Models.Suppliers.ProductSupplierViewModel
+
+@inject IGenericAttributeService GenericAttributeService
+@inject IWorkContext WorkContext
+
+@{
+    const string hideProductSupplierName = "Product.HideProductSupplier";
+    var hideProductSupplierBlock = await GenericAttributeService.GetAttributeAsync<bool>(await WorkContext.GetCurrentCustomerAsync(), hideProductSupplierName);
+}
+
+<nop-card asp-name="product-supplier"
+          asp-icon="fas fa-info"
+          asp-hide-block-attribute-name="@hideProductSupplierName"
+          asp-hide="@hideProductSupplierBlock"
+          asp-title=@T("Nop.Plugin.Baramjk.Core.MyFatoorah.Admin.Suppliers.Product.AssignSupplier")
+          asp-advanced="false">
+
+    <div class="card-body">
+        <div class="form-group row">
+            <div class="col-md-3">
+                <nop-label asp-for="SupplierId"/>
+            </div>
+            <div class="col-md-9">
+                <nop-select id="supplierList" asp-for="SupplierId" asp-items="@Model.AvailableSuppliers"/>
+                <span asp-validation-for="SupplierId"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="text-center col-12">
+                <button type="button" id="setProductSupplier" class="btn btn-primary">
+                    @T("Nop.Plugin.Baramjk.Core.MyFatoorah.Admin.Suppliers.Product.Assign")
+                </button>
+            </div>
+        </div>
+        
+    </div>
+
+    <script>
+
+        $('#setProductSupplier').click(function() {
+            const data = {
+                "SupplierId": $('#supplierList').val(),
+                "ProductId": '@(Model.ProductId)',
+            };
+            addAntiForgeryToken(data);
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: "@Url.Action("AssignProduct", "SupplierAdmin")",
+                data: data,
+                success: function () {
+                    alert('@T("Nop.Plugin.Baramjk.Core.MyFatoorah.Admin.Suppliers.Product.AssignSuccessful")');
+                },
+                error: function (data){
+                    alert("assign failed: " + data);
+                },
+                complete: function (jqXHR, textStatus) {
+                }
+            });
+        });
+
+    </script>
+    
+</nop-card>

@@ -1,0 +1,139 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Nop.Web.Framework.TagHelpers.Admin
+@model Nop.Plugin.Baramjk.PushNotification.Models.SendNotificationModel
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+@{
+    Html.AddScriptParts(ResourceLocation.Head, "~/Plugins/Baramjk.PushNotification/content/comboTreePlugin/comboTreePlugin.js");
+    Html.AddCssFileParts(ResourceLocation.Head, "~/Plugins/Baramjk.PushNotification/content/comboTreePlugin/style.css?" + DateTime.Now.Ticks);
+    Html.AddScriptParts(ResourceLocation.Head, "~/Plugins/Baramjk.PushNotification/content/SendNotification.js?" + DateTime.Now.Ticks);
+}
+
+<div class="content-header clearfix">
+    <h1 class="float-left">
+        Send Notification
+    </h1>
+    <div class="float-right">
+
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="form-horizontal1">
+            <div class="cards-group">
+                <div class="card card-default">
+                    <div class="card-body">
+                        <form method="post" id="SendNotificationForm">
+                            <nop-panel asp-advanced="false" asp-hide="false" asp-hide-block-attribute-name="title"
+                                       asp-icon="fa fa-envelope-open-o" asp-name="nop_notification_center" asp-title="Send Notification">
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <nop-label asp-for="Title"/>
+                                            <nop-editor asp-for="Title"/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <nop-label asp-for="Body"/>
+                                            <nop-textarea asp-for="Body"/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <nop-label asp-for="Link"/>
+                                            <nop-editor asp-for="Link"/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <nop-label asp-for="Title"/>
+                                            <nop-editor asp-for="Title"/>
+                                        </div>
+                                        @* <div class="form-group"> *@
+                                        @*     <nop-label asp-for="Schedule"/> *@
+                                        @*     <nop-editor asp-for="Schedule"/> *@
+                                        @* </div> *@
+                                        
+                                        <div class="form-group">
+                                            <nop-label asp-for="Schedule"/>
+                                            <select name="Schedule" class="form-control text-box single-line">
+                                                <option value="false">false</option>
+                                                <option value="true">true</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <nop-label asp-for="OnDateTime"/>
+                                            <nop-editor asp-for="OnDateTime"/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <nop-label asp-for="ExtraData"/>
+                                            <nop-editor asp-for="ExtraData"/>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group   ">
+                                            <div class="label-wrapper">
+                                                <label class="control-label">
+                                                    Customer
+                                                </label>
+                                            </div>
+                                            <input type="text" id="AttrTree" placeholder="Select" autocomplete="off" name="CustomerIds"
+                                                   class="form-control text-box single-line"/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <nop-label asp-for="NotificationType"/>
+                                            <select name="NotificationType" class="form-control text-box single-line">
+                                                <option value="Normal">@T("Baramjk.PushNotification.NotificationType.Normal")</option>
+                                                <option value="Http Link">@T("Baramjk.PushNotification.NotificationType.HttpLink")</option>
+                                                <option value="Deep Link">@T("Baramjk.PushNotification.NotificationType.DeepLink")</option>
+                                                <option value="Order">@T("Baramjk.PushNotification.NotificationType.Order")</option>
+                                                <option value="Product">@T("Baramjk.PushNotification.NotificationType.Product")</option>
+                                                <option value="Category">@T("Baramjk.PushNotification.NotificationType.Category")</option>
+                                                <option value="Congratulation">@T("Baramjk.PushNotification.NotificationType.Congratulation")</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <nop-label asp-for="Code"/>
+                                            <nop-editor asp-for="Code"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <nop-label asp-for="Platform"/>
+                                            <select name="Platform" class="form-control text-box single-line">
+                                                <option value="40">@T("Baramjk.PushNotification.PlatformType.All")</option>
+                                                <option value="10">@T("Baramjk.PushNotification.PlatformType.Android")</option>
+                                                <option value="20">@T("Baramjk.PushNotification.PlatformType.Ios")</option>
+                                                <option value="30">@T("Baramjk.PushNotification.PlatformType.Web")</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <nop-label asp-for="PictureId"/>
+                                            <nop-editor asp-for="PictureId"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <button type="button" class="btn bg-blue" onclick="SendNotif()">
+                                        <i class="fa fa-envelope-open-o"></i>
+                                        Send
+                                    </button>
+                                </div>
+                            </nop-panel>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+var treeItems=@Html.Raw(ViewBag.treeItems);
+</script>

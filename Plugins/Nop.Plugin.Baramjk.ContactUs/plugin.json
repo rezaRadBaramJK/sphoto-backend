@@ -1,0 +1,13 @@
+﻿{
+  "Group": "Baramjk",
+  "FriendlyName": "Contact Us",
+  "SystemName": "Baramjk.ContactUs",
+  "Version": "1.0",
+  "SupportedVersions": [
+    "4.40"
+  ],
+  "Author": "Baramjk team - Fayyaz",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Baramjk.ContactUs.dll",
+  "Description": "'Contact Us' API and Admin panel"
+}

@@ -1,0 +1,185 @@
+@model Nop.Plugin.Baramjk.PhotoPlatform.Models.Reports.Actor.ActorTimeSlotRevenueListModel
+@inject Nop.Services.Catalog.IPriceFormatter PriceFormatter
+@{ }
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8"/>
+    <title>@T("Nop.Plugin.Baramjk.PhotoPlatform.Actor.Report.Pdf.ActorTimeSlotRevenue.Title").Text</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            direction: rtl;
+            color: #0066b3;
+        }
+
+        .logo {
+            margin-top: 20px;
+        }
+
+        .section-line {
+            border: none;
+            height: 6px;
+            background-color: #b0d235;
+            margin: 20px 0;
+        }
+
+
+        .info-table, .data-table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+
+        .info-table td {
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .data-table th, .data-table td {
+            border: 2px solid #b0d235;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .data-table th {
+            font-weight: bold;
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Logo -->
+<div class="logo">
+    <img src="~/Plugins/Baramjk.PhotoPlatform/Areas/Admin/Contents/Images/sami-main-logo.png"
+         alt="logo"
+         style="height: 50px;"/>
+</div>
+
+@foreach (var dateGroupedItem in Model.GroupedByDate)
+{
+<!-- Section Separator -->
+<hr class="section-line"/>
+
+<!-- Info Table -->
+<table class="info-table">
+    <tr>
+        <td style="text-align: right; padding-right: 25px">
+            @T("Nop.Plugin.Baramjk.PhotoPlatform.Actor.Report.Pdf.EventName"): @dateGroupedItem.Items.First().EventName
+        </td>
+
+        @if (Model.GroupedByDate.Count == 1)
+        {
+        <td>
+            @T("Nop.Plugin.Baramjk.PhotoPlatform.Actor.Report.Pdf.Date"): @dateGroupedItem.Date
+        </td>
+        }
+
+    </tr>
+    @if (Model.GroupedByDate.Count == 1 && Model.GroupedByDate.First().Items.Count == 1)
+    {
+    <tr>
+        <td colspan="2">@T("Nop.Plugin.Baramjk.PhotoPlatform.Actor.Report.Pdf.TimeSlot"): @Model.GroupedByDate.First().Items.First().TimeSlot</td>
+    </tr>
+    }
+</table>
+<hr class="section-line"/>
+
+<!-- Data Table -->
+<table class="data-table">
+    <tr>
+
+        @if (Model.GroupedByDate.Count > 1)
+        {
+        <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Actor.Report.Pdf.Date")</th>
+        }
+
+        @if (Model.GroupedByDate.First().Items.Count > 1)
+        {
+        <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Actor.Report.Pdf.TimeSlot")</th>
+        }
+
+        <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Actor.Report.Pdf.TicketPrice")</th>
+        <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Actor.Report.Pdf.ActorShare")</th>
+        <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Actor.Report.Pdf.CameraManPhotoCount")</th>
+        <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Actor.Report.Pdf.CustomerMobilePhotoCount")</th>
+        <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Actor.Report.Pdf.TotalPhotoCount")</th>
+        <th>@T("Nop.Plugin.Baramjk.PhotoPlatform.Actor.Report.Pdf.TotalPhotosPrice")</th>
+    </tr>
+
+    @for (int i = 0; i < dateGroupedItem.Items.Count; i++)
+    {
+    var item = dateGroupedItem.Items[i];
+    <tr>
+        @if (i == 0 && Model.GroupedByDate.Count > 1)
+        {
+        <td rowspan="@dateGroupedItem.Items.Count">@dateGroupedItem.Date</td>
+        }
+
+        @if (Model.GroupedByDate.First().Items.Count > 1)
+        {
+        <td>@item.TimeSlot</td>
+        }
+
+        <td>@await PriceFormatter.FormatPriceAsync(item.TicketPrice)</td>
+        <td>@await PriceFormatter.FormatPriceAsync(item.ActorShare)</td>
+        <td>@item.CameraManPhotoCount</td>
+        <td>@item.CustomerMobilePhotoCount</td>
+        <td>@item.TotalPhotoCount</td>
+        <td>@await PriceFormatter.FormatPriceAsync(item.TotalPhotoPrice)</td>
+    </tr>
+    }
+
+    <!-- Summary row -->
+
+
+    @if (dateGroupedItem.Items.Count > 1)
+    {
+    <tr>
+
+        @if (Model.GroupedByDate.Count > 1)
+        {
+        <td colspan="6">المجموع</td>
+        }
+        else
+        {
+        <td colspan="5">المجموع</td>
+        }
+
+
+        <td>@dateGroupedItem.Items.Sum(x => x.TotalPhotoCount)</td>
+        <td>@await PriceFormatter.FormatPriceAsync(dateGroupedItem.Items.Sum(x => x.TotalPhotoPrice))</td>
+    </tr>
+    }
+
+</table>
+
+@if (dateGroupedItem != Model.GroupedByDate.Last())
+{
+<!-- Page Break -->
+<div class="page-break"></div>
+}
+
+@if (Model.GroupedByDate.Count > 1 && dateGroupedItem == Model.GroupedByDate.Last())
+{
+<table style="width: 300px; border-collapse: collapse; font-family: Arial, sans-serif; margin: 30px auto">
+    <tr style="background-color: #ffffff; color: #0066b3;">
+
+        <th style="border: 2px solid #b0d235; padding: 10px;">@T("Nop.Plugin.Baramjk.PhotoPlatform.Actor.Report.Pdf.TotalPhotoCount")</th>
+        <th style="border: 2px solid #b0d235; padding: 10px;">@T("Nop.Plugin.Baramjk.PhotoPlatform.Actor.Report.Pdf.TotalPhotosPrice")</th>
+    </tr>
+    <tr style="color: #0066b3;">
+        <td style="border: 2px solid #b0d235; padding: 10px; text-align: center;">@Model.TotalPhotoCount</td>
+        <td style="border: 2px solid #b0d235; padding: 10px; text-align: center;">@await PriceFormatter.FormatPriceAsync(Model.TotalPhotoPrice)</td>
+    </tr>
+</table>
+}
+}
+
+</body>
+</html>

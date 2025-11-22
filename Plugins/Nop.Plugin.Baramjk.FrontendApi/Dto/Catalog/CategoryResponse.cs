@@ -1,0 +1,11 @@
+﻿using Nop.Plugin.Baramjk.FrontendApi.Framework.Dto;
+
+namespace Nop.Plugin.Baramjk.FrontendApi.Dto.Catalog
+{
+    public class CategoryResponse : BaseDto
+    {
+        public string TemplateViewPath { get; set; }
+
+        public CategoryModelDto CategoryModelDto { get; set; }
+    }
+}

@@ -1,0 +1,13 @@
+﻿{
+  "Group": "Baramjk",
+  "FriendlyName": "SocialLinks",
+  "SystemName": "Baramjk.SocialLinks",
+  "Version": "1.4",
+  "SupportedVersions": [
+    "4.40"
+  ],
+  "Author": "Baramjk team - Hajizadeh",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Baramjk.SocialLinks.dll",
+  "Description": "SocialLinks"
+}

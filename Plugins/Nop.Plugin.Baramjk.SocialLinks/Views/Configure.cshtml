@@ -1,0 +1,66 @@
+﻿@using Nop.Plugin.Baramjk.Framework
+@using Nop.Web.Framework.TagHelpers.Admin
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Nop.Plugin.Baramjk.Framework.Models.ViewModels
+@using Nop.Plugin.Baramjk.SocialLinks.Plugins
+@model Nop.Plugin.Baramjk.SocialLinks.Models.SocialLinksSettingsModel
+
+@{
+    InitConfigureView(new DefaultConfigureViewModel(typeof(SocialLinksPlugin), "SocialLinksAdmin"));
+}
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="WidgetIconSize"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="WidgetIconSize"/>
+        <span asp-validation-for="WidgetIconSize"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="PaymentMethodIconSize"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="PaymentMethodIconSize"/>
+        <span asp-validation-for="PaymentMethodIconSize"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="SocialMediaIconSize"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="SocialMediaIconSize"/>
+        <span asp-validation-for="SocialMediaIconSize"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="ProductDetailsIconSize"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="ProductDetailsIconSize"/>
+        <span asp-validation-for="ProductDetailsIconSize"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="EnableFooter"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="EnableFooter"/>
+        <span asp-validation-for="EnableFooter"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="EnableFloating"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="EnableFloating"/>
+        <span asp-validation-for="EnableFloating"></span>
+    </div>
+</div>
+<hr/>

@@ -1,0 +1,40 @@
+﻿<div class="panel-container">
+    <div class="panel-body">
+        <button type="button" name="impersonate" class="button-1 order-completed-continue-button"
+                onclick="CreateInvoice()">
+            <i class="fa fa-sticky-note-o panel-icon"></i>
+            Pay Now
+        </button>
+        <a id="invoiceUrl"></a>
+    </div>
+</div>
+
+
+<script>
+function  CreateInvoice(){
+    fetch("/OrderPaymentLink/CreateInvoice?orderId=@ViewBag.Id&sendEmail=false", {
+    method: "GET",
+    mode: "no-cors",
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+    },
+    })
+    .then(response => response.json())
+    .then((data)=>{
+        if (data.IsSuccess===false)
+        {
+            invoiceUrl.innerHTML=data.Message
+            return;
+        }
+                
+        var url = data.Data;
+        invoiceUrl.innerHTML=url;
+        invoiceUrl.href=url;
+        window.location=url;
+     })
+    .catch(function(error) {
+         alert("Can't create invoice");
+    });
+    }
+</script>

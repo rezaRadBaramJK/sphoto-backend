@@ -1,0 +1,74 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.ActorEvents.BulkSharesEditViewModel
+
+@{
+    ViewBag.PageTitle = T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.EditAllProductionShares").Text;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminPopupLayout.cshtml";
+    var eventId = Context.Request.Query["EventId"];
+}
+
+
+<form asp-controller="ActorEvent" asp-action="BulkSharesEdit" method="post" id="bulk-share-edit-form">
+    <input type="hidden" name="EventId" value="@eventId"/>
+    <div class="content-header clearfix">
+        <h1 class="float-left">
+            @T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.EditAllProductionShares")
+        </h1>
+        <div class="float-right">
+            <button type="submit" name="save" class="btn btn-primary">
+                <i class="far fa-save"></i>
+                @T("Admin.Common.Save")
+            </button>
+
+
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="form-horizontal">
+                <div class="cards-group">
+                    <div class="card card-default">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <div class="form-group row">
+                                    <div class="col-md-3">
+                                        <nop-label asp-for="ProductionShare"/>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <nop-editor asp-for="ProductionShare"/>
+                                        <span asp-validation-for="ProductionShare"></span>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+</form>
+
+
+<script>
+    $('#bulk-share-edit-form').on('submit', function (e) {
+        e.preventDefault();
+        const form = this;
+        const data = $(form).serialize();
+        $.post(form.action, data)
+            .done(function () {
+                const refreshBtnId = @Html.Raw(Json.Serialize(Context.Request.Query["RefreshBtnId"]));
+                window.opener?.document.getElementById(refreshBtnId)?.click();
+                window.close();
+            })
+            .fail(function (err) {
+                let errorMessage = err.responseJSON?.Data?.Message ?? 'An error occurred. Please try again.';
+                alert(errorMessage);
+
+            });
+    });
+</script>

@@ -1,0 +1,32 @@
+﻿@using Nop.Web.Framework.TagHelpers.Admin
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Nop.Plugin.Baramjk.Framework.Models.ViewModels
+@using Nop.Plugin.Baramjk.PushNotification.Plugins
+@model Nop.Plugin.Baramjk.PushNotification.Models.PushNotificationSettingModel
+
+@{
+    InitConfigureView(new DefaultConfigureViewModel(typeof(PushNotificationPlugin), "PushNotificationAdmin"));
+}
+
+<div >
+    <div class="form-group">
+        <div class="col-md-3">
+            <nop-label asp-for="FireBaseConfig"/>
+        </div>
+        <div class="col-md-9">
+            <nop-TextArea asp-for="FireBaseConfig"/>
+            <span asp-validation-for="FireBaseConfig"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-3">
+            <nop-label asp-for="ServerKey"/>
+        </div>
+        <div class="col-md-9">
+            <nop-TextArea asp-for="ServerKey"/>
+            <span asp-validation-for="ServerKey"></span>
+        </div>
+    </div>
+
+</div>
+<a class="btn btn-danger" asp-controller="SmsAdmin" asp-action="GetSmsConfiguration">Configure Sms</a>

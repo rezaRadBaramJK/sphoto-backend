@@ -1,0 +1,70 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <CheckEolTargetFramework>false</CheckEolTargetFramework>
+        <Copyright>Copyright © Baramjk</Copyright>
+        <Company>Baramjk</Company>
+        <Authors>farzadfayyaz@baramjk.com</Authors>
+        <PackageProjectUrl>https://baramjk.com/</PackageProjectUrl>
+        <OutputPath>..\..\Presentation\Nop.Web\Plugins\Baramjk.PhotoPlatform</OutputPath>
+        <OutDir>$(OutputPath)</OutDir>
+        
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <AssemblyName>Nop.Plugin.Baramjk.PhotoPlatform</AssemblyName>
+        <RootNamespace>Nop.Plugin.Baramjk.PhotoPlatform</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Content Include="logo.png" CopyToOutputDirectory="PreserveNewest"/>
+        <Content Include="plugin.json" CopyToOutputDirectory="PreserveNewest"/>
+        <Content Include="Views\**" CopyToOutputDirectory="PreserveNewest" LinkBase="Views\"/>
+        <Content Include="Areas\Admin\Views\**" CopyToOutputDirectory="PreserveNewest" LinkBase="Views\"/>
+        <Content Include="Content\**" CopyToOutputDirectory="PreserveNewest" LinkBase="Content\"/>
+        <Content Update="Areas\Admin\Views\_ViewImports.cshtml">
+            <LinkBase>Views/</LinkBase>
+        </Content>
+        <Content Include="Rotativa\**" CopyToOutputDirectory="PreserveNewest"/>
+        <None Remove="Areas\Admin\Contents\Images\sami-main-logo.png" />
+        <Content Include="Areas\Admin\Contents\Images\sami-main-logo.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Update="Views\_ViewImports.cshtml">
+          <LinkBase>Views/</LinkBase>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ClearPluginAssemblies Include="$(MSBuildProjectDirectory)\..\..\Build\ClearPluginAssemblies.proj"/>
+        <ProjectReference Include="..\Nop.Plugin.Baramjk.Framework\Nop.Plugin.Baramjk.Framework.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="Areas\Admin\Contents\Js\main.js">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Areas\Admin\Models\Cashiers\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Rotativa.AspNetCore" Version="1.4.0" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.10" />
+    </ItemGroup>
+    
+    <Target Name="NopTarget" AfterTargets="Build">
+        <RemoveDir Directories="$(OutDir)runtimes\osx"/>
+        <RemoveDir Directories="$(OutDir)runtimes\linux-arm"/>
+        <RemoveDir Directories="$(OutDir)runtimes\linux-arm64"/>
+        <RemoveDir Directories="$(OutDir)runtimes\linux-musl-x64"/>
+        <RemoveDir Directories="$(OutDir)runtimes\linux-x64"/>
+        <RemoveDir Directories="$(OutDir)runtimes\unix"/>
+        <RemoveDir Directories="$(OutDir)runtimes\win"/>
+        <RemoveDir Directories="$(OutDir)runtimes\win-arm64"/>
+        <RemoveDir Directories="$(OutDir)runtimes\win-x86"/>
+        <MSBuild Projects="@(ClearPluginAssemblies)" Properties="PluginPath=$(MSBuildProjectDirectory)\$(OutDir)" Targets="NopClear"/>
+    </Target>
+
+</Project>

@@ -1,0 +1,346 @@
+@using Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.Events
+
+@model Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.Events.EventDetailsViewModel
+
+<div class="card-body">
+    <div class="cards-group">
+        <div class="card card-default">
+            <div class="card-body">
+
+                <input type="hidden" id="event-detail-id" value="@Model.Id"/>
+
+                @(await Html.LocalizedEditorAsync<EventDetailsViewModel, EventDetailsLocalizedModel>("event-details-localized",
+                @<div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="@Model.Locales[item].TermsAndConditions"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="@Model.Locales[item].TermsAndConditions" asp-template="RichEditor"/>
+                            <span asp-validation-for="@Model.Locales[item].TermsAndConditions"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="@Model.Locales[item].Note"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="@Model.Locales[item].Note"/>
+                            <span asp-validation-for="@Model.Locales[item].Note"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="@Model.Locales[item].LocationUrlTitle"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="@Model.Locales[item].LocationUrlTitle"/>
+                            <span asp-validation-for="@Model.Locales[item].LocationUrlTitle"></span>
+                        </div>
+                    </div>
+                    <input type="hidden" asp-for="@Model.Locales[item].LanguageId"/>
+                </div>
+                ,
+                @<div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="TermsAndConditions"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="TermsAndConditions" asp-template="RichEditor"/>
+                            <span asp-validation-for="TermsAndConditions"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="Note"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="Note"/>
+                            <span asp-validation-for="Note"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="LocationUrlTitle"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="LocationUrlTitle"/>
+                            <span asp-validation-for="LocationUrlTitle"></span>
+                        </div>
+                    </div>
+                </div>)
+                )
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="LocationUrl"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="LocationUrl"/>
+                        <span asp-validation-for="LocationUrl"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="StartDate"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="StartDate"/>
+                        <span asp-validation-for="StartDate"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="EndDate"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="EndDate"/>
+                        <span asp-validation-for="EndDate"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="StartTime"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="StartTime"/>
+                        <span asp-validation-for="StartTime"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="EndTime"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="EndTime"/>
+                        <span asp-validation-for="EndTime"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="TimeSlotDuration"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="TimeSlotDuration"/>
+                        <span asp-validation-for="TimeSlotDuration"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="PhotoPrice"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="PhotoPrice"/>
+                        <span asp-validation-for="PhotoPrice"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="ActorShare"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="ActorShare"/>
+                        <span asp-validation-for="ActorShare"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="ProductionShare"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="ProductionShare"/>
+                        <span asp-validation-for="ProductionShare"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-label asp-for="PhotoShootShare"/>
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="PhotoShootShare"/>
+                        <span asp-validation-for="PhotoShootShare"></span>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group row mt-2">
+                    <div class="col-md-3">
+                        <nop-label asp-for="TimeSlotLabelTypeId"/>
+                    </div>
+                    <div class="col-md-5">
+                        <nop-select
+                            asp-for="TimeSlotLabelTypeId"
+                            asp-items="Model.AvailableTimeSlotLabelTypes"
+                            id="TimeSlotLabelTypeId"/>
+
+                        <span asp-validation-for="TimeSlotLabelTypeId" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+
+
+
+
+                <div class="form-group row mt-2">
+                    <div class="col-md-3">
+                        <nop-label asp-for="CountryIds"/>
+                    </div>
+                    <div class="col-md-5">
+                        <nop-select
+                            asp-for="CountryIds"
+                            asp-multiple="true"
+                            asp-items="Model.AvailableCountries"
+                            multiple="multiple"
+                            id="CountryIds"/>
+
+                        <span asp-validation-for="CountryIds" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+
+                <div class="card-footer">
+                    <button id="save-event-details-button" class="btn btn-primary">
+                        <i class="fas fa-plus-square"></i>
+                        @T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Event.Details.Save")
+                    </button>
+                </div>
+
+                <script>
+                    $(document).ready(function () {
+                        $('#product-price').parent().css('display', 'none')
+                        $('#product-shipping').parent().css('display', 'none')
+                        $('#product-inventory').parent().css('display', 'none')
+                        $('#product-product-attributes').parent().css('display', 'none')
+                        $('#product-specification-attributes').parent().css('display', 'none')
+                        $('#product-giftcard').parent().css('display', 'none')
+                        $('#product-downloadable').parent().css('display', 'none')
+                        $('#product-rental').parent().css('display', 'none')
+                        $('#product-seo').parent().css('display', 'none')
+                        $('#product-recurring').parent().css('display', 'none')
+                        $('#product-related-products').parent().css('display', 'none')
+                        $('#product-crosssells-products').parent().css('display', 'none')
+                        $('#product-stock-quantity-history').parent().css('display', 'none')
+                        $('#product-purchased-with-orders').parent().css('display', 'none')
+
+                    });
+                    const saveEventDetailsButton = $('#save-event-details-button');
+
+                    $(document).ready(function () {
+                        saveEventDetailsButton.click(saveEventDetails);
+                    });
+
+                    function saveEventDetails() {
+                        saveEventDetailsButton.attr('disabled', true);
+
+                        const localizationCount = $('#custom-content-above-tabContent').children().length;
+
+                        const locals = [];
+                        const localIdsPrefix = "Locales_"
+
+                        for (let i = 0; i < localizationCount - 1; i++) {
+                            const languageHtmlId = "#" + localIdsPrefix + i + "__LanguageId";
+                            const languageId = $(languageHtmlId).val();
+
+                            const termsHtmlId = localIdsPrefix + i + "__" + "@Html.IdFor(model => model.TermsAndConditions)";
+                            const noteHtmlId = localIdsPrefix + i + "__" + "@Html.IdFor(model => model.Note)";
+                            const locationUrlTitleHtmlId = localIdsPrefix + i + "__" + "@Html.IdFor(model => model.LocationUrlTitle)";
+
+                            const terms = tinymce.get(termsHtmlId).getContent();
+                            const note = $('#' + noteHtmlId).val();
+                            const locationUrlTitle = $('#' + locationUrlTitleHtmlId).val();
+
+                            locals.push({
+                                TermsAndConditions: terms,
+                                Note: note,
+                                LocationUrlTitle: locationUrlTitle,
+                                LanguageId: languageId
+                            });
+                        }
+                        const eventDetailId = $('#event-detail-id').val();
+                        const startDate = $('#@Html.IdFor(model => model.StartDate)');
+                        const endDate = $('#@Html.IdFor(model => model.EndDate)');
+                        const startTime = $('#@Html.IdFor(model => model.StartTime)');
+                        const endTime = $('#@Html.IdFor(model => model.EndTime)');
+                        const timeSlotDuration = $('#@Html.IdFor(model => model.TimeSlotDuration)');
+                        const actorShare = $('#@Html.IdFor(model => model.ActorShare)');
+                        const productionShare = $('#@Html.IdFor(model => model.ProductionShare)');
+                        const photoShootShare = $('#@Html.IdFor(model => model.PhotoShootShare)');
+                        const photoPrice = $('#@Html.IdFor(model => model.PhotoPrice)');
+                        const timeSlotLabelTypeId = $('#@Html.IdFor(model => model.TimeSlotLabelTypeId)');
+                        const locationUrlId = $('#@Html.IdFor(model => model.LocationUrl)')
+                        const countryIds = $('#@Html.IdFor(model => model.CountryIds)');
+
+
+                        let startDateValue = startDate.data("kendoDatePicker").value();
+                        let formattedStartDate = kendo.toString(startDateValue, "yyyy-MM-dd");
+
+                        let endDateVale = endDate.data("kendoDatePicker").value();
+                        let formattedEndDate = kendo.toString(endDateVale, "yyyy-MM-dd");
+                        
+                        let postData = {
+                            Id: eventDetailId,
+                            TermsAndConditions: tinymce.get('@Html.IdFor(model => model.TermsAndConditions)').getContent(),
+                            Note: $('#@Html.IdFor(model => model.Note)').val(),
+                            LocationUrlTitle:  $('#@Html.IdFor(model => model.LocationUrlTitle)').val(),
+                            LocationUrl: locationUrlId.val(),
+                            StartDate: formattedStartDate,
+                            EndDate:formattedEndDate,
+                            StartTime: startTime.val(),
+                            EndTime: endTime.val(),
+                            TimeSlotDuration: timeSlotDuration.val(),
+                            EventId: @Model.EventId,
+                            Locales: locals,
+                            photoPrice: photoPrice.val(),
+                            ActorShare: actorShare.val(),
+                            PhotoShootShare: photoShootShare.val(),
+                            ProductionShare: productionShare.val(),
+                            TimeSlotLabelTypeId: timeSlotLabelTypeId.val(),
+                            CountryIds: countryIds.data("kendoMultiSelect").value()
+
+                        };
+                        addAntiForgeryToken(postData);
+
+                        $.ajax({
+                            cache: false,
+                            type: "POST",
+                            url: "@(Url.Action("Submit", "EventDetail"))",
+                            data: postData,
+                            success: function () {
+                                alert("Event details has been saved.");
+                                updateTable('#time-slots-grid');
+                            },
+                            error: function (data) {
+                                if (data.responseJSON.Message) {
+                                    alert(data.responseJSON.Message);
+                                } else {
+                                    console.log(data);
+                                }
+                            },
+                            complete: function () {
+                                saveEventDetailsButton.attr('disabled', false);
+
+                            }
+                        });
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+</div>

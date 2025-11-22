@@ -1,0 +1,85 @@
+﻿@using Nop.Plugin.Baramjk.PushNotification
+@using Nop.Plugin.Baramjk.PushNotification.Models.Admin.EventNotificationConfigs
+@using Nop.Web.Framework.Models.DataTables
+
+@model EventNotificationConfigSearchModel
+
+@{
+    ViewBag.PageTitle = T($"{DefaultValue.SystemName}.Admin.EventNotificationConfig.Title").Text;
+    Html.SetActiveMenuItemSystemName($"{SystemName}.EventNotificationConfig");
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content-header clearfix">
+    <h1 class="float-left">
+        @T($"{DefaultValue.SystemName}.Admin.EventNotificationConfig.Title")
+    </h1>
+    <div class="float-right">
+        <a asp-action="Create" asp-controller="EventNotificationConfig" class="btn btn-primary">
+            <i class="fas fa-plus-square"></i>
+            @T("Admin.Common.AddNew")
+        </a>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="form-horizontal">
+            <div class="card card-default">
+                <div class="card-body">
+                    @await Html.PartialAsync("Table", new DataTablesModel
+                    {
+                        Name = "event-notification-config-grid",
+                        UrlRead = new DataUrl("List", "EventNotificationConfig", null),
+                        SearchButtonId = "search-event-notification-config",
+                        Length = Model.PageSize,
+                        LengthMenu = Model.AvailablePageSizes,
+                        ColumnCollection = new List<ColumnProperty>
+                        {
+                            new(nameof(EventNotificationConfigModel.LocalizedEventName))
+                            {
+                                Title = T("Baramjk.PushNotification.Admin.EventNotificationConfig.EventName").Text,
+                                Width = "400"
+                            },
+                            new(nameof(EventNotificationConfigModel.LocalizedStatusName))
+                            {
+                                Title = T("Baramjk.PushNotification.Admin.EventNotificationConfig.StatusName").Text,
+                                Width = "400"
+                            },
+                            new(nameof(EventNotificationConfigModel.TemplateName))
+                            {
+                                Title = T("Baramjk.PushNotification.Admin.EventNotificationConfig.TemplateName").Text,
+                                Width = "400"
+                            },
+                            new(nameof(EventNotificationConfigModel.UseFirebase))
+                            {
+                                Title = T("Baramjk.PushNotification.Admin.EventNotificationConfig.UseFirebase").Text,
+                                Width = "20",
+                                Render = new RenderBoolean()
+                            },
+                            new(nameof(EventNotificationConfigModel.UseSms))
+                            {
+                                Title = T("Baramjk.PushNotification.Admin.EventNotificationConfig.UseSms").Text,
+                                Width = "20",
+                                Render = new RenderBoolean()
+                            },
+                            new(nameof(EventNotificationConfigModel.UseWhatsApp))
+                            {
+                                Title = T("Baramjk.PushNotification.Admin.EventNotificationConfig.UseWhatsApp").Text,
+                                Width = "20",
+                                Render = new RenderBoolean()
+                            },
+                            new ColumnProperty(nameof(EventNotificationConfigModel.Id))
+                            {
+                                Title = T("Admin.Common.Edit").Text,
+                                Width = "80",
+                                ClassName = NopColumnClassDefaults.Button,
+                                Render = new RenderButtonEdit(new DataUrl("Edit"))
+                            }
+                        }
+                    })
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

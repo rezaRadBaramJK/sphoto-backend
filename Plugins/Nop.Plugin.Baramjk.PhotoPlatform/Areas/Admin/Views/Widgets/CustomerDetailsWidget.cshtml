@@ -1,0 +1,57 @@
+@using Nop.Core
+@using Nop.Services.Common
+@model Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.Actors.CustomerDetailsWidgetModel
+@inject IGenericAttributeService GenericAttributeService
+@inject IWorkContext WorkContext
+
+@{
+    var customer = await WorkContext.GetCurrentCustomerAsync();
+
+    const string hideActorDetailsBlockAttributeName = "CustomerPage.HideActorDetailsBlock";
+    var hideActorAttributesBlock = await GenericAttributeService.GetAttributeAsync(customer, hideActorDetailsBlockAttributeName, defaultValue: true);
+}
+
+<nop-card
+    asp-name="actor-details"
+    asp-icon="fa fa-info"
+    asp-title="@T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.Widget.Actor.Title")"
+    asp-hide-block-attribute-name="@hideActorDetailsBlockAttributeName"
+    asp-hide="@hideActorAttributesBlock"
+    asp-advanced="false">
+
+    <div class="card-body">
+        @if (Model.ActorId != 0)
+        {
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <nop-label asp-for="ActorId"/>
+                </div>
+                <div class="col-md-9">
+                    <div class="form-text-row">@Model.ActorId</div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <nop-label asp-for="ActorLink"/>
+                </div>
+                <div class="col-md-9">
+                    <a href="@Model.ActorLink">@Model.ActorLink</a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="card card-default">
+                <div class="card-body">
+                    @T("Nop.Plugin.Baramjk.PhotoPlatform.Admin.CustomerDetailsWidget.NotAssociatedToActor")
+                </div>
+            </div>
+        }
+    </div>
+</nop-card>
+
+
+    
+    
+    

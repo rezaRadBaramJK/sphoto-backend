@@ -1,0 +1,91 @@
+
+
+@using Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.TimeSlots
+@model Nop.Plugin.Baramjk.PhotoPlatform.Areas.Admin.Models.TimeSlots.TimeSlotViewModel
+
+@{
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="form-horizontal">
+            <div class="card card-default">
+                <div class="card-body">
+                    <input type="hidden" asp-for="EventId" value="@Model.EventId"/>
+
+
+
+                    @(await Html.LocalizedEditorAsync<TimeSlotViewModel, TimeSlotLocalizedModel>("timeslot-localized",
+                        @<div>
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="@Model.Locales[item].Note"/>
+                                </div>
+                                <div class="col-md-9">
+                                    <nop-editor asp-for="@Model.Locales[item].Note" asp-template="RichEditor"/>
+                                    <span asp-validation-for="@Model.Locales[item].Note"></span>
+                                </div>
+                            </div>
+                            <input type="hidden" asp-for="@Model.Locales[item].LanguageId"/>
+                        </div>
+                        ,
+                        @<div>
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="Note"/>
+                                </div>
+                                <div class="col-md-9">
+                                    <nop-editor asp-for="Note" asp-template="RichEditor"/>
+                                    <span asp-validation-for="Note"></span>
+                                </div>
+                            </div>
+                        </div>)
+                    )
+
+
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="Date"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="Date"/>
+                            <span asp-validation-for="Date"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="StartTime"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="StartTime"/>
+                            <span asp-validation-for="StartTime"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="EndTime"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="EndTime"/>
+                            <span asp-validation-for="EndTime"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-label asp-for="Active"/>
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="Active"/>
+                            <span asp-validation-for="Active"></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
