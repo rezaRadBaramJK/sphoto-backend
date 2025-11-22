@@ -1,0 +1,199 @@
+@using Nop.Web.Framework.TagHelpers.Admin
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Nop.Plugin.Baramjk.Banner.Models.BannerModel
+
+@{
+    var dataTablesModel = ViewBag.DataTablesModel;
+}
+<nop-card asp-name="order-info" asp-icon="fas fa-info" asp-title="Banner"
+          asp-hide-block-attribute-name="BannerBlock" asp-hide="true" asp-advanced="false">
+    <div class="card-body">
+        <div class="content" id="bannerContainer">
+
+            <input type="hidden" value="@Model.EntityId" id="EntityId">
+            <input type="hidden" value="@Model.EntityName" id="EntityName">
+
+            <div class="panel panel-default">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="BannerType"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-select asp-for="BannerType" asp-items="@Model.AvailableTypes" class="mt-1"/>
+                                <span asp-validation-for="BannerType"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+
+                            <div class="col-md-3">
+                                <nop-label asp-for="FileId"/>
+                            </div>
+                            <div class="col-md-9">
+                                @await Html.PartialAsync("~/Plugins/Baramjk.Banner/Views/EditorTemplates/CustomDownload/CustomDownload.cshtml", Model)
+                                <span asp-validation-for="FileId"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="Title"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="Title"/>
+                                <span asp-validation-for="Title"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="Text"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="Text"/>
+                                <span asp-validation-for="Text"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="Tag"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="Tag"/>
+                                @{
+                                    var tags = ViewBag.Tags;
+                                    foreach (var tag in tags)
+                                    {
+                                        <span class="banner_tag" onclick="$('#Tag').val($(this).text())">@tag</span>
+                                    }
+                                }
+                                <span asp-validation-for="Tag"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="AltText"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="AltText"/>
+                                <span asp-validation-for="AltText"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="Link"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="Link"/>
+                                <span asp-validation-for="Link"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="DisplayOrder"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="DisplayOrder"/>
+                                <span asp-validation-for="DisplayOrder"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <nop-label asp-for="ExpirationDateTime"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="ExpirationDateTime"/>
+                                <span asp-validation-for="ExpirationDateTime"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <button type="button" name="save" class="btn bg-blue" style=" 
+              display: block;
+              margin: 0 auto;
+              margin-bottom: 15px;
+          " onclick=" SavePicture()"> <i class="fa fa-floppy-o"></i> Save </button>
+
+            </div>
+
+            <script>
+   function SavePicture(){
+                const formData  = new FormData();
+                formData.append( "Text",$('#bannerContainer #Text').val());
+                formData.append( "Tag",$('#bannerContainer #Tag').val());
+                formData.append( "AltText",$('#bannerContainer #AltText').val());
+                formData.append( "Link",$('#bannerContainer #Link').val());
+                formData.append( "EntityId",$('#bannerContainer #EntityId').val());
+                formData.append( "EntityName",$('#bannerContainer #EntityName').val());
+                formData.append( "DisplayOrder",$('#bannerContainer #DisplayOrder').val());
+                formData.append( "Title",$('#bannerContainer #Title').val());
+                formData.append( "BannerType",$('#bannerContainer #BannerType').val());
+                formData.append( "FileId",$('#bannerContainer #FileId').val());
+                    
+               fetch("/FrontendApi/banner/",{
+                   method:"post",
+                       body: formData
+                   })
+                   .then(item=>item.text())
+                   .then(item=>{
+                        $('#BannerListItemModelTable').DataTable().ajax.reload();
+                   });
+               }
+    </script>
+
+            <div class="form-horizontal">
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+
+                            @await Html.PartialAsync("Table", dataTablesModel, null)
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nop-card>
+<script>
+function  RenderFile(x,y,row){
+    if ( row.BannerTypeName!=="Picture")
+    return `<a target="_blank" href="/banner/GetFile/${row.FileName}"> ${row.BannerTypeName}</a>`; 
+    
+    return `<a target="_blank" href="/banner/GetFile/${row.FileName}"> 
+                <img src="/banner/GetFile/${row.FileName}" width="100" />
+            </a>`; 
+    }
+</script>
+
+
+<style>
+    #bid_table tr>*{
+        margin: 0px;
+        outline: none;
+        padding: 5px;
+        box-sizing: border-box;
+        min-width: 50px;
+        border: 1px solid rgb(221, 221, 221) !important;
+        color: rgb(92, 91, 91);
+        width: 204.812px;
+        clear: both;
+        font-size: 1.1em;
+        font-weight: 700;
+    }
+</style>
+
+
+<style>
+    .banner_tag {
+        cursor: pointer;
+        background-color: #f8f8f8;
+        border: 1px #d7d4d4 solid;
+        padding: 1px 3px;
+        margin: 1px;
+        display: inline-block;
+        margin-top: 4px;
+    }
+</style>

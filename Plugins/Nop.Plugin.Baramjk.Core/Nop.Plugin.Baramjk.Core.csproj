@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <CheckEolTargetFramework>false</CheckEolTargetFramework>
+        <Copyright>Copyright © Baramjk</Copyright>
+        <Company>Baramjk</Company>
+        <Authors>hos.hajizadeh@gmail.com</Authors>
+        <PackageProjectUrl>https://baramjk.com/</PackageProjectUrl>
+        <OutputPath>..\..\Presentation\Nop.Web\Plugins\Baramjk.Core</OutputPath>
+        <OutDir>$(OutputPath)</OutDir>
+        <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+        <AssemblyName>Nop.Plugin.Baramjk.Core</AssemblyName>
+        <RootNamespace>Nop.Plugin.Baramjk.Core</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Content Include="logo.jpg" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="plugin.json" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="Views\**" CopyToOutputDirectory="PreserveNewest" LinkBase="Views\" />
+        <Content Include="Content\**" CopyToOutputDirectory="PreserveNewest" LinkBase="Content\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ClearPluginAssemblies Include="$(MSBuildProjectDirectory)\..\..\Build\ClearPluginAssemblies.proj" />
+        <ProjectReference Include="..\Nop.Plugin.Baramjk.Framework\Nop.Plugin.Baramjk.Framework.csproj" />
+    </ItemGroup>
+
+    <Target Name="NopTarget" AfterTargets="Build">
+        <MSBuild Projects="@(ClearPluginAssemblies)" Properties="PluginPath=$(MSBuildProjectDirectory)\$(OutDir)" Targets="NopClear" />
+    </Target>
+</Project>

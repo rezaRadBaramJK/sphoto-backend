@@ -1,0 +1,63 @@
+﻿@using Nop.Services.Plugins
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Nop.Plugin.Baramjk.Framework.Exceptions
+@using Nop.Plugin.Baramjk.Framework.Models.ViewModels
+@using Nop.Plugin.Baramjk.Framework.Nop.Plugins
+@inject IPluginService PluginService
+
+@{
+    if (ViewBag.ConfigureModel is not DefaultConfigureViewModel configureModel)
+        throw new NullBusinessException("configureViewModel is null");
+}
+
+@{
+    var plugin = configureModel.PluginType == null ? null : PluginService.FindPluginByTypeInAssembly(configureModel.PluginType);
+
+    if (plugin != null && string.IsNullOrEmpty(configureModel.FriendlyName))
+        configureModel.FriendlyName = plugin.PluginDescriptor.FriendlyName;
+
+    if (plugin is BaramjkPlugin baramjkPlugin && configureModel.ActiveMenuSystemName == "Widgets")
+        configureModel.ActiveMenuSystemName = baramjkPlugin.MenuSystemNameConfiguration;
+}
+
+@{
+    // ReSharper disable once Razor.LayoutNotResolved
+    Layout = "_AdminLayout";
+    ViewBag.PageTitle = T(configureModel.ConfigureLocale).Text + " - " + configureModel.FriendlyName;
+    Html.SetActiveMenuItemSystemName(configureModel.ActiveMenuSystemName);
+}
+<form asp-controller="@configureModel.Controller" asp-action="@configureModel.Action" method="post">
+    <div class="content-header clearfix">
+        <h1 class="float-left">
+            @T(configureModel.ConfigureLocale) - @configureModel.FriendlyName
+            <small>
+                <i class="fas fa-arrow-circle-left"></i>
+                <a asp-controller="@configureModel.ListControllerName"
+                   asp-action="@configureModel.ListActionMethodName">
+                    @T(configureModel.BackToLocale)
+                </a>
+            </small>
+        </h1>
+        <div class="float-right">
+            <button type="submit" name="save" class="btn btn-primary">
+                <i class="far fa-save"></i>
+                @T("Admin.Common.Save")
+            </button>
+        </div>
+    </div>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="form-horizontal">
+
+                <div class="cards-group">
+                    <div class="card card-default">
+                        <div class="card-body">
+                            @RenderBody()
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</form>

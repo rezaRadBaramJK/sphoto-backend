@@ -1,0 +1,17 @@
+@using Nop.Plugin.Baramjk.Framework.Extensions
+@using Nop.Web.Framework.TagHelpers.Admin
+@using Nop.Plugin.Baramjk.Banner.Plugins
+@{
+    Layout = "";
+}
+
+@inject BannerSettings _settings
+@{
+    var tags = _settings.ProductTags.SplitSafe();
+}
+<nop-card asp-name="order-info" asp-icon="fas fa-info" asp-title="Banner"
+          asp-hide-block-attribute-name="BannerBlock" asp-hide="true" asp-advanced="false">
+    <div class="card-body">
+        @await Component.InvokeAsync("WidgetsBannerManager", new { entityId = ViewBag.Id, tags })
+    </div>
+</nop-card>

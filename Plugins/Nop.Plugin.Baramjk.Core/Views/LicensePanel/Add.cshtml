@@ -1,0 +1,45 @@
+@using Nop.Web.Framework.Infrastructure
+@using Nop.Web.Framework.TagHelpers.Admin
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Nop.Plugin.Baramjk.Core.Controllers.AddLicenseModel;
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form asp-controller="LicensePanel" asp-action="AddLicense" method="post">
+    <div class="content-header clearfix">
+        <h1 class="pull-left">
+            Add License
+        </h1>
+        <div class="pull-right">
+            <button type="submit" name="save" class="btn bg-blue">
+                <i class="fa fa-floppy-o"></i>
+                @T("Admin.Common.Save")
+            </button>
+            @await Component.InvokeAsync("AdminWidget", new { widgetZone = AdminWidgetZones.CustomerRoleDetailsButtons })
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="form-horizontal">
+            <div class="panel-group">
+                @await Component.InvokeAsync("AdminWidget", new { widgetZone = AdminWidgetZones.CustomerRoleDetailsTop, additionalData = Model })
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <nop-label asp-for="Token"/>
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="Token"/>
+                                <span asp-validation-for="Token"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @await Component.InvokeAsync("AdminWidget", new { widgetZone = AdminWidgetZones.CustomerRoleDetailsBottom, additionalData = Model })
+            </div>
+        </div>
+    </div>
+</form>

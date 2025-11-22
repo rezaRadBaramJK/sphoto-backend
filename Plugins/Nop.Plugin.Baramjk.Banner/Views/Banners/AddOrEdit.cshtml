@@ -1,0 +1,192 @@
+@using Nop.Web.Framework.TagHelpers.Admin
+@using Nop.Plugin.Baramjk.Framework.Extensions
+@using Nop.Plugin.Baramjk.Banner.Plugins
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Nop.Plugin.Baramjk.Banner.Models
+@using Nop.Plugin.Baramjk.Framework
+@model Nop.Plugin.Baramjk.Banner.Models.BannerModel
+@{
+    var isEditPage = Model.Id > 0;
+    var pageHeader = isEditPage ? "Edit Banner" : "Add Banner";
+    Layout = FrameworkDefaultValues.FormLayoutViewPath;
+    ViewBag.PageTitle = pageHeader;
+    SetActiveMenu("List");
+
+    Html.AddScriptParts(ResourceLocation.Footer, "~/Plugins/Baramjk.Core/Content/Common.js");
+    Html.AddScriptParts(ResourceLocation.Footer, $"~/Plugins/Baramjk.Banner/Views/Banners/js.js?{DateTime.Now.Ticks}");
+}
+@inject BannerSettings Settings
+
+<form asp-action="AddOrEdit" asp-controller="Banner" method="post" enctype="multipart/form-data">
+
+    <div class="content-header clearfix">
+        <h1 class="float-left">
+            @pageHeader
+        </h1>
+        <div class="float-right">
+            <button type="submit" name="save" class="btn btn-primary">
+                <i class="far fa-save"></i>
+                @T("Admin.Common.Save")
+            </button>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="form-horizontal">
+                <div class="cards-group">
+                    <div class="card card-default">
+                        <div class="card-body">
+                            <input asp-for="Id" type="hidden"/>
+                            <input asp-for="EntityId" type="hidden"/>
+                            <input asp-for="EntityName" type="hidden"/>
+
+                            @(await Html.LocalizedEditorAsync<BannerModel, BannerLocalizedModel>("banner-localized",
+                                @<div>
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <nop-label asp-for="@Model.Locales[item].Title"/>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <nop-editor asp-for="@Model.Locales[item].Title"/>
+                                            <span asp-validation-for="@Model.Locales[item].Title"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <nop-label asp-for="@Model.Locales[item].Text"/>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <nop-editor asp-for="@Model.Locales[item].Text"/>
+                                            <span asp-validation-for="@Model.Locales[item].Text"></span>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" asp-for="@Model.Locales[item].LanguageId"/>
+                                </div>,
+                                @<div>
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <nop-label asp-for="Title"/>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <nop-editor asp-for="Title"/>
+                                            <span asp-validation-for="Title"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <nop-label asp-for="Text"/>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <nop-editor asp-for="Text"/>
+                                            <span asp-validation-for="Text"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="BannerType"/>
+                                </div>
+                                <div class="col-md-9">
+                                    <nop-select asp-for="BannerType" asp-items="Model.AvailableTypes" class="mt-1"/>
+                                    <span asp-validation-for="BannerType"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="FileId"/>
+                                </div>
+                                <div class="col-md-9">
+                                    @await Html.PartialAsync("~/Plugins/Baramjk.Banner/Views/EditorTemplates/CustomDownload/CustomDownload.cshtml", Model)
+                                    <span asp-validation-for="FileId"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="Tag"/>
+                                </div>
+                                <div class="col-md-9">
+                                    <nop-editor asp-for="Tag"/>
+                                    @{
+                                        var tags = Settings.Tags.SplitSafe();
+                                        if (tags != null)
+                                        {
+                                            foreach (var tag in tags)
+                                            {
+                                                <span class="banner_tag" onclick="$('#Tag').val($(this).text())">@tag</span>
+                                            }
+                                        }
+                                    }
+                                    <span asp-validation-for="Tag"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="AltText"/>
+                                </div>
+                                <div class="col-md-9">
+                                    <nop-editor asp-for="AltText"/>
+                                    <span asp-validation-for="AltText"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="Link"/>
+                                </div>
+                                <div class="col-md-9">
+                                    <nop-editor asp-for="Link"/>
+                                    <span class="banner_tag" onclick="selectCategoryPopup()">Category:</span>
+                                    <span class="banner_tag" onclick="selectVendorsPopup()">Vendor:</span>
+                                    <span class="banner_tag" onclick="selectProductPopup()">Product:</span>
+                                    <span class="banner_tag" onclick="selectManufacturesPopup()">Manufactures:</span>
+                                    <span class="banner_tag" onclick="selectDiscountsPopup()">Discounts:</span>
+                                    <span class="banner_tag" onclick="$('#Link').val($(this).text())">WebView:</span>
+                                    <span asp-validation-for="Link"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="DisplayOrder"/>
+                                </div>
+                                <div class="col-md-9">
+                                    <nop-editor asp-for="DisplayOrder"/>
+                                    <span asp-validation-for="DisplayOrder"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <nop-label asp-for="ExpirationDateTime"/>
+                                </div>
+                                <div class="col-md-9">
+                                    <nop-editor asp-for="ExpirationDateTime"/>
+                                    <span asp-validation-for="ExpirationDateTime"></span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</form>
+
+<style>
+    .banner_tag {
+        cursor: pointer;
+        background-color: #f8f8f8;
+        border: 1px #d7d4d4 solid;
+        padding: 1px 3px;
+        margin: 1px;
+        display: inline-block;
+        margin-top: 4px;
+    }
+</style>
+
+<style>.banner_tag{cursor:pointer;background-color:#f8f8f8;border:1px #d7d4d4 solid;padding:1px 3px;margin:1px;display:inline-block;margin-top:4px}</style>

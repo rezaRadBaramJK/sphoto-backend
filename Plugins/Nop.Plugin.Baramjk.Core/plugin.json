@@ -1,0 +1,12 @@
+﻿{
+  "Group": "Baramjk",
+  "FriendlyName": "Core",
+  "SystemName": "Baramjk.Core",
+  "Version": "1.1",
+  "SupportedVersions": [
+    "4.40"
+  ],
+  "Author": "Hajizadeh",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Baramjk.Core.dll"
+}

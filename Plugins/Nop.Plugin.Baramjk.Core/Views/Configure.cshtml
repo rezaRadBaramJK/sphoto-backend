@@ -1,0 +1,19 @@
+﻿@using Nop.Web.Framework.TagHelpers.Admin
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Nop.Plugin.Baramjk.Core.Plugins
+@using Nop.Plugin.Baramjk.Framework.Models.ViewModels
+@model Nop.Plugin.Baramjk.Core.Models.FrameworkSettingsModel
+
+@{
+    InitConfigureView(new DefaultConfigureViewModel(typeof(BaramjkCorePlugin), "CoreAdmin"));
+}
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="DefaultGatewayClientName"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="DefaultGatewayClientName"/>
+        <span asp-validation-for="DefaultGatewayClientName"></span>
+    </div>
+</div>

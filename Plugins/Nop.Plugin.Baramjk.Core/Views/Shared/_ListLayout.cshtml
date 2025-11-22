@@ -1,0 +1,90 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Nop.Plugin.Baramjk.Framework.Extensions
+@model DefaultListViewModel
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.PageTitle = Model.PageTitle;
+    if (ViewBag.IsSetActiveMenu != true)
+    {
+        Html.SetActiveMenu(Model);
+    }
+    if(string.IsNullOrEmpty(Model.JsPath) == false)
+        Html.AppendScriptParts(ResourceLocation.Footer, Model.JsPath);
+}
+<div class="content-header clearfix">
+    <h1 class="float-left">
+        @Model.PageTitle
+    </h1>
+    <div class="float-right">
+        @if (string.IsNullOrEmpty(Model.AddAction) == false)
+        {
+            <a class="btn btn-primary" asp-action="@Model.AddAction">
+                <i class="fas fa-plus-square"></i> @T("Admin.Common.AddNew")
+            </a>
+        }
+
+        @if (Model.Tools.HasItem())
+        {
+            foreach (var tool in Model.Tools)
+            {
+                <a class="@tool.ClassName" href="@tool.Href" @tool.Attributes >
+                    @if (tool.Icon.HasValue())
+                    {
+                        <i class="@tool.Icon"></i>
+                    }
+                    @tool.Content
+                </a>
+            }
+        }
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="form-horizontal">
+            <div class="cards-group">
+                <div class="card card-default">
+                    <div class="card-body">
+                        @if (string.IsNullOrEmpty(Model.BeforePartialViewName) == false)
+                        {
+                            @await Html.PartialAsync(Model.BeforePartialViewData, Model.BeforePartialViewData, null)
+                        }
+
+                        @if (Model.FilterItems.HasItem())
+                        {
+                            foreach (var item in Model.FilterItems.Where(i => i.IsHiddenField))
+                            {
+                                <input type="hidden" id="@item.Name" name="@item.Name" value="@item.Value"/>
+                            }
+                        }
+
+                        @RenderBody()
+
+                        @await Html.PartialAsync("Table", Model.DataTablesModel, null)
+
+                        @if (string.IsNullOrEmpty(Model.AfterPartialViewName) == false)
+                        {
+                            @await Html.PartialAsync(Model.AfterPartialViewName, Model.AfterPartialViewData, null)
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+function  RenderLink(x,y,row){
+    return `<a target="_blank" href="/${x}">  </a>`; 
+}
+    
+function  RenderImage(x,y,row){
+    return `<a target="_blank" href="${x}"> 
+                <img src="${x}" width="100%" />
+            </a>`; 
+    }
+
+ @Html.Raw(Model.Javascript)
+</script>

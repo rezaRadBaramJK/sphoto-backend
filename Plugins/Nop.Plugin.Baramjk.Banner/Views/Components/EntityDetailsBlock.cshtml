@@ -1,0 +1,11 @@
+@using Nop.Web.Framework.TagHelpers.Admin
+@{
+    Layout = "";
+}
+
+<nop-card asp-name="order-info" asp-icon="fas fa-info" asp-title="Banner"
+          asp-hide-block-attribute-name="BannerBlock" asp-hide="false" asp-advanced="false">
+    <div class="card-body">
+        @await Component.InvokeAsync("WidgetsBannerManager", new { entityId = ViewBag.Id, entityName = ViewBag.entityType, tags = new List<string>() })
+    </div>
+</nop-card>

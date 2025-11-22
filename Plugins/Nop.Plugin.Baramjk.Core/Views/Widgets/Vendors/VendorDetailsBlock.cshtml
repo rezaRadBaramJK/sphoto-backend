@@ -1,0 +1,115 @@
+﻿
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Nop.Core
+@using Nop.Services.Common
+@using Nop.Web.Framework.TagHelpers.Admin
+
+@model Nop.Plugin.Baramjk.Core.Models.Vendors.VendorDetailsViewModel
+
+@inject IGenericAttributeService GenericAttributeService
+@inject IWorkContext WorkContext
+
+@{
+    const string hideDetailsBlockAttributeName = "VendorPage.Core.HideVendorDetailsBlock";
+    var hideDetailsBlock = await GenericAttributeService.GetAttributeAsync<bool>(await WorkContext.GetCurrentCustomerAsync(), hideDetailsBlockAttributeName);
+}
+
+
+<nop-card
+    asp-name="vendor-details"
+    asp-icon="fas fa-building"
+    asp-title="@T("Nop.Plugin.Baramjk.Core.Admin.Vendors.Details.Titles")"
+    asp-hide-block-attribute-name="@hideDetailsBlockAttributeName"
+    asp-hide="@hideDetailsBlock"
+    asp-advanced="true">
+    <div class="card-body">
+        
+        <div class="form-group row">
+            <div class="col-md-3">
+                <nop-label asp-for="StartTime"/>
+            </div>
+            <div class="col-md-9">
+                <nop-editor asp-for="StartTime"/>
+                <span asp-validation-for="StartTime"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3">
+                <nop-label asp-for="EndTime"/>
+            </div>
+            <div class="col-md-9">
+                <nop-editor asp-for="EndTime"/>
+                <span asp-validation-for="EndTime"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-3">
+                <nop-label asp-for="IsAvailable"/>
+            </div>
+            <div class="col-md-9">
+                <nop-editor asp-for="IsAvailable"/>
+                <span asp-validation-for="IsAvailable"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-3">
+                <nop-label asp-for="OffDaysOfWeekIds"/>
+            </div>
+            <div class="col-md-9">
+                <nop-select asp-for="OffDaysOfWeekIds" asp-items="Model.AvailableDaysOfWeek" asp-multiple="true"/>
+            </div>
+        </div>
+        
+        <div class="card-footer">
+
+            <button id="save-details" type="button" name="save" class="btn btn-primary">
+                <i class="far fa-save"></i>
+                @T("Nop.Plugin.Baramjk.Core.Admin.Vendors.Details.SaveDetails")
+            </button>
+        </div>
+
+        <script>
+            $(document).ready(function (){
+                $("#save-details").click(saveDetails);
+            });
+
+            function saveDetails(){
+                $('#save-details').attr('disabled', true);
+                
+                let startTime = $("#@Html.IdFor(model => model.StartTime)").val();
+                let endTime = $("#@Html.IdFor(model => model.EndTime)").val();
+                let offDays = $("#@Html.IdFor(model => model.OffDaysOfWeekIds)").val();
+                let isAvailable = $("#@Html.IdFor(model => model.IsAvailable)").is(":checked");
+                const postData = {
+                    VendorId: @Model.VendorId,
+                    StartTime:startTime,
+                    EndTime:endTime,
+                    OffDaysOfWeekIds:offDays,
+                    IsAvailable: isAvailable
+                };
+
+                addAntiForgeryToken(postData);
+
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: "@(Url.Action("SubmitDetails", "VendorAdmin", new {vendorId = Model.VendorId}))",
+                    data: postData,
+                    error: function () {
+                        alert('Vendor details save has been failed.');
+                    },
+                    success: function (){
+                        alert('Vendor details has been saved.');
+                    },
+                    complete: function () {
+                        $('#save-details').attr('disabled', false);
+                    }
+                });
+            }
+
+        </script>
+
+    </div>
+</nop-card>

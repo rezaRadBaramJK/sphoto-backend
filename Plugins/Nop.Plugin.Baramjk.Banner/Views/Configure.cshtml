@@ -1,0 +1,55 @@
+﻿@using Nop.Web.Framework.TagHelpers.Admin
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Nop.Plugin.Baramjk.Banner.Plugins
+@using Nop.Plugin.Baramjk.Framework.Models.ViewModels
+@model Nop.Plugin.Baramjk.Banner.Models.BannerSettingsModel
+
+@{
+    InitConfigureView(new DefaultConfigureViewModel(typeof(BannerPlugin), "BannerAdmin"));
+}
+
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="Tags"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="Tags"/>
+        <span asp-validation-for="Tags"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="ProductTags"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="ProductTags"/>
+        <span asp-validation-for="ProductTags"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="CategoryTags"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="CategoryTags"/>
+        <span asp-validation-for="CategoryTags"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="VendorTags"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="VendorTags"/>
+        <span asp-validation-for="VendorTags"></span>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-3">
+        <nop-label asp-for="ShowInProductAttributeValuePage"/>
+    </div>
+    <div class="col-md-9">
+        <nop-editor asp-for="ShowInProductAttributeValuePage"/>
+        <span asp-validation-for="ShowInProductAttributeValuePage"></span>
+    </div>
+</div>

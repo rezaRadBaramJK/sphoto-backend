@@ -1,0 +1,13 @@
+﻿{
+  "Group": "Baramjk",
+  "FriendlyName": "Banner",
+  "SystemName": "Baramjk.Banner",
+  "Version": "1.0",
+  "SupportedVersions": [
+    "4.40"
+  ],
+  "Author": "Baramjk team - Hajizadeh",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Baramjk.Banner.dll",
+  "Description": "Banner"
+}

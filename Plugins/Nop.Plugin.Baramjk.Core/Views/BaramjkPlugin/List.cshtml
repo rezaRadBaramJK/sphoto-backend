@@ -1,0 +1,77 @@
+@model IList<Nop.Services.Plugins.PluginDescriptor>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    Html.SetActiveMenuItemSystemName("BaramjkMenu_License");
+}
+
+
+<div class="content-header clearfix">
+    <h1 class="pull-left">
+        Plugins
+    </h1>
+    <div class="pull-right">
+
+    </div>
+</div>
+
+<div class="content">
+    <div class="form-horizontal">
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+
+                    <table id="bid_table" class="table table-bordered table-hover table-striped dataTable no-footer">
+                        <tr>
+                            <th>logo</th>
+                            <th>FriendlyName</th>
+                            <th>Description</th>
+                            <th>Version</th>
+                            <th>Installed</th>
+                            <th></th>
+                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td >
+                                    <img src="/Plugins/@item.SystemName/logo.jpg" width="70"/>
+                                </td>
+                                <td >
+                                    @item.FriendlyName
+                                </td>
+                                <td >
+                                    @item.Description
+                                </td>
+                                <td >
+                                    @item.Version
+                                </td>
+                                <td >
+                                    @item.Installed
+                                </td>
+                                <td>
+                                    <a href="CreateDemoLicense?pluginName=@item.SystemName" class="btn btn-primary">Create Demo License</a>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #bid_table tr>*{
+        margin: 0px;
+        outline: none;
+        padding: 5px;
+        box-sizing: border-box;
+        min-width: 50px;
+        border: 1px solid rgb(221, 221, 221) !important;
+        color: rgb(92, 91, 91);
+        width: 204.812px;
+        clear: both;
+        font-size: 1.1em;
+        font-weight: 700;
+    }
+</style>
